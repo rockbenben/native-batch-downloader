@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Нативний пакетний завантажувач"
+  },
+  "extDesc": {
+    "message": "Пакетне завантаження файлів через вбудований канал браузера — кукі, UA та заголовки надсилаються автоматично"
+  },
+  "title": {
+    "message": "Нативний пакетний завантажувач"
+  },
+  "placeholder": {
+    "message": "Вставте посилання, по одному на рядок\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Одночасних завантажень"
+  },
+  "delay": {
+    "message": "Затримка"
+  },
+  "start": {
+    "message": "Почати завантаження"
+  },
+  "stop": {
+    "message": "Зупинити"
+  },
+  "total": {
+    "message": "Всього"
+  },
+  "success": {
+    "message": "ОК"
+  },
+  "failed": {
+    "message": "Помилка"
+  },
+  "waiting": {
+    "message": "Очікування"
+  },
+  "noUrls": {
+    "message": "Дійсних URL не знайдено"
+  },
+  "startLog": {
+    "message": "Починаю завантаження $1 файлів (одночасно: $2)"
+  },
+  "downloading": {
+    "message": "Завантаження"
+  },
+  "interrupted": {
+    "message": "перервано"
+  },
+  "stopped": {
+    "message": "Зупинено вручну"
+  },
+  "doneAll": {
+    "message": "Готово — $1 ОК, $2 помилок"
+  }
+}

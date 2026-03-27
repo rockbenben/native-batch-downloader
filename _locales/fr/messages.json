@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Téléchargeur natif par lots"
+  },
+  "extDesc": {
+    "message": "Téléchargement par lots via le canal natif du navigateur — cookies, UA et en-têtes envoyés automatiquement"
+  },
+  "title": {
+    "message": "Téléchargeur natif par lots"
+  },
+  "placeholder": {
+    "message": "Collez les URLs, une par ligne\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Téléchargements simultanés"
+  },
+  "delay": {
+    "message": "Délai"
+  },
+  "start": {
+    "message": "Lancer"
+  },
+  "stop": {
+    "message": "Arrêter"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Échec"
+  },
+  "waiting": {
+    "message": "Attente"
+  },
+  "noUrls": {
+    "message": "Aucune URL valide trouvée"
+  },
+  "startLog": {
+    "message": "Démarrage de $1 téléchargements (simultanés : $2)"
+  },
+  "downloading": {
+    "message": "Téléchargement"
+  },
+  "interrupted": {
+    "message": "interrompu"
+  },
+  "stopped": {
+    "message": "Arrêté manuellement"
+  },
+  "doneAll": {
+    "message": "Terminé — $1 OK, $2 échoués"
+  }
+}

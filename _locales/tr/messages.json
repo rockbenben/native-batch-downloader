@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Yerel Toplu İndirici"
+  },
+  "extDesc": {
+    "message": "Tarayıcının yerel indirme kanalıyla toplu dosya indirme — çerez, UA ve başlıklar otomatik gönderilir"
+  },
+  "title": {
+    "message": "Yerel Toplu İndirici"
+  },
+  "placeholder": {
+    "message": "İndirme URL'lerini yapıştırın, her satıra bir tane\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Eşzamanlı indirme"
+  },
+  "delay": {
+    "message": "Gecikme"
+  },
+  "start": {
+    "message": "İndirmeyi başlat"
+  },
+  "stop": {
+    "message": "Durdur"
+  },
+  "total": {
+    "message": "Toplam"
+  },
+  "success": {
+    "message": "Tamam"
+  },
+  "failed": {
+    "message": "Hata"
+  },
+  "waiting": {
+    "message": "Bekliyor"
+  },
+  "noUrls": {
+    "message": "Geçerli URL bulunamadı"
+  },
+  "startLog": {
+    "message": "$1 indirme başlatılıyor (eşzamanlı: $2)"
+  },
+  "downloading": {
+    "message": "İndiriliyor"
+  },
+  "interrupted": {
+    "message": "kesildi"
+  },
+  "stopped": {
+    "message": "El ile durduruldu"
+  },
+  "doneAll": {
+    "message": "Tamamlandı — $1 başarılı, $2 başarısız"
+  }
+}

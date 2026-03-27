@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Descargador nativo por lotes"
+  },
+  "extDesc": {
+    "message": "Descarga por lotes usando el canal nativo del navegador — cookies, UA y cabeceras se envían automáticamente"
+  },
+  "title": {
+    "message": "Descargador nativo por lotes"
+  },
+  "placeholder": {
+    "message": "Pega las URLs, una por línea\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Descargas simultáneas"
+  },
+  "delay": {
+    "message": "Intervalo"
+  },
+  "start": {
+    "message": "Iniciar descarga"
+  },
+  "stop": {
+    "message": "Detener"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Error"
+  },
+  "waiting": {
+    "message": "Espera"
+  },
+  "noUrls": {
+    "message": "No se encontraron URLs válidas"
+  },
+  "startLog": {
+    "message": "Iniciando $1 descargas (simultáneas: $2)"
+  },
+  "downloading": {
+    "message": "Descargando"
+  },
+  "interrupted": {
+    "message": "interrumpido"
+  },
+  "stopped": {
+    "message": "Detenido manualmente"
+  },
+  "doneAll": {
+    "message": "Listo — $1 OK, $2 fallidos"
+  }
+}

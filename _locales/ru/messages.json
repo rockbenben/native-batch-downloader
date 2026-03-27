@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Нативный пакетный загрузчик"
+  },
+  "extDesc": {
+    "message": "Пакетная загрузка файлов через встроенный канал браузера — куки, UA и заголовки отправляются автоматически"
+  },
+  "title": {
+    "message": "Нативный пакетный загрузчик"
+  },
+  "placeholder": {
+    "message": "Вставьте ссылки, по одной на строку\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Одновременных загрузок"
+  },
+  "delay": {
+    "message": "Задержка"
+  },
+  "start": {
+    "message": "Начать загрузку"
+  },
+  "stop": {
+    "message": "Стоп"
+  },
+  "total": {
+    "message": "Всего"
+  },
+  "success": {
+    "message": "ОК"
+  },
+  "failed": {
+    "message": "Ошибка"
+  },
+  "waiting": {
+    "message": "Ожидание"
+  },
+  "noUrls": {
+    "message": "Нет допустимых URL"
+  },
+  "startLog": {
+    "message": "Начинаю загрузку $1 файлов (одновременно: $2)"
+  },
+  "downloading": {
+    "message": "Загрузка"
+  },
+  "interrupted": {
+    "message": "прервано"
+  },
+  "stopped": {
+    "message": "Остановлено вручную"
+  },
+  "doneAll": {
+    "message": "Готово — $1 ОК, $2 ошибок"
+  }
+}

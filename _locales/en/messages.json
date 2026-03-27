@@ -1,0 +1,20 @@
+{
+  "extName": { "message": "Native Batch Downloader" },
+  "extDesc": { "message": "Batch download files using browser's native download channel — auto-carries cookies, UA and headers" },
+  "title": { "message": "Native Batch Downloader" },
+  "placeholder": { "message": "Paste download URLs, one per line\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Concurrency" },
+  "delay": { "message": "Delay" },
+  "start": { "message": "Start Download" },
+  "stop": { "message": "Stop" },
+  "total": { "message": "Total" },
+  "success": { "message": "OK" },
+  "failed": { "message": "Fail" },
+  "waiting": { "message": "Wait" },
+  "noUrls": { "message": "No valid URLs found" },
+  "startLog": { "message": "Starting $1 downloads (concurrency $2)" },
+  "downloading": { "message": "Downloading" },
+  "interrupted": { "message": "interrupted" },
+  "stopped": { "message": "Manually stopped" },
+  "doneAll": { "message": "All done — $1 OK, $2 failed" }
+}

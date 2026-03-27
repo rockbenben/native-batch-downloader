@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Downloader nativo em lote"
+  },
+  "extDesc": {
+    "message": "Download em lote pelo canal nativo do navegador — cookies, UA e cabeçalhos enviados automaticamente"
+  },
+  "title": {
+    "message": "Downloader nativo em lote"
+  },
+  "placeholder": {
+    "message": "Cole as URLs, uma por linha\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Downloads simultâneos"
+  },
+  "delay": {
+    "message": "Intervalo"
+  },
+  "start": {
+    "message": "Iniciar download"
+  },
+  "stop": {
+    "message": "Parar"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Falha"
+  },
+  "waiting": {
+    "message": "Aguardando"
+  },
+  "noUrls": {
+    "message": "Nenhuma URL válida encontrada"
+  },
+  "startLog": {
+    "message": "Iniciando $1 downloads (simultâneos: $2)"
+  },
+  "downloading": {
+    "message": "Baixando"
+  },
+  "interrupted": {
+    "message": "interrompido"
+  },
+  "stopped": {
+    "message": "Parado manualmente"
+  },
+  "doneAll": {
+    "message": "Concluído — $1 OK, $2 falharam"
+  }
+}

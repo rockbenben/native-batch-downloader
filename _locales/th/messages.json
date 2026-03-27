@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "ดาวน์โหลดแบบกลุ่มผ่านเบราว์เซอร์"
+  },
+  "extDesc": {
+    "message": "ดาวน์โหลดไฟล์จำนวนมากผ่านช่องทางดาวน์โหลดของเบราว์เซอร์ — ส่ง cookie, UA และ header โดยอัตโนมัติ"
+  },
+  "title": {
+    "message": "ดาวน์โหลดแบบกลุ่มผ่านเบราว์เซอร์"
+  },
+  "placeholder": {
+    "message": "วาง URL บรรทัดละหนึ่งลิงก์\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "ดาวน์โหลดพร้อมกัน"
+  },
+  "delay": {
+    "message": "หน่วงเวลา"
+  },
+  "start": {
+    "message": "เริ่มดาวน์โหลด"
+  },
+  "stop": {
+    "message": "หยุด"
+  },
+  "total": {
+    "message": "ทั้งหมด"
+  },
+  "success": {
+    "message": "สำเร็จ"
+  },
+  "failed": {
+    "message": "ล้มเหลว"
+  },
+  "waiting": {
+    "message": "รอ"
+  },
+  "noUrls": {
+    "message": "ไม่พบ URL ที่ถูกต้อง"
+  },
+  "startLog": {
+    "message": "เริ่มดาวน์โหลด $1 ไฟล์ (พร้อมกัน: $2)"
+  },
+  "downloading": {
+    "message": "กำลังดาวน์โหลด"
+  },
+  "interrupted": {
+    "message": "ถูกขัดจังหวะ"
+  },
+  "stopped": {
+    "message": "หยุดด้วยตนเอง"
+  },
+  "doneAll": {
+    "message": "เสร็จสิ้น — สำเร็จ $1, ล้มเหลว $2"
+  }
+}

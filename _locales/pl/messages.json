@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Natywne pobieranie zbiorcze"
+  },
+  "extDesc": {
+    "message": "Zbiorcze pobieranie plików przez natywny kanał przeglądarki — ciasteczka, UA i nagłówki wysyłane automatycznie"
+  },
+  "title": {
+    "message": "Natywne pobieranie zbiorcze"
+  },
+  "placeholder": {
+    "message": "Wklej adresy URL, jeden na linię\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Jednoczesnych pobrań"
+  },
+  "delay": {
+    "message": "Opóźnienie"
+  },
+  "start": {
+    "message": "Rozpocznij pobieranie"
+  },
+  "stop": {
+    "message": "Zatrzymaj"
+  },
+  "total": {
+    "message": "Łącznie"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Błąd"
+  },
+  "waiting": {
+    "message": "Oczekuje"
+  },
+  "noUrls": {
+    "message": "Nie znaleziono prawidłowych URL"
+  },
+  "startLog": {
+    "message": "Rozpoczynam pobieranie $1 plików (jednocześnie: $2)"
+  },
+  "downloading": {
+    "message": "Pobieranie"
+  },
+  "interrupted": {
+    "message": "przerwano"
+  },
+  "stopped": {
+    "message": "Zatrzymano ręcznie"
+  },
+  "doneAll": {
+    "message": "Gotowe — $1 OK, $2 błędów"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "أداة التحميل الأصلية الجماعية"
+  },
+  "extDesc": {
+    "message": "تحميل جماعي للملفات عبر قناة التحميل الأصلية للمتصفح — يتم إرسال الكوكيز والهيدرز تلقائياً"
+  },
+  "title": {
+    "message": "أداة التحميل الأصلية الجماعية"
+  },
+  "placeholder": {
+    "message": "الصق روابط التحميل، رابط واحد في كل سطر\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "تحميلات متزامنة"
+  },
+  "delay": {
+    "message": "تأخير"
+  },
+  "start": {
+    "message": "بدء التحميل"
+  },
+  "stop": {
+    "message": "إيقاف"
+  },
+  "total": {
+    "message": "الإجمالي"
+  },
+  "success": {
+    "message": "نجاح"
+  },
+  "failed": {
+    "message": "فشل"
+  },
+  "waiting": {
+    "message": "انتظار"
+  },
+  "noUrls": {
+    "message": "لم يتم العثور على روابط صالحة"
+  },
+  "startLog": {
+    "message": "بدء تحميل $1 ملف (متزامن: $2)"
+  },
+  "downloading": {
+    "message": "جاري التحميل"
+  },
+  "interrupted": {
+    "message": "تم المقاطعة"
+  },
+  "stopped": {
+    "message": "تم الإيقاف يدوياً"
+  },
+  "doneAll": {
+    "message": "تم — $1 نجاح، $2 فشل"
+  }
+}

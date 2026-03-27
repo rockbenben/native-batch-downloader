@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Nativer Batch-Downloader"
+  },
+  "extDesc": {
+    "message": "Dateien über den nativen Browser-Download-Kanal herunterladen — Cookies, UA und Header werden automatisch gesendet"
+  },
+  "title": {
+    "message": "Nativer Batch-Downloader"
+  },
+  "placeholder": {
+    "message": "Download-URLs einfügen, eine pro Zeile\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Gleichzeitige Downloads"
+  },
+  "delay": {
+    "message": "Verzögerung"
+  },
+  "start": {
+    "message": "Download starten"
+  },
+  "stop": {
+    "message": "Stoppen"
+  },
+  "total": {
+    "message": "Gesamt"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Fehler"
+  },
+  "waiting": {
+    "message": "Wartend"
+  },
+  "noUrls": {
+    "message": "Keine gültigen URLs gefunden"
+  },
+  "startLog": {
+    "message": "$1 Downloads gestartet (gleichzeitig: $2)"
+  },
+  "downloading": {
+    "message": "Herunterladen"
+  },
+  "interrupted": {
+    "message": "unterbrochen"
+  },
+  "stopped": {
+    "message": "Manuell gestoppt"
+  },
+  "doneAll": {
+    "message": "Fertig — $1 OK, $2 fehlgeschlagen"
+  }
+}

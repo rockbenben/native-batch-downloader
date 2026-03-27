@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Natieve batchdownloader"
+  },
+  "extDesc": {
+    "message": "Batchgewijs downloaden via het native downloadkanaal van de browser — cookies, UA en headers worden automatisch meegestuurd"
+  },
+  "title": {
+    "message": "Natieve batchdownloader"
+  },
+  "placeholder": {
+    "message": "Plak download-URL's, één per regel\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Gelijktijdige downloads"
+  },
+  "delay": {
+    "message": "Vertraging"
+  },
+  "start": {
+    "message": "Download starten"
+  },
+  "stop": {
+    "message": "Stoppen"
+  },
+  "total": {
+    "message": "Totaal"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Fout"
+  },
+  "waiting": {
+    "message": "Wachtend"
+  },
+  "noUrls": {
+    "message": "Geen geldige URL's gevonden"
+  },
+  "startLog": {
+    "message": "$1 downloads gestart (gelijktijdig: $2)"
+  },
+  "downloading": {
+    "message": "Downloaden"
+  },
+  "interrupted": {
+    "message": "onderbroken"
+  },
+  "stopped": {
+    "message": "Handmatig gestopt"
+  },
+  "doneAll": {
+    "message": "Klaar — $1 OK, $2 mislukt"
+  }
+}

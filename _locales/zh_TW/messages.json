@@ -1,0 +1,20 @@
+{
+  "extName": { "message": "原生批次下載器" },
+  "extDesc": { "message": "使用瀏覽器原生下載通道批次下載檔案，自動攜帶 Cookie、UA 等請求標頭" },
+  "title": { "message": "原生批次下載器" },
+  "placeholder": { "message": "貼上下載連結，每行一個\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "並行數" },
+  "delay": { "message": "間隔" },
+  "start": { "message": "開始下載" },
+  "stop": { "message": "停止" },
+  "total": { "message": "總計" },
+  "success": { "message": "成功" },
+  "failed": { "message": "失敗" },
+  "waiting": { "message": "等待" },
+  "noUrls": { "message": "沒有有效的 URL" },
+  "startLog": { "message": "開始下載 $1 個檔案（並行 $2）" },
+  "downloading": { "message": "下載中" },
+  "interrupted": { "message": "已中斷" },
+  "stopped": { "message": "已手動停止" },
+  "doneAll": { "message": "全部完成 — 成功 $1，失敗 $2" }
+}

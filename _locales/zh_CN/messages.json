@@ -1,0 +1,20 @@
+{
+  "extName": { "message": "原生批量下载器" },
+  "extDesc": { "message": "使用浏览器原生下载通道批量下载文件，自动携带 Cookie、UA 等请求头" },
+  "title": { "message": "原生批量下载器" },
+  "placeholder": { "message": "粘贴下载链接，每行一个\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "并发数" },
+  "delay": { "message": "间隔" },
+  "start": { "message": "开始下载" },
+  "stop": { "message": "停止" },
+  "total": { "message": "总计" },
+  "success": { "message": "成功" },
+  "failed": { "message": "失败" },
+  "waiting": { "message": "等待" },
+  "noUrls": { "message": "没有有效的 URL" },
+  "startLog": { "message": "开始下载 $1 个文件（并发 $2）" },
+  "downloading": { "message": "下载中" },
+  "interrupted": { "message": "已中断" },
+  "stopped": { "message": "已手动停止" },
+  "doneAll": { "message": "全部完成 — 成功 $1，失败 $2" }
+}

@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Tải hàng loạt gốc"
+  },
+  "extDesc": {
+    "message": "Tải hàng loạt qua kênh tải gốc của trình duyệt — tự động gửi cookie, UA và header"
+  },
+  "title": {
+    "message": "Tải hàng loạt gốc"
+  },
+  "placeholder": {
+    "message": "Dán URL tải xuống, mỗi dòng một URL\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Tải đồng thời"
+  },
+  "delay": {
+    "message": "Khoảng cách"
+  },
+  "start": {
+    "message": "Bắt đầu tải"
+  },
+  "stop": {
+    "message": "Dừng"
+  },
+  "total": {
+    "message": "Tổng"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Lỗi"
+  },
+  "waiting": {
+    "message": "Đợi"
+  },
+  "noUrls": {
+    "message": "Không tìm thấy URL hợp lệ"
+  },
+  "startLog": {
+    "message": "Bắt đầu tải $1 tệp (đồng thời: $2)"
+  },
+  "downloading": {
+    "message": "Đang tải"
+  },
+  "interrupted": {
+    "message": "bị gián đoạn"
+  },
+  "stopped": {
+    "message": "Đã dừng thủ công"
+  },
+  "doneAll": {
+    "message": "Hoàn tất — $1 OK, $2 lỗi"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "ネイティブ一括ダウンローダー"
+  },
+  "extDesc": {
+    "message": "ブラウザのネイティブダウンロード機能でファイルを一括ダウンロード。Cookie・UA・ヘッダーを自動送信"
+  },
+  "title": {
+    "message": "ネイティブ一括ダウンローダー"
+  },
+  "placeholder": {
+    "message": "ダウンロードURLを1行ずつ貼り付け\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "同時接続数"
+  },
+  "delay": {
+    "message": "間隔"
+  },
+  "start": {
+    "message": "ダウンロード開始"
+  },
+  "stop": {
+    "message": "停止"
+  },
+  "total": {
+    "message": "合計"
+  },
+  "success": {
+    "message": "成功"
+  },
+  "failed": {
+    "message": "失敗"
+  },
+  "waiting": {
+    "message": "待機"
+  },
+  "noUrls": {
+    "message": "有効なURLがありません"
+  },
+  "startLog": {
+    "message": "$1 件のダウンロードを開始（同時接続 $2）"
+  },
+  "downloading": {
+    "message": "ダウンロード中"
+  },
+  "interrupted": {
+    "message": "中断されました"
+  },
+  "stopped": {
+    "message": "手動停止しました"
+  },
+  "doneAll": {
+    "message": "完了 — 成功 $1、失敗 $2"
+  }
+}

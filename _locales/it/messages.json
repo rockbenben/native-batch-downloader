@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "Downloader nativo batch"
+  },
+  "extDesc": {
+    "message": "Download in batch tramite il canale nativo del browser — cookie, UA e intestazioni inviati automaticamente"
+  },
+  "title": {
+    "message": "Downloader nativo batch"
+  },
+  "placeholder": {
+    "message": "Incolla gli URL, uno per riga\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "Download simultanei"
+  },
+  "delay": {
+    "message": "Ritardo"
+  },
+  "start": {
+    "message": "Avvia download"
+  },
+  "stop": {
+    "message": "Ferma"
+  },
+  "total": {
+    "message": "Totale"
+  },
+  "success": {
+    "message": "OK"
+  },
+  "failed": {
+    "message": "Errore"
+  },
+  "waiting": {
+    "message": "In attesa"
+  },
+  "noUrls": {
+    "message": "Nessun URL valido trovato"
+  },
+  "startLog": {
+    "message": "Avvio di $1 download (simultanei: $2)"
+  },
+  "downloading": {
+    "message": "Download in corso"
+  },
+  "interrupted": {
+    "message": "interrotto"
+  },
+  "stopped": {
+    "message": "Fermato manualmente"
+  },
+  "doneAll": {
+    "message": "Completato — $1 OK, $2 falliti"
+  }
+}

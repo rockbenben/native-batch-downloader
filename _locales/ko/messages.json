@@ -1,0 +1,56 @@
+{
+  "extName": {
+    "message": "네이티브 일괄 다운로더"
+  },
+  "extDesc": {
+    "message": "브라우저 기본 다운로드 채널로 파일 일괄 다운로드 — 쿠키, UA, 헤더 자동 전송"
+  },
+  "title": {
+    "message": "네이티브 일괄 다운로더"
+  },
+  "placeholder": {
+    "message": "다운로드 URL을 한 줄에 하나씩 붙여넣기\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
+  },
+  "concurrency": {
+    "message": "동시 다운로드"
+  },
+  "delay": {
+    "message": "간격"
+  },
+  "start": {
+    "message": "다운로드 시작"
+  },
+  "stop": {
+    "message": "중지"
+  },
+  "total": {
+    "message": "전체"
+  },
+  "success": {
+    "message": "성공"
+  },
+  "failed": {
+    "message": "실패"
+  },
+  "waiting": {
+    "message": "대기"
+  },
+  "noUrls": {
+    "message": "유효한 URL이 없습니다"
+  },
+  "startLog": {
+    "message": "$1개 다운로드 시작 (동시 $2)"
+  },
+  "downloading": {
+    "message": "다운로드 중"
+  },
+  "interrupted": {
+    "message": "중단됨"
+  },
+  "stopped": {
+    "message": "수동 중지됨"
+  },
+  "doneAll": {
+    "message": "완료 — 성공 $1, 실패 $2"
+  }
+}
