@@ -1,8 +1,12 @@
 # Native Batch Downloader
 
+> 365 Open Source Plan #001 · Chrome extension for batch downloading via native browser channel
+
 A Chrome extension for batch downloading files through the browser's native download channel. Cookies, User-Agent, and Referer headers are carried automatically -- no extra configuration needed.
 
 [中文](README.zh.md) | English
+
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/fmmihnoplefjcfoggfgpeiomlbmjnfpm)](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)
 
 ## How It Works
 
@@ -20,6 +24,12 @@ Under the hood it calls `chrome.downloads.download(url)` for each link, which is
 - **Manifest V3** -- modern Chrome extension architecture, no background scripts.
 
 ## Installation
+
+**From Chrome Web Store (recommended):**
+
+Install directly from the [Chrome Web Store](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm).
+
+**Manual installation (development):**
 
 1. Download or clone this repository.
 2. Open `chrome://extensions/` in Chrome.
@@ -56,6 +66,12 @@ Executable files (`.exe`, `.bat`, etc.) may trigger Chrome's built-in security p
 **Workaround**: go to `chrome://settings/security` and set Safe Browsing to **No protection**. Remember to switch it back after you're done.
 
 PDFs and other common document types are not affected.
+
+## About the 365 Open Source Plan
+
+This is project #001 of the [365 Open Source Plan](https://github.com/rockbenben/365opensource).
+
+One person + AI, 300+ open-source projects in one year. [Submit your idea →](https://my.feishu.cn/share/base/form/shrcnI6y7rrmlSjbzkYXh6sjmzb)
 
 ## License
 
