@@ -15,6 +15,7 @@
   "startLog": { "message": "开始下载 $1 个文件（并发 $2）" },
   "downloading": { "message": "下载中" },
   "interrupted": { "message": "已中断" },
+  "filtered": { "message": "已跳过 $1 个无效、$2 个重复链接" },
   "stopped": { "message": "已手动停止" },
   "doneAll": { "message": "全部完成 — 成功 $1，失败 $2" }
 }

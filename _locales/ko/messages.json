@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "중단됨"
   },
+  "filtered": {
+    "message": "잘못된 URL $1개, 중복 $2개를 건너뛰었습니다"
+  },
   "stopped": {
     "message": "수동 중지됨"
   },

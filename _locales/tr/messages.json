@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "kesildi"
   },
+  "filtered": {
+    "message": "$1 geçersiz ve $2 yinelenen URL atlandı"
+  },
   "stopped": {
     "message": "El ile durduruldu"
   },

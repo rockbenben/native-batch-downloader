@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "中断されました"
   },
+  "filtered": {
+    "message": "無効な URL $1 件、重複 $2 件をスキップしました"
+  },
   "stopped": {
     "message": "手動停止しました"
   },

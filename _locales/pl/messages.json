@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "przerwano"
   },
+  "filtered": {
+    "message": "Pominięto $1 nieprawidłowych i $2 zduplikowanych adresów URL"
+  },
   "stopped": {
     "message": "Zatrzymano ręcznie"
   },

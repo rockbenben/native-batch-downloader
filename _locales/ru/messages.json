@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "прервано"
   },
+  "filtered": {
+    "message": "Пропущено $1 недопустимых и $2 повторяющихся URL"
+  },
   "stopped": {
     "message": "Остановлено вручную"
   },

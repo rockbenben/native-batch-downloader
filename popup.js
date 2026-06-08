@@ -1,10 +1,7 @@
 (() => {
   const $ = (s) => document.querySelector(s);
-  const M = (key, ...subs) => {
-    let msg = chrome.i18n.getMessage(key) || key;
-    subs.forEach((s, i) => { msg = msg.replace(`$${i + 1}`, s); });
-    return msg;
-  };
+  const M = (key, ...subs) =>
+    chrome.i18n.getMessage(key, subs.map(String)) || key;
 
   // -- i18n UI --
   $("#titleText").textContent = M("title");
@@ -30,143 +27,89 @@
   const barEl = $("#bar");
   const logEl = $("#log");
 
-  let aborted = false;
-  let stats = { total: 0, ok: 0, fail: 0 };
+  let seenTotal = 0; // logical count of log entries already rendered (survives trimming)
 
-  function parseUrls() {
-    return urlsEl.value
-      .split("\n")
-      .map((l) => l.trim())
-      .filter((l) => l && (l.startsWith("http://") || l.startsWith("https://")));
-  }
-
-  function log(text, cls = "info") {
+  function logLine(text, cls) {
     const d = document.createElement("div");
     d.className = cls;
     d.textContent = text;
     logEl.prepend(d);
   }
 
-  function updateStats() {
-    const done = stats.ok + stats.fail;
-    const waiting = stats.total - done;
-    totalEl.textContent = stats.total;
-    okEl.textContent = stats.ok;
-    failEl.textContent = stats.fail;
-    waitEl.textContent = waiting;
-    barEl.style.width = stats.total ? `${(done / stats.total) * 100}%` : "0%";
-  }
+  function renderState(st) {
+    const done = st.stats.ok + st.stats.fail;
+    totalEl.textContent = st.stats.total;
+    okEl.textContent = st.stats.ok;
+    failEl.textContent = st.stats.fail;
+    waitEl.textContent = st.stats.total - done;
+    barEl.style.width = st.stats.total ? `${(done / st.stats.total) * 100}%` : "0%";
 
-  function filenameFromUrl(url) {
-    try {
-      const pathname = new URL(url).pathname;
-      const parts = pathname.split("/");
-      const last = parts[parts.length - 1];
-      return last ? decodeURIComponent(last) : null;
-    } catch {
-      return null;
+    startBtn.disabled = st.running;
+    stopBtn.disabled = !st.running;
+    urlsEl.disabled = st.running;
+
+    // Render by logical index so front-trimming of the capped log doesn't
+    // desync the view. total = entries ever produced this run; st.log holds the
+    // last (total - dropped) of them. A drop in total means a new run -> rebuild.
+    const dropped = st.dropped || 0;
+    const total = dropped + st.log.length;
+    if (total < seenTotal) {
+      logEl.innerHTML = "";
+      seenTotal = 0;
     }
+    for (let i = Math.max(seenTotal, dropped); i < total; i++) {
+      const e = st.log[i - dropped];
+      logLine(e.text, e.cls);
+    }
+    seenTotal = total;
   }
 
-  function downloadOne(url) {
-    return new Promise((resolve) => {
-      const filename = filenameFromUrl(url);
-      const opts = { url, saveAs: false };
-      if (filename) opts.filename = filename;
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg && msg.evt === "sync") renderState(msg.state);
+  });
 
-      chrome.downloads.download(opts, (downloadId) => {
-        if (chrome.runtime.lastError) {
-          stats.fail++;
-          log(`${filename || url}  — ${chrome.runtime.lastError.message}`, "err");
-          updateStats();
-          resolve(false);
-          return;
-        }
+  chrome.runtime.sendMessage({ cmd: "getState" }, (resp) => {
+    if (chrome.runtime.lastError) return;
+    if (resp && resp.state) renderState(resp.state);
+  });
 
-        const handler = (delta) => {
-          if (delta.id !== downloadId) return;
-          if (delta.state) {
-            if (delta.state.current === "complete") {
-              chrome.downloads.onChanged.removeListener(handler);
-              stats.ok++;
-              log(filename || url, "ok");
-              updateStats();
-              resolve(true);
-            } else if (delta.state.current === "interrupted") {
-              chrome.downloads.onChanged.removeListener(handler);
-              stats.fail++;
-              log(`${filename || url}  — ${M("interrupted")}`, "err");
-              updateStats();
-              resolve(false);
-            }
-          }
-        };
-        chrome.downloads.onChanged.addListener(handler);
-      });
-    });
-  }
-
-  function sleep(ms) {
-    return new Promise((r) => setTimeout(r, ms));
-  }
-
-  async function runQueue(urls, concurrency, delay) {
-    let idx = 0;
-
-    async function worker() {
-      while (idx < urls.length && !aborted) {
-        const i = idx++;
-        const url = urls[i];
-        log(`${M("downloading")}: ${filenameFromUrl(url) || url}`, "info");
-        await downloadOne(url);
-        if (delay > 0 && idx < urls.length && !aborted) {
-          await sleep(delay);
-        }
+  startBtn.addEventListener("click", () => {
+    const lines = urlsEl.value
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+    const valid = lines.filter(
+      (l) => l.startsWith("http://") || l.startsWith("https://")
+    );
+    const seen = new Set();
+    const urls = [];
+    for (const u of valid) {
+      if (!seen.has(u)) {
+        seen.add(u);
+        urls.push(u);
       }
     }
 
-    const workers = [];
-    for (let i = 0; i < Math.min(concurrency, urls.length); i++) {
-      workers.push(worker());
-    }
-    await Promise.all(workers);
-  }
-
-  startBtn.addEventListener("click", async () => {
-    const urls = parseUrls();
     if (!urls.length) {
-      log(M("noUrls"), "err");
+      logLine(M("noUrls"), "err");
       return;
     }
 
-    aborted = false;
-    stats = { total: urls.length, ok: 0, fail: 0 };
-    logEl.innerHTML = "";
-    updateStats();
-
-    const concurrency = Math.max(1, Math.min(200, parseInt(concurrencyEl.value) || 100));
+    const concurrency = Math.max(1, Math.min(200, parseInt(concurrencyEl.value) || 10));
     const delay = parseInt(delayEl.value) || 0;
 
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-    urlsEl.disabled = true;
-
-    log(M("startLog", urls.length, concurrency), "info");
-    await runQueue(urls, concurrency, delay);
-
-    if (aborted) {
-      log(M("stopped"), "err");
-    } else {
-      log(M("doneAll", stats.ok, stats.fail), stats.fail ? "err" : "ok");
-    }
-
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    urlsEl.disabled = false;
+    chrome.runtime.sendMessage({
+      cmd: "start",
+      urls,
+      concurrency,
+      delay,
+      invalid: lines.length - valid.length,
+      dups: valid.length - urls.length,
+    });
   });
 
   stopBtn.addEventListener("click", () => {
-    aborted = true;
     stopBtn.disabled = true;
+    chrome.runtime.sendMessage({ cmd: "stop" });
   });
 })();

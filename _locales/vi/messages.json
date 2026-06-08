@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "bị gián đoạn"
   },
+  "filtered": {
+    "message": "Đã bỏ qua $1 URL không hợp lệ và $2 URL trùng lặp"
+  },
   "stopped": {
     "message": "Đã dừng thủ công"
   },

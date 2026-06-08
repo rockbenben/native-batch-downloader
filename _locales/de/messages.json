@@ -47,6 +47,9 @@
   "interrupted": {
     "message": "unterbrochen"
   },
+  "filtered": {
+    "message": "$1 ungültige und $2 doppelte URL(s) übersprungen"
+  },
   "stopped": {
     "message": "Manuell gestoppt"
   },
