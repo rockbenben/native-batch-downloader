@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [1.1.0] - 2026-06-08
+## [1.1.0] - 2026-06-09
 
 ### Added
 
@@ -24,6 +24,9 @@ All notable changes to this project are documented here. The format is based on
 - Concurrency race on a cold service worker where simultaneous completion events could strand entries in the active set and hang the batch.
 - The log view no longer stops updating after 500 lines.
 - Opening the popup during a running background batch can no longer wipe it.
+- **Stop stat accuracy** — downloads in the "launching" phase (sent to Chrome but not yet assigned an ID) are now correctly counted as failed when Stop is pressed; previously `ok + fail` could be less than `total`.
+- **Filename safety** — URLs with percent-encoded slashes (`%2F` / `%5C`) in the last path segment no longer create unexpected subdirectories in the downloads folder; the extension now falls back to Chrome's own naming for those filenames.
+- **Concurrency input 0** — typing `0` in the Concurrency field now correctly clamps to the minimum of 1; previously it silently defaulted to 10.
 
 ## [1.0.0]
 

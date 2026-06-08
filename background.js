@@ -13,6 +13,7 @@ const LOG_CAP = 500;
 let state = null;
 let statePromise = null;
 let launching = 0;
+let epoch = 0; // batch generation; bumped on every start/stop so stale download() callbacks can be ignored
 
 function blankState() {
   return {
@@ -72,7 +73,9 @@ function activeCount() {
 function filenameFromUrl(url) {
   try {
     const last = new URL(url).pathname.split("/").pop();
-    return last ? decodeURIComponent(last) : null;
+    if (!last) return null;
+    const decoded = decodeURIComponent(last);
+    return (decoded.includes("/") || decoded.includes("\\")) ? null : decoded;
   } catch {
     return null;
   }
@@ -86,18 +89,21 @@ function startDownload(url) {
   // server-provided name with an extension-less path segment.
   if (filename && filename.includes(".")) opts.filename = filename;
   const label = filename || url;
+  const myEpoch = epoch;
   pushLog(`${M("downloading")}: ${label}`, "info");
 
   chrome.downloads.download(opts, (downloadId) => {
+    if (myEpoch !== epoch) {
+      // batch was stopped/replaced before this callback ran — cancel and ignore
+      if (!chrome.runtime.lastError && downloadId != null) {
+        chrome.downloads.cancel(downloadId, () => void chrome.runtime.lastError);
+      }
+      return;
+    }
     launching--;
     if (chrome.runtime.lastError) {
       state.stats.fail++;
       pushLog(`${label}  — ${chrome.runtime.lastError.message}`, "err");
-      onSettle();
-      return;
-    }
-    if (state.aborted) {
-      chrome.downloads.cancel(downloadId, () => void chrome.runtime.lastError);
       onSettle();
       return;
     }
@@ -154,6 +160,7 @@ function start({ urls, concurrency, delay, invalid = 0, dups = 0 }) {
   state.running = true;
   state.aborted = false;
   launching = 0;
+  epoch++;
   state.concurrency = Math.max(1, Math.min(200, concurrency || 1));
   state.delay = Math.max(0, delay || 0);
   state.stats = { total: urls.length, ok: 0, fail: 0 };
@@ -171,16 +178,22 @@ function start({ urls, concurrency, delay, invalid = 0, dups = 0 }) {
 function stop() {
   if (!state.running) return;
   state.aborted = true;
+  epoch++;
   state.queue = [];
+  // Cancel in-flight downloads (best-effort) and finalize the batch right here.
+  // Relying on each cancellation's onChanged event to re-enable Start is fragile:
+  // one dropped/late event under heavy load would leave the batch stuck running.
   const ids = Object.keys(state.active).map(Number);
   for (const id of ids) {
     chrome.downloads.cancel(id, () => void chrome.runtime.lastError);
   }
+  state.stats.fail += ids.length + launching;
+  state.active = {};
+  launching = 0;
+  state.running = false;
+  pushLog(M("stopped"), "err");
   persist();
   broadcast();
-  // Cancellations arrive as onChanged "interrupted" and drive checkDone via
-  // onSettle; if nothing is in flight, finish right now.
-  if (ids.length === 0 && launching === 0) checkDone();
 }
 
 chrome.downloads.onChanged.addListener(async (delta) => {
