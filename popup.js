@@ -8,7 +8,6 @@
   $("#urls").placeholder = M("placeholder");
   $("#concLabel").textContent = M("concurrency");
   $("#delayLabel").textContent = M("delay");
-  $("#startBtn").textContent = M("start");
   $("#stopBtn").textContent = M("stop");
   $("#lblTotal").textContent = M("total");
   $("#lblOk").textContent = M("success");
@@ -29,6 +28,25 @@
 
   let seenTotal = 0; // logical count of log entries already rendered (survives trimming)
 
+  // Parse the textarea into the unique, valid URL list plus what was skipped.
+  function parseInput() {
+    const lines = urlsEl.value.split("\n").map((l) => l.trim()).filter(Boolean);
+    const valid = lines.filter((l) => l.startsWith("http://") || l.startsWith("https://"));
+    const seen = new Set();
+    const urls = [];
+    for (const u of valid) if (!seen.has(u)) { seen.add(u); urls.push(u); }
+    return { urls, invalid: lines.length - valid.length, dups: valid.length - urls.length };
+  }
+
+  // The Start button doubles as a pre-flight readout: it shows how many links
+  // will actually be queued, so a paste is confirmed at a glance before committing.
+  function updateStartLabel() {
+    const n = parseInput().urls.length;
+    startBtn.textContent = n ? `${M("start")} · ${n}` : M("start");
+  }
+  updateStartLabel();
+  urlsEl.addEventListener("input", updateStartLabel);
+
   function logLine(text, cls) {
     const d = document.createElement("div");
     d.className = cls;
@@ -47,6 +65,10 @@
     startBtn.disabled = st.running;
     stopBtn.disabled = !st.running;
     urlsEl.disabled = st.running;
+    // Concurrency/delay are read only at Start; lock them while running so the
+    // controls don't appear to do something they can't.
+    concurrencyEl.disabled = st.running;
+    delayEl.disabled = st.running;
 
     // Render by logical index so front-trimming of the capped log doesn't
     // desync the view. total = entries ever produced this run; st.log holds the
@@ -73,39 +95,26 @@
     if (resp && resp.state) renderState(resp.state);
   });
 
-  startBtn.addEventListener("click", () => {
-    const lines = urlsEl.value
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean);
-    const valid = lines.filter(
-      (l) => l.startsWith("http://") || l.startsWith("https://")
-    );
-    const seen = new Set();
-    const urls = [];
-    for (const u of valid) {
-      if (!seen.has(u)) {
-        seen.add(u);
-        urls.push(u);
-      }
-    }
-
+  function start() {
+    const { urls, invalid, dups } = parseInput();
     if (!urls.length) {
       logLine(M("noUrls"), "err");
       return;
     }
-
-    const concurrency = Math.max(1, Math.min(200, parseInt(concurrencyEl.value) || 10));
+    const _cv = parseInt(concurrencyEl.value, 10);
+    const concurrency = Math.max(1, Math.min(200, isNaN(_cv) ? 10 : _cv));
     const delay = parseInt(delayEl.value) || 0;
+    chrome.runtime.sendMessage({ cmd: "start", urls, concurrency, delay, invalid, dups });
+  }
 
-    chrome.runtime.sendMessage({
-      cmd: "start",
-      urls,
-      concurrency,
-      delay,
-      invalid: lines.length - valid.length,
-      dups: valid.length - urls.length,
-    });
+  startBtn.addEventListener("click", start);
+
+  // Ctrl/Cmd + Enter from the URL field launches the batch.
+  urlsEl.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter" && !startBtn.disabled) {
+      e.preventDefault();
+      start();
+    }
   });
 
   stopBtn.addEventListener("click", () => {
