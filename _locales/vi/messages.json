@@ -3,7 +3,7 @@
     "message": "Tải hàng loạt gốc"
   },
   "extDesc": {
-    "message": "Tải hàng loạt qua kênh tải gốc của trình duyệt — tự động gửi cookie, UA và header"
+    "message": "Tải hàng loạt qua kênh tải gốc của trình duyệt — tải được cả tệp cần đăng nhập, tự động gửi cookie"
   },
   "title": {
     "message": "Tải hàng loạt gốc"

@@ -3,7 +3,7 @@
     "message": "Yerel Toplu İndirici"
   },
   "extDesc": {
-    "message": "Tarayıcının yerel indirme kanalıyla toplu dosya indirme — çerez, UA ve başlıklar otomatik gönderilir"
+    "message": "Tarayıcının yerel indirme kanalıyla toplu indirme — oturum açma gerektiren dosyalar bile iner; çerezler otomatik gönderilir"
   },
   "title": {
     "message": "Yerel Toplu İndirici"

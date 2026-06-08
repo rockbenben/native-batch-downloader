@@ -3,7 +3,7 @@
     "message": "Descargador nativo por lotes"
   },
   "extDesc": {
-    "message": "Descarga por lotes usando el canal nativo del navegador — cookies, UA y cabeceras se envían automáticamente"
+    "message": "Descarga por lotes mediante el canal nativo del navegador — incluso archivos que requieren login; cookies enviadas automáticamente"
   },
   "title": {
     "message": "Descargador nativo por lotes"

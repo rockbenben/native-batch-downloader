@@ -3,7 +3,7 @@
     "message": "Downloader nativo em lote"
   },
   "extDesc": {
-    "message": "Download em lote pelo canal nativo do navegador — cookies, UA e cabeçalhos enviados automaticamente"
+    "message": "Baixe arquivos em lote pelo canal nativo do navegador — até arquivos que exigem login; cookies enviados automaticamente"
   },
   "title": {
     "message": "Downloader nativo em lote"

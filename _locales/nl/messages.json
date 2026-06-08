@@ -3,7 +3,7 @@
     "message": "Natieve batchdownloader"
   },
   "extDesc": {
-    "message": "Batchgewijs downloaden via het native downloadkanaal van de browser — cookies, UA en headers worden automatisch meegestuurd"
+    "message": "Batchgewijs downloaden via het native kanaal van de browser — ook bestanden achter een login; cookies automatisch meegestuurd"
   },
   "title": {
     "message": "Natieve batchdownloader"

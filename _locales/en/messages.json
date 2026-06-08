@@ -1,6 +1,6 @@
 {
   "extName": { "message": "Native Batch Downloader" },
-  "extDesc": { "message": "Batch download files using browser's native download channel — auto-carries cookies, UA and headers" },
+  "extDesc": { "message": "Batch download files via the browser's native download channel — even login-protected files work, cookies sent automatically" },
   "title": { "message": "Native Batch Downloader" },
   "placeholder": { "message": "Paste download URLs, one per line\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
   "concurrency": { "message": "Concurrency" },

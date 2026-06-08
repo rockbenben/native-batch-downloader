@@ -2,7 +2,7 @@
 
 > 365 Open Source Plan #001 · Chrome extension for batch downloading via native browser channel
 
-A Chrome extension for batch downloading files through the browser's native download channel. Cookies, User-Agent, and Referer headers are carried automatically -- no extra configuration needed.
+Paste a list of links and download them all at once. Because it downloads through the browser's own channel -- the same path as clicking a link yourself -- **files that require a login work too**: your cookies, User-Agent, and headers are carried automatically, with no setup.
 
 [中文](README.zh.md) | English
 
@@ -12,13 +12,13 @@ A Chrome extension for batch downloading files through the browser's native down
 
 Click the toolbar icon, paste your URLs (one per line), set the delay and concurrency, then hit **Start Download**.
 
-Under the hood it calls `chrome.downloads.download(url)` for each link, which is essentially the same as typing a URL into the address bar and pressing Enter. The browser handles the actual request, so all session cookies, UA strings, and headers are sent natively.
+In plain terms: anything you could download by clicking a link in this browser, you can grab here in bulk -- and you stay logged in automatically. Under the hood it calls `chrome.downloads.download(url)` for each link, which is essentially the same as typing a URL into the address bar and pressing Enter. The browser handles the actual request, so all session cookies, UA strings, and headers are sent natively.
 
 The download queue runs in a background service worker, so it keeps going even if you close the popup -- reopen it anytime to see live progress.
 
 ## Features
 
-- **Native download channel** -- requests go through the browser itself, not `fetch` or `XMLHttpRequest`, so authentication cookies and headers are automatically included.
+- **Logged-in downloads just work** -- files go through the browser's own download channel, not `fetch` or `XMLHttpRequest`, so your session cookies and headers ride along automatically. Anything you can normally download while signed in, you can batch here.
 - **Concurrency & delay control** -- set how many files download in parallel (1-200) and an optional delay between downloads (in ms).
 - **Real-time progress** -- live stats for total / succeeded / failed / waiting, with a progress bar.
 - **Any file type** -- PDF, images, videos, archives, executables -- anything a direct URL points to.

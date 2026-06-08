@@ -3,7 +3,7 @@
     "message": "Downloader nativo batch"
   },
   "extDesc": {
-    "message": "Download in batch tramite il canale nativo del browser — cookie, UA e intestazioni inviati automaticamente"
+    "message": "Download in batch tramite il canale nativo del browser — anche i file che richiedono il login; cookie inviati automaticamente"
   },
   "title": {
     "message": "Downloader nativo batch"

@@ -3,7 +3,7 @@
     "message": "Nativer Batch-Downloader"
   },
   "extDesc": {
-    "message": "Dateien über den nativen Browser-Download-Kanal herunterladen — Cookies, UA und Header werden automatisch gesendet"
+    "message": "Dateien stapelweise über den nativen Browser-Download-Kanal laden — auch Login-geschützte Dateien, Cookies automatisch gesendet"
   },
   "title": {
     "message": "Nativer Batch-Downloader"

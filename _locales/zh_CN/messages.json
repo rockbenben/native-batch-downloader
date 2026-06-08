@@ -1,6 +1,6 @@
 {
   "extName": { "message": "原生批量下载器" },
-  "extDesc": { "message": "使用浏览器原生下载通道批量下载文件，自动携带 Cookie、UA 等请求头" },
+  "extDesc": { "message": "通过浏览器原生下载通道批量下载文件——连需要登录的文件也能下载，自动携带 Cookie" },
   "title": { "message": "原生批量下载器" },
   "placeholder": { "message": "粘贴下载链接，每行一个\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
   "concurrency": { "message": "并发数" },

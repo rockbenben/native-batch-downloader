@@ -1,6 +1,6 @@
 {
   "extName": { "message": "原生批次下載器" },
-  "extDesc": { "message": "使用瀏覽器原生下載通道批次下載檔案，自動攜帶 Cookie、UA 等請求標頭" },
+  "extDesc": { "message": "透過瀏覽器原生下載通道批次下載檔案——連需要登入的檔案也能下載，自動攜帶 Cookie" },
   "title": { "message": "原生批次下載器" },
   "placeholder": { "message": "貼上下載連結，每行一個\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
   "concurrency": { "message": "並行數" },

@@ -3,7 +3,7 @@
     "message": "Natywne pobieranie zbiorcze"
   },
   "extDesc": {
-    "message": "Zbiorcze pobieranie plików przez natywny kanał przeglądarki — ciasteczka, UA i nagłówki wysyłane automatycznie"
+    "message": "Zbiorcze pobieranie przez natywny kanał przeglądarki — nawet pliki wymagające logowania; ciasteczka wysyłane automatycznie"
   },
   "title": {
     "message": "Natywne pobieranie zbiorcze"
