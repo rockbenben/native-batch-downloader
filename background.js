@@ -18,7 +18,6 @@ let epoch = 0; // batch generation; bumped on every start/stop so stale download
 function blankState() {
   return {
     running: false,
-    aborted: false,
     concurrency: 1,
     delay: 0,
     stats: { total: 0, ok: 0, fail: 0 },
@@ -115,7 +114,7 @@ function startDownload(url) {
 
 function pump() {
   if (!state.running) return;
-  while (!state.aborted && activeCount() + launching < state.concurrency && state.queue.length) {
+  while (activeCount() + launching < state.concurrency && state.queue.length) {
     launching++;
     startDownload(state.queue.shift());
   }
@@ -126,10 +125,6 @@ function pump() {
 function onSettle() {
   persist();
   broadcast();
-  if (state.aborted) {
-    checkDone();
-    return;
-  }
   if (state.delay > 0 && state.queue.length) {
     setTimeout(() => {
       pump();
@@ -143,13 +138,9 @@ function onSettle() {
 
 function checkDone() {
   if (!state.running) return;
-  if (activeCount() === 0 && launching === 0 && (state.aborted || state.queue.length === 0)) {
+  if (activeCount() === 0 && launching === 0 && state.queue.length === 0) {
     state.running = false;
-    if (state.aborted) {
-      pushLog(M("stopped"), "err");
-    } else {
-      pushLog(M("doneAll", state.stats.ok, state.stats.fail), state.stats.fail ? "err" : "ok");
-    }
+    pushLog(M("doneAll", state.stats.ok, state.stats.fail), state.stats.fail ? "err" : "ok");
     persist();
     broadcast();
   }
@@ -158,7 +149,6 @@ function checkDone() {
 function start({ urls, concurrency, delay, invalid = 0, dups = 0 }) {
   if (state.running) return; // a batch is already in progress; don't clobber it
   state.running = true;
-  state.aborted = false;
   launching = 0;
   epoch++;
   state.concurrency = Math.max(1, Math.min(200, concurrency || 1));
@@ -177,7 +167,6 @@ function start({ urls, concurrency, delay, invalid = 0, dups = 0 }) {
 
 function stop() {
   if (!state.running) return;
-  state.aborted = true;
   epoch++;
   state.queue = [];
   // Cancel in-flight downloads (best-effort) and finalize the batch right here.

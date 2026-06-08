@@ -101,8 +101,8 @@
       logLine(M("noUrls"), "err");
       return;
     }
-    const _cv = parseInt(concurrencyEl.value, 10);
-    const concurrency = Math.max(1, Math.min(200, isNaN(_cv) ? 10 : _cv));
+    const parsedConc = parseInt(concurrencyEl.value, 10);
+    const concurrency = Math.max(1, Math.min(200, isNaN(parsedConc) ? 10 : parsedConc));
     const delay = parseInt(delayEl.value) || 0;
     chrome.runtime.sendMessage({ cmd: "start", urls, concurrency, delay, invalid, dups });
   }
