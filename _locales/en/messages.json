@@ -7,6 +7,9 @@
   "delay": { "message": "Delay" },
   "start": { "message": "Start Download" },
   "stop": { "message": "Stop" },
+  "retryFailed": { "message": "Retry Failed" },
+  "subfolder": { "message": "Save to subfolder" },
+  "subfolderTip": { "message": "Files go into a BatchDL/<date> folder inside Downloads" },
   "total": { "message": "Total" },
   "success": { "message": "OK" },
   "failed": { "message": "Fail" },
@@ -15,7 +18,8 @@
   "startLog": { "message": "Starting $1 downloads (concurrency $2)" },
   "downloading": { "message": "Downloading" },
   "interrupted": { "message": "interrupted" },
-  "filtered": { "message": "Skipped $1 invalid, $2 duplicate URL(s)" },
+  "skippedInvalid": { "message": "Skipped $1 invalid URL(s)" },
+  "skippedDuplicate": { "message": "Skipped $1 duplicate URL(s)" },
   "stopped": { "message": "Manually stopped" },
   "doneAll": { "message": "All done — $1 OK, $2 failed" }
 }

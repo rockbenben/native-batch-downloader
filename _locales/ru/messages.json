@@ -23,6 +23,9 @@
   "stop": {
     "message": "Стоп"
   },
+  "retryFailed": { "message": "Повторить неудачные" },
+  "subfolder": { "message": "Сохранять в подпапку" },
+  "subfolderTip": { "message": "Файлы сохраняются в папку BatchDL/<дата> внутри Загрузок" },
   "total": {
     "message": "Всего"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "прервано"
   },
-  "filtered": {
-    "message": "Пропущено $1 недопустимых и $2 повторяющихся URL"
-  },
+  "skippedInvalid": { "message": "Пропущено недопустимых URL: $1" },
+  "skippedDuplicate": { "message": "Пропущено повторяющихся URL: $1" },
   "stopped": {
     "message": "Остановлено вручную"
   },

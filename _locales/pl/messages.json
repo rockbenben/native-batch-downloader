@@ -23,6 +23,9 @@
   "stop": {
     "message": "Zatrzymaj"
   },
+  "retryFailed": { "message": "Ponów nieudane" },
+  "subfolder": { "message": "Zapisz w podfolderze" },
+  "subfolderTip": { "message": "Pliki trafiają do folderu BatchDL/<data> w Pobranych" },
   "total": {
     "message": "Łącznie"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "przerwano"
   },
-  "filtered": {
-    "message": "Pominięto $1 nieprawidłowych i $2 zduplikowanych adresów URL"
-  },
+  "skippedInvalid": { "message": "Pominięto nieprawidłowe adresy URL: $1" },
+  "skippedDuplicate": { "message": "Pominięto zduplikowane adresy URL: $1" },
   "stopped": {
     "message": "Zatrzymano ręcznie"
   },

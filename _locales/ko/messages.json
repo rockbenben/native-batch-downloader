@@ -23,6 +23,9 @@
   "stop": {
     "message": "중지"
   },
+  "retryFailed": { "message": "실패 재시도" },
+  "subfolder": { "message": "하위 폴더에 저장" },
+  "subfolderTip": { "message": "다운로드 폴더 내 BatchDL/<날짜> 폴더에 저장합니다" },
   "total": {
     "message": "전체"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "중단됨"
   },
-  "filtered": {
-    "message": "잘못된 URL $1개, 중복 $2개를 건너뛰었습니다"
-  },
+  "skippedInvalid": { "message": "잘못된 URL $1개 건너뜀" },
+  "skippedDuplicate": { "message": "중복 URL $1개 건너뜀" },
   "stopped": {
     "message": "수동 중지됨"
   },

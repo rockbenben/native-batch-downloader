@@ -23,6 +23,9 @@
   "stop": {
     "message": "Stoppen"
   },
+  "retryFailed": { "message": "Fehlgeschlagene wiederholen" },
+  "subfolder": { "message": "In Unterordner speichern" },
+  "subfolderTip": { "message": "Dateien landen im Ordner BatchDL/<Datum> innerhalb von Downloads" },
   "total": {
     "message": "Gesamt"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "unterbrochen"
   },
-  "filtered": {
-    "message": "$1 ungültige und $2 doppelte URL(s) übersprungen"
-  },
+  "skippedInvalid": { "message": "$1 ungültige URL(s) übersprungen" },
+  "skippedDuplicate": { "message": "$1 doppelte URL(s) übersprungen" },
   "stopped": {
     "message": "Manuell gestoppt"
   },

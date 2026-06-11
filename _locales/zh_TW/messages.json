@@ -7,6 +7,9 @@
   "delay": { "message": "間隔" },
   "start": { "message": "開始下載" },
   "stop": { "message": "停止" },
+  "retryFailed": { "message": "重試失敗項" },
+  "subfolder": { "message": "存入子資料夾" },
+  "subfolderTip": { "message": "檔案儲存到下載目錄的 BatchDL/<日期> 資料夾中，避免淹沒下載目錄" },
   "total": { "message": "總計" },
   "success": { "message": "成功" },
   "failed": { "message": "失敗" },
@@ -15,7 +18,8 @@
   "startLog": { "message": "開始下載 $1 個檔案（並行 $2）" },
   "downloading": { "message": "下載中" },
   "interrupted": { "message": "已中斷" },
-  "filtered": { "message": "已略過 $1 個無效、$2 個重複連結" },
+  "skippedInvalid": { "message": "已略過 $1 個無效連結" },
+  "skippedDuplicate": { "message": "已略過 $1 個重複連結" },
   "stopped": { "message": "已手動停止" },
   "doneAll": { "message": "全部完成 — 成功 $1，失敗 $2" }
 }

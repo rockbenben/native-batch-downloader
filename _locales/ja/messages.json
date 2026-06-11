@@ -23,6 +23,9 @@
   "stop": {
     "message": "停止"
   },
+  "retryFailed": { "message": "失敗を再試行" },
+  "subfolder": { "message": "サブフォルダーに保存" },
+  "subfolderTip": { "message": "ダウンロード内の BatchDL/<日付> フォルダーに保存します" },
   "total": {
     "message": "合計"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "中断されました"
   },
-  "filtered": {
-    "message": "無効な URL $1 件、重複 $2 件をスキップしました"
-  },
+  "skippedInvalid": { "message": "無効なURLを$1件スキップしました" },
+  "skippedDuplicate": { "message": "重複したURLを$1件スキップしました" },
   "stopped": {
     "message": "手動停止しました"
   },

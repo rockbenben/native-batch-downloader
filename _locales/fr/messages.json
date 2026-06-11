@@ -23,6 +23,9 @@
   "stop": {
     "message": "Arrêter"
   },
+  "retryFailed": { "message": "Réessayer les échecs" },
+  "subfolder": { "message": "Enregistrer dans un sous-dossier" },
+  "subfolderTip": { "message": "Les fichiers sont enregistrés dans BatchDL/<date> du dossier Téléchargements" },
   "total": {
     "message": "Total"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "interrompu"
   },
-  "filtered": {
-    "message": "$1 URL non valide(s) et $2 en double ignorée(s)"
-  },
+  "skippedInvalid": { "message": "$1 URL non valide(s) ignorée(s)" },
+  "skippedDuplicate": { "message": "$1 URL en double ignorée(s)" },
   "stopped": {
     "message": "Arrêté manuellement"
   },

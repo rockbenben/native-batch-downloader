@@ -23,6 +23,9 @@
   "stop": {
     "message": "หยุด"
   },
+  "retryFailed": { "message": "ลองใหม่ที่ล้มเหลว" },
+  "subfolder": { "message": "บันทึกลงโฟลเดอร์ย่อย" },
+  "subfolderTip": { "message": "ไฟล์จะถูกบันทึกในโฟลเดอร์ BatchDL/<วันที่> ภายในดาวน์โหลด" },
   "total": {
     "message": "ทั้งหมด"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "ถูกขัดจังหวะ"
   },
-  "filtered": {
-    "message": "ข้ามลิงก์ที่ไม่ถูกต้อง $1 รายการ และซ้ำ $2 รายการ"
-  },
+  "skippedInvalid": { "message": "ข้าม URL ที่ไม่ถูกต้อง $1 รายการ" },
+  "skippedDuplicate": { "message": "ข้าม URL ที่ซ้ำกัน $1 รายการ" },
   "stopped": {
     "message": "หยุดด้วยตนเอง"
   },

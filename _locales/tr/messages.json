@@ -23,6 +23,9 @@
   "stop": {
     "message": "Durdur"
   },
+  "retryFailed": { "message": "Başarısızları yeniden dene" },
+  "subfolder": { "message": "Alt klasöre kaydet" },
+  "subfolderTip": { "message": "Dosyalar İndirilenler içindeki BatchDL/<tarih> klasörüne kaydedilir" },
   "total": {
     "message": "Toplam"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "kesildi"
   },
-  "filtered": {
-    "message": "$1 geçersiz ve $2 yinelenen URL atlandı"
-  },
+  "skippedInvalid": { "message": "$1 geçersiz URL atlandı" },
+  "skippedDuplicate": { "message": "$1 yinelenen URL atlandı" },
   "stopped": {
     "message": "El ile durduruldu"
   },

@@ -23,6 +23,9 @@
   "stop": {
     "message": "Parar"
   },
+  "retryFailed": { "message": "Repetir falhas" },
+  "subfolder": { "message": "Salvar em subpasta" },
+  "subfolderTip": { "message": "Os arquivos vão para BatchDL/<data> dentro de Downloads" },
   "total": {
     "message": "Total"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "interrompido"
   },
-  "filtered": {
-    "message": "$1 URL(s) inválida(s) e $2 duplicada(s) ignorada(s)"
-  },
+  "skippedInvalid": { "message": "$1 URL(s) inválida(s) ignorada(s)" },
+  "skippedDuplicate": { "message": "$1 URL(s) duplicada(s) ignorada(s)" },
   "stopped": {
     "message": "Parado manualmente"
   },

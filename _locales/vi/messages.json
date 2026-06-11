@@ -23,6 +23,9 @@
   "stop": {
     "message": "Dừng"
   },
+  "retryFailed": { "message": "Thử lại mục lỗi" },
+  "subfolder": { "message": "Lưu vào thư mục con" },
+  "subfolderTip": { "message": "Tệp được lưu vào BatchDL/<ngày> trong thư mục Tải xuống" },
   "total": {
     "message": "Tổng"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "bị gián đoạn"
   },
-  "filtered": {
-    "message": "Đã bỏ qua $1 URL không hợp lệ và $2 URL trùng lặp"
-  },
+  "skippedInvalid": { "message": "Đã bỏ qua $1 URL không hợp lệ" },
+  "skippedDuplicate": { "message": "Đã bỏ qua $1 URL trùng lặp" },
   "stopped": {
     "message": "Đã dừng thủ công"
   },

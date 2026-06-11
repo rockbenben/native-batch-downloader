@@ -23,6 +23,9 @@
   "stop": {
     "message": "Detener"
   },
+  "retryFailed": { "message": "Reintentar fallidos" },
+  "subfolder": { "message": "Guardar en subcarpeta" },
+  "subfolderTip": { "message": "Los archivos se guardan en BatchDL/<fecha> dentro de Descargas" },
   "total": {
     "message": "Total"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "interrumpido"
   },
-  "filtered": {
-    "message": "Se omitieron $1 URL no válidas y $2 duplicadas"
-  },
+  "skippedInvalid": { "message": "Se omitieron $1 URL no válidas" },
+  "skippedDuplicate": { "message": "Se omitieron $1 URL duplicadas" },
   "stopped": {
     "message": "Detenido manualmente"
   },

@@ -7,6 +7,9 @@
   "delay": { "message": "间隔" },
   "start": { "message": "开始下载" },
   "stop": { "message": "停止" },
+  "retryFailed": { "message": "重试失败项" },
+  "subfolder": { "message": "存入子文件夹" },
+  "subfolderTip": { "message": "文件保存到下载目录的 BatchDL/<日期> 文件夹中，避免淹没下载目录" },
   "total": { "message": "总计" },
   "success": { "message": "成功" },
   "failed": { "message": "失败" },
@@ -15,7 +18,8 @@
   "startLog": { "message": "开始下载 $1 个文件（并发 $2）" },
   "downloading": { "message": "下载中" },
   "interrupted": { "message": "已中断" },
-  "filtered": { "message": "已跳过 $1 个无效、$2 个重复链接" },
+  "skippedInvalid": { "message": "已跳过 $1 个无效链接" },
+  "skippedDuplicate": { "message": "已跳过 $1 个重复链接" },
   "stopped": { "message": "已手动停止" },
   "doneAll": { "message": "全部完成 — 成功 $1，失败 $2" }
 }

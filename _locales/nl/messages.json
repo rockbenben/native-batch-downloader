@@ -23,6 +23,9 @@
   "stop": {
     "message": "Stoppen"
   },
+  "retryFailed": { "message": "Mislukte opnieuw proberen" },
+  "subfolder": { "message": "Opslaan in submap" },
+  "subfolderTip": { "message": "Bestanden komen in BatchDL/<datum> binnen Downloads" },
   "total": {
     "message": "Totaal"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "onderbroken"
   },
-  "filtered": {
-    "message": "$1 ongeldige en $2 dubbele URL('s) overgeslagen"
-  },
+  "skippedInvalid": { "message": "$1 ongeldige URL's overgeslagen" },
+  "skippedDuplicate": { "message": "$1 dubbele URL's overgeslagen" },
   "stopped": {
     "message": "Handmatig gestopt"
   },

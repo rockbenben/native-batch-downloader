@@ -23,6 +23,9 @@
   "stop": {
     "message": "إيقاف"
   },
+  "retryFailed": { "message": "إعادة محاولة الفاشلة" },
+  "subfolder": { "message": "الحفظ في مجلد فرعي" },
+  "subfolderTip": { "message": "تُحفظ الملفات في مجلد BatchDL/<التاريخ> داخل التنزيلات" },
   "total": {
     "message": "الإجمالي"
   },
@@ -47,9 +50,8 @@
   "interrupted": {
     "message": "تم المقاطعة"
   },
-  "filtered": {
-    "message": "تم تخطّي $1 رابطًا غير صالح و$2 رابطًا مكررًا"
-  },
+  "skippedInvalid": { "message": "تم تخطي $1 من الروابط غير الصالحة" },
+  "skippedDuplicate": { "message": "تم تخطي $1 من الروابط المكررة" },
   "stopped": {
     "message": "تم الإيقاف يدوياً"
   },
