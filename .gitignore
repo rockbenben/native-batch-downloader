@@ -1,0 +1,30 @@
+# Local tooling state
+.gstack/
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node / Python tooling
+node_modules/
+__pycache__/
+
+# Packaged extension artifacts
+*.zip
+*.crx
+*.pem
+
+# Logs / temp
+*.log
+*.tmp
+
+# Store listing images are generated output; the HTML/JSON sources are tracked
+store-assets/*.png

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Toolbar icon generator</title><style>
+  body{background:#e8e4da;padding:24px;font-family:monospace;font-size:12px}
+  .row{display:flex;gap:24px;align-items:flex-end;margin-bottom:24px}
+  .zoom canvas{image-rendering:pixelated}
+  .z16,.z32{width:128px;height:128px}
+  .dark{background:#2b2b2b;padding:12px;display:inline-flex;gap:12px;align-items:center;color:#ccc}
+  p{max-width:560px;line-height:1.5}
+</style></head>
+<body>
+<p>Source of truth for icons/*.png. Tweak the TUNE table, reload, then right-click
+each canvas in the top row → "Save image as…" over the matching icons/icon&lt;size&gt;.png.
+Flat borderless tile; small sizes grow the glyph so the arrow stays legible at 16px.</p>
+<div class="row">
+  <canvas id="c128" width="128" height="128"></canvas>
+  <canvas id="c48" width="48" height="48"></canvas>
+  <canvas id="c32" width="32" height="32"></canvas>
+  <canvas id="c16" width="16" height="16"></canvas>
+</div>
+<div class="row zoom">
+  <span>16px @8x:</span><canvas id="z16" width="16" height="16" class="z16"></canvas>
+  <span>32px @4x:</span><canvas id="z32" width="32" height="32" class="z32"></canvas>
+  <span class="dark">toolbar: <canvas id="t16" width="16" height="16"></canvas></span>
+</div>
+<script>
+function rr(x, X, Y, W, H, R) {
+  x.beginPath();
+  x.moveTo(X + R, Y);
+  x.arcTo(X + W, Y, X + W, Y + H, R);
+  x.arcTo(X + W, Y + H, X, Y + H, R);
+  x.arcTo(X, Y + H, X, Y, R);
+  x.arcTo(X, Y, X + W, Y, R);
+  x.closePath();
+}
+// Per-size tuning: r = corner radius, area = glyph scale within the tile,
+// lw = white stroke width. No outer border — the flat cobalt tile reads
+// cleaner in the toolbar at every size.
+const TUNE = {
+  128: { r: 30,  area: 0.88, lw: 10.5 },
+  48:  { r: 11,  area: 0.95, lw: 4.6 },
+  32:  { r: 7.5, area: 1.0,  lw: 3.4 },
+  16:  { r: 4,   area: 1.0,  lw: 2.4 },
+};
+function draw(c, s) {
+  const t = TUNE[s];
+  const x = c.getContext("2d");
+  rr(x, 0, 0, s, s, t.r);
+  x.fillStyle = "#2547e0";
+  x.fill();
+  const g = (s * t.area) / 24;
+  const o = (s * (1 - t.area)) / 2;
+  const P = (px, py) => [o + px * g, o + py * g];
+  x.strokeStyle = "#ffffff";
+  x.lineWidth = t.lw;
+  x.lineCap = "round";
+  x.lineJoin = "round";
+  x.beginPath();
+  x.moveTo(...P(12, 4.2));  x.lineTo(...P(12, 13.4));                            // stem
+  x.moveTo(...P(6.9, 8.8)); x.lineTo(...P(12, 14));   x.lineTo(...P(17.1, 8.8)); // chevron
+  x.moveTo(...P(5.6, 19.6)); x.lineTo(...P(18.4, 19.6));                         // tray
+  x.stroke();
+}
+for (const s of [128, 48, 32, 16]) draw(document.getElementById("c" + s), s);
+draw(document.getElementById("z16"), 16);
+draw(document.getElementById("z32"), 32);
+draw(document.getElementById("t16"), 16);
+</script>
+</body>
+</html>
