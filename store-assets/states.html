@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><style>
+  @font-face { font-family: "BD"; src: url("../fonts/bricolage-800-latin.woff2") format("woff2"); font-weight: 800; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1320px; height: 800px; overflow: hidden;
+    background:
+      radial-gradient(rgba(32,36,46,0.10) 1.6px, transparent 1.8px) 0 0 / 28px 28px,
+      #f4edda;
+    display: flex; align-items: flex-start; justify-content: center;
+    gap: 40px; padding: 26px 0;
+    font-family: "BD", "Segoe UI", sans-serif; color: #20242e;
+  }
+  .col { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .label {
+    font-size: 19px; font-weight: 800;
+    padding: 6px 18px; border: 2.5px solid #20242e; border-radius: 99px;
+    background: #fdfaf1; box-shadow: 3px 3px 0 #20242e;
+  }
+  .label.run { background: #f5b80c; }
+  .label.done { background: #2547e0; color: #fff; }
+  img { width: 380px; border: 3px solid #20242e; border-radius: 14px; box-shadow: 7px 7px 0 #20242e; }
+</style></head>
+<body>
+  <div class="col"><span class="label">1 · Paste or drop links</span><img src="popup-idle.png"></div>
+  <div class="col"><span class="label run">2 · Watch it run</span><img src="popup-running.png"></div>
+  <div class="col"><span class="label done">3 · Retry any failures</span><img src="popup-done.png"></div>
+</body>
+</html>

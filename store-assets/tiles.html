@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><style>
+  @font-face { font-family: "BD"; src: url("../fonts/bricolage-800-latin.woff2") format("woff2"); font-weight: 800; }
+  :root {
+    --cream: #f4edda; --card: #fdfaf1; --ink: #20242e; --soft: #6f6852;
+    --cobalt: #2547e0; --sun: #f5b80c;
+    --display: "BD", "Segoe UI", sans-serif;
+    --mono: "Cascadia Code", ui-monospace, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1400px; font-family: var(--mono); color: var(--ink); }
+  .bg {
+    background:
+      radial-gradient(rgba(32,36,46,0.10) 1.6px, transparent 1.8px) 0 0 / 28px 28px,
+      var(--cream);
+  }
+
+  /* small promo tile 440x280 */
+  .tile {
+    width: 440px; height: 280px; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 34px; gap: 16px;
+  }
+  .tile .row { display: flex; align-items: center; gap: 18px; }
+  .tile img { width: 72px; height: 72px; border-radius: 16px; box-shadow: 4px 4px 0 var(--ink); }
+  .tile h1 { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1.04; }
+  .tile p { font-size: 15.5px; color: var(--soft); line-height: 1.45; }
+
+  /* marquee 1400x560 */
+  .marquee {
+    width: 1400px; height: 560px; overflow: hidden;
+    display: flex; align-items: center; gap: 64px; padding: 0 90px;
+  }
+  .marquee .copy { flex: 1; }
+  .marquee h1 { font-family: var(--display); font-weight: 800; font-size: 78px; line-height: 1.0; letter-spacing: -0.01em; margin-bottom: 24px; }
+  .marquee h1 .acc { color: var(--cobalt); }
+  .marquee p { font-size: 24px; color: var(--soft); line-height: 1.5; max-width: 620px; }
+  .chips { display: flex; gap: 12px; margin-top: 30px; }
+  .chip {
+    font-family: var(--display); font-weight: 800; font-size: 17px;
+    padding: 9px 18px; border: 2.5px solid var(--ink); border-radius: 99px;
+    background: var(--card); box-shadow: 3px 3px 0 var(--ink);
+  }
+  .chip.blue { background: var(--cobalt); color: #fff; }
+  .chip.sun { background: var(--sun); }
+  .marquee .shot img {
+    width: 400px; border-radius: 16px;
+    border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink);
+    display: block;
+  }
+  .marquee .shot { transform: translateY(70px); }
+</style></head>
+<body>
+
+<div class="tile bg" id="tile">
+  <div class="row">
+    <img src="../icons/icon128.png">
+    <h1>Native Batch Downloader</h1>
+  </div>
+  <p>Paste links, download them all — files behind a login just work.</p>
+</div>
+
+<div class="marquee bg" id="marquee">
+  <div class="copy">
+    <h1>Paste links.<br>Download <span class="acc">them all.</span></h1>
+    <p>Batch downloads through your browser itself — logged-in files work with zero setup.</p>
+    <div class="chips">
+      <span class="chip blue">No account</span>
+      <span class="chip">24 languages</span>
+      <span class="chip sun">Free &amp; open source</span>
+    </div>
+  </div>
+  <div class="shot"><img src="popup-running.png"></div>
+</div>
+
+</body>
+</html>

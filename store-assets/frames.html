@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><style>
+  @font-face { font-family: "BD"; src: url("../fonts/bricolage-800-latin.woff2") format("woff2"); font-weight: 800; }
+  :root {
+    --cream: #f4edda; --card: #fdfaf1; --ink: #20242e; --soft: #6f6852;
+    --cobalt: #2547e0; --red: #e8442e; --mint: #237a52; --sun: #f5b80c;
+    --display: "BD", "Segoe UI", sans-serif;
+    --mono: "Cascadia Code", ui-monospace, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1280px; }
+  .frame {
+    position: relative; width: 1280px; height: 800px; overflow: hidden;
+    background:
+      radial-gradient(rgba(32,36,46,0.10) 1.6px, transparent 1.8px) 0 0 / 30px 30px,
+      var(--cream);
+    display: flex; align-items: center; gap: 56px; padding: 0 84px;
+    font-family: var(--mono); color: var(--ink);
+  }
+  .copy { flex: 1; min-width: 0; }
+  .flip .copy { order: 2; }
+  h1 { font-family: var(--display); font-weight: 800; font-size: 72px; line-height: 1.02; letter-spacing: -0.01em; margin-bottom: 26px; }
+  h1 .acc { color: var(--cobalt); }
+  .sub { font-size: 23px; line-height: 1.55; color: var(--soft); max-width: 560px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+  .chip {
+    font-family: var(--display); font-weight: 800; font-size: 17px;
+    padding: 10px 18px; border: 2.5px solid var(--ink); border-radius: 99px;
+    background: var(--card); box-shadow: 3px 3px 0 var(--ink);
+  }
+  .chip.blue { background: var(--cobalt); color: #fff; }
+  .chip.sun  { background: var(--sun); }
+  .shot { flex: none; display: flex; align-items: center; }
+  .shot img {
+    width: 460px; border-radius: 16px;
+    box-shadow: 10px 10px 0 var(--ink);
+    border: 3px solid var(--ink);
+  }
+  /* fake browser toolbar with badge, for the background frame */
+  .toolbar {
+    display: inline-flex; align-items: center; gap: 18px;
+    background: #3c3f43; border: 3px solid var(--ink); border-radius: 14px;
+    box-shadow: 6px 6px 0 var(--ink);
+    padding: 16px 22px; margin-top: 36px;
+  }
+  .toolbar .dot { width: 14px; height: 14px; border-radius: 50%; background: #6a6e74; }
+  .slot { position: relative; width: 44px; height: 44px; }
+  .slot img { width: 44px; height: 44px; }
+  .badge {
+    position: absolute; right: -10px; bottom: -6px;
+    background: var(--sun); color: var(--ink);
+    font: 800 15px/1.4 var(--display);
+    padding: 1px 7px; border-radius: 5px; border: 2px solid var(--ink);
+  }
+</style></head>
+<body>
+
+<!-- 1 · hero -->
+<section class="frame">
+  <div class="copy">
+    <h1>Paste links.<br>Download <span class="acc">them all.</span></h1>
+    <p class="sub">Batch downloads that run through your browser itself — so files behind a login download just like everything else.</p>
+    <div class="chips">
+      <span class="chip blue">No account</span>
+      <span class="chip">24 languages</span>
+      <span class="chip sun">Free &amp; open source</span>
+    </div>
+  </div>
+  <div class="shot"><img src="popup-running.png"></div>
+</section>
+
+<!-- 2 · login benefit -->
+<section class="frame flip">
+  <div class="copy">
+    <h1>Logged-in files? <span class="acc">Just work.</span></h1>
+    <p class="sub">The browser makes every download, exactly as if you clicked each link yourself. You stay signed in — no tokens, no setup, no copying anything.</p>
+    <div class="chips">
+      <span class="chip">Stays signed in</span>
+      <span class="chip blue">Zero configuration</span>
+    </div>
+  </div>
+  <div class="shot"><img src="popup-idle.png"></div>
+</section>
+
+<!-- 3 · control -->
+<section class="frame">
+  <div class="copy">
+    <h1>You set <span class="acc">the pace.</span></h1>
+    <p class="sub">1–200 parallel downloads, with an optional gap between starts so careful servers stay happy. Your settings are remembered for next time.</p>
+    <div class="chips">
+      <span class="chip blue">1–200 parallel</span>
+      <span class="chip">Spaced starts</span>
+      <span class="chip sun">Settings remembered</span>
+    </div>
+  </div>
+  <div class="shot"><img src="popup-idle.png"></div>
+</section>
+
+<!-- 4 · retry -->
+<section class="frame flip">
+  <div class="copy">
+    <h1>Failures retry in <span class="acc">one click.</span></h1>
+    <p class="sub">Anything that failed, got interrupted, or was stopped is tracked. When the batch ends, one button re-queues exactly those files.</p>
+    <div class="chips">
+      <span class="chip sun">Retry Failed · 5</span>
+      <span class="chip">Live progress &amp; log</span>
+    </div>
+  </div>
+  <div class="shot"><img src="popup-done.png"></div>
+</section>
+
+<!-- 5 · background + tidy -->
+<section class="frame">
+  <div class="copy">
+    <h1>Close it. It <span class="acc">keeps going.</span></h1>
+    <p class="sub">Downloads continue with the popup closed — the toolbar badge shows what's left. Files land in a tidy dated folder instead of burying your Downloads.</p>
+    <div class="toolbar">
+      <span class="dot"></span><span class="dot"></span>
+      <span class="slot"><img src="../icons/icon48.png"><span class="badge">59</span></span>
+    </div>
+    <div class="chips">
+      <span class="chip">BatchDL/&lt;date&gt;/</span>
+      <span class="chip blue">Drop a .txt of links</span>
+    </div>
+  </div>
+  <div class="shot"><img src="popup-running.png"></div>
+</section>
+
+</body>
+</html>
