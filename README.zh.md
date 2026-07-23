@@ -1,22 +1,24 @@
 # Native Batch Downloader
 
-> 365 开源计划 #001 · 通过浏览器原生通道批量下载文件的 Chrome 扩展
+> 通过浏览器原生通道批量下载文件的 Chrome 扩展
 
-把一堆链接粘进去，一次性全部下载。因为它走的是浏览器自己的下载通道——和你手动点链接下载是同一条路——所以**需要登录才能下的文件也能下**，登录状态自动带上，无需任何配置。
-
-中文 | [English](README.md)
+[English](README.md) · **简体中文**
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/fmmihnoplefjcfoggfgpeiomlbmjnfpm)](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![365 开源计划 #001](https://img.shields.io/badge/365%20%E5%BC%80%E6%BA%90%E8%AE%A1%E5%88%92-%23001-1f6feb)](https://github.com/rockbenben/365opensource)
+
+**[⬇ 从 Chrome 应用商店安装](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)** —— 一键装好、自动更新。需要 Chrome 110+。
 
 ![粘贴链接，一次全部下载——需要登录的文件也能下](assets/banner.png)
 
+把一堆链接粘进去，一次性全部下载。因为它走的是浏览器自己的下载通道——和你手动点链接下载是同一条路——所以**需要登录才能下的文件也能下**，登录状态自动带上，无需任何配置。
+
 ## 工作原理
 
-点击工具栏图标，把链接粘进去（一行一个），设好间隔和并发数，点 **开始下载** 就行。
+点工具栏图标，把链接一行一个粘进去，点 **开始下载**。队列跑在 Chrome 自己的下载管线上——和你点一个链接时是同一条——所以请求会自动带上 Cookie，不用在任何地方配账号密码。
 
-简单说，凡是你在这个浏览器里点链接能下载的东西，这里都能批量下，而且会自动保持登录态。下载由浏览器本身完成，就像你亲手把每个链接都点了一遍，所以登录状态始终有效。
-
-下载队列在后台持续运行，即使关闭弹窗也会继续下载——随时重新打开即可看到实时进度。
+这同时也划出了边界：一个链接如果在这个浏览器里点了下不下来，放到这儿也一样下不来。下面讲的都是怎么把几百次这样的点击变得可忍受。
 
 ## 功能特性
 
@@ -77,9 +79,11 @@ Chrome 对**同一个网站**同时只传约 **6 个文件**，所以即使你�
 
 ### 危险文件类型会触发 Chrome 警告
 
-`.exe`、`.bat` 等可执行文件可能触发 Chrome 内置安全提示，会打断自动下载流程。任何扩展都无法绕过这一限制——这是 Chrome 的安全规则。
+`.exe`、`.bat` 等可执行文件可能触发 Chrome 内置安全提示，会打断自动下载流程。任何扩展都无法绕过这一限制——这是 Chrome 的安全规则，走任何下载通道都一样。
 
-**解决办法**：打开 `chrome://settings/security`，将安全浏览等级设为 **无保护**，下完后记得改回来。
+**怎么办**：别把可执行文件混进大批量里。单独开一个小批次、逐个确认提示即可——批量拉二进制文件正是这道检查最该起作用的场景。
+
+在 `chrome://settings/security` 里把安全浏览关掉确实能去掉提示，但它关掉的是**你全部浏览行为**的钓鱼与恶意软件防护，不只是这一次下载。为省几次点击不值当。
 
 PDF 等常规文档类型完全不受影响，直接用就行。
 
@@ -96,10 +100,4 @@ PDF 等常规文档类型完全不受影响，直接用就行。
 
 ## 关于 365 开源计划
 
-本项目是 [365 开源计划](https://github.com/rockbenben/365opensource) 的第 001 个项目。
-
-一个人 + AI，一年 300+ 个开源项目。[提交你的需求 →](https://my.feishu.cn/share/base/form/shrcnI6y7rrmlSjbzkYXh6sjmzb)
-
-## 许可证
-
-[MIT](LICENSE)
+[365 开源计划](https://github.com/rockbenben/365opensource) 的第 **#001** 个项目——一个人 + AI，一年 300+ 个开源项目。[提交你的需求 →](https://365.aishort.top/) · [Discord](https://discord.gg/PZTQfJ4GjX) · [Telegram](https://t.me/aishort_top)

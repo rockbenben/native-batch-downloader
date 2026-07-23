@@ -1,22 +1,24 @@
 # Native Batch Downloader
 
-> 365 Open Source Plan #001 · Chrome extension for batch downloading via native browser channel
+> Chrome extension for batch downloading via native browser channel
 
-Paste a list of links and download them all at once. Because it downloads through the browser's own channel -- the same path as clicking a link yourself -- **files that require a login work too**: you stay signed in automatically, with no setup.
-
-[中文](README.zh.md) | English
+**English** · [简体中文](README.zh.md)
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/fmmihnoplefjcfoggfgpeiomlbmjnfpm)](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![365 Open Source Plan #001](https://img.shields.io/badge/365%20Open%20Source%20Plan-%23001-1f6feb)](https://github.com/rockbenben/365opensource)
+
+**[⬇ Install from the Chrome Web Store](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)** -- one click, auto-updates. Needs Chrome 110+.
 
 ![Paste links, download them all — files behind a login just work](assets/banner.png)
 
+Paste a list of links and download them all at once. Because it downloads through the browser's own channel -- the same path as clicking a link yourself -- **files that require a login work too**: you stay signed in automatically, with no setup.
+
 ## How It Works
 
-Click the toolbar icon, paste your URLs (one per line), set the delay and concurrency, then hit **Start Download**.
+Click the toolbar icon, paste your URLs one per line, and hit **Start Download**. The queue runs in Chrome's own download pipeline -- the same one a click on a link uses -- which is why the request carries your cookies and no credentials need configuring anywhere.
 
-In plain terms: anything you could download by clicking a link in this browser, you can grab here in bulk -- and you stay logged in automatically. The downloads are made by the browser itself, exactly as if you had clicked each link yourself, so your login always comes along.
-
-The download queue runs in the background, so it keeps going even if you close the popup -- reopen it anytime to see live progress.
+That also sets the boundary: if a link doesn't download by clicking it in this browser, it won't work here either. Everything below is about making a few hundred of those clicks bearable.
 
 ## Features
 
@@ -77,9 +79,11 @@ Chrome only transfers about **6 files from the same site at once**. Even if you 
 
 ### Dangerous file type warnings
 
-Executable files (`.exe`, `.bat`, etc.) may trigger Chrome's built-in security prompt, which interrupts the automated flow. No extension can suppress this -- it's a Chrome safety rule.
+Executable files (`.exe`, `.bat`, etc.) may trigger Chrome's built-in security prompt, which interrupts the automated flow. No extension can suppress this -- it's a Chrome safety rule, and it applies to every download path including this one.
 
-**Workaround**: go to `chrome://settings/security` and set Safe Browsing to **No protection**. Remember to switch it back after you're done.
+**What to do**: keep executables out of the big batches. Queue them separately in a small batch and confirm each prompt -- that check is exactly the one worth keeping when you're pulling binaries from the internet in bulk.
+
+Turning Safe Browsing off in `chrome://settings/security` does remove the prompt, but it removes phishing and malware protection from *all* of your browsing, not just this download. Not worth it to save a few clicks.
 
 PDFs and other common document types are not affected.
 
@@ -96,10 +100,4 @@ No build step -- plain HTML/CSS/JS, loads unpacked as-is.
 
 ## About the 365 Open Source Plan
 
-This is project #001 of the [365 Open Source Plan](https://github.com/rockbenben/365opensource).
-
-One person + AI, 300+ open-source projects in one year. [Submit your idea →](https://my.feishu.cn/share/base/form/shrcnI6y7rrmlSjbzkYXh6sjmzb)
-
-## License
-
-[MIT](LICENSE)
+Project **#001** of the [365 Open Source Plan](https://github.com/rockbenben/365opensource) — one person + AI, 300+ open-source projects in a year. [Submit your idea →](https://365.aishort.top/) · [Discord](https://discord.gg/PZTQfJ4GjX) · [Telegram](https://t.me/aishort_top)
