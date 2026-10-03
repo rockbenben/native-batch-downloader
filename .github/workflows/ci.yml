@@ -1,0 +1,103 @@
+name: CI
+
+# Every gate here caught a real bug in this repo at least once:
+#   i18n-check — a 24-locale rollout that missed keys / broke $1 placeholders
+#   subset-display-fonts — editing title/start/stop without re-baking loses
+#     glyphs at runtime (fails loudly on missing coverage)
+#   package.py — the CSS extraction silently dropped files from the zip
+# Tests run on every push to main so a tag can never outrun a red gate.
+# No workflow_dispatch on purpose: a manual run carries the branch name in
+# GITHUB_REF_NAME, so the tag-vs-manifest check below would always fail —
+# to re-release, delete the tag and re-push it.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+# A newer push to the same ref supersedes in-flight gate runs; a tag run is a
+# release — never cancelled mid-zip.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: JS syntax
+        run: |
+          node --check background.js
+          node --check popup.js
+          node --check dashboard.js
+
+      - name: locale parity, placeholders, frozen keys
+        run: python scripts/i18n-check.py
+
+      - name: package gate (runtime file + asset cross-references)
+        run: |
+          python scripts/package.py
+          rm native-batch-downloader-v*.zip
+
+      - name: behavior tests (draft restore + flush, real popup.js over CDP)
+        run: node scripts/run-tests.mjs
+
+      - name: display-font subset coverage
+        run: |
+          pip install fonttools brotli
+          python scripts/subset-display-fonts.py
+          # the gate is glyph coverage, not recompased bytes — ship what is committed
+          git checkout -- fonts/
+
+      - name: tag matches manifest version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          manifest="$(python -c "import json;print(json.load(open('manifest.json'))['version'])")"
+          echo "tag=$tag manifest=$manifest"
+          if [ "$tag" != "$manifest" ]; then
+            echo "::error::tag v$tag but manifest.json says $manifest"
+            exit 1
+          fi
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          python scripts/package.py
+          python - <<'PY'
+          import os, pathlib
+          ver = os.environ["GITHUB_REF_NAME"].lstrip("v")
+          text = pathlib.Path("CHANGELOG.md").read_text(encoding="utf-8")
+          section = ""
+          for chunk in text.split("\n## "):
+              if chunk.startswith("[%s]" % ver):
+                  section = "\n".join(chunk.split("\n")[1:]).strip()
+          if not section:
+              raise SystemExit(f"CHANGELOG.md has no section for {ver} — write it before tagging")
+          notes = "\n".join([
+              "Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm),",
+              "or download the zip below: unzip it, open `chrome://extensions`, enable Developer mode, and choose \"Load unpacked\".",
+              "",
+              "## Changes in " + ver,
+              "",
+              section,
+              "",
+              "Source: https://github.com/rockbenben/native-batch-downloader",
+          ])
+          pathlib.Path("notes.md").write_text(notes, encoding="utf-8")
+          PY
+          gh release create "$GITHUB_REF_NAME" native-batch-downloader-v*.zip --title "$GITHUB_REF_NAME" --notes-file notes.md
+        env:
+          GH_TOKEN: ${{ github.token }}

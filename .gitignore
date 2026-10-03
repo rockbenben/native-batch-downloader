@@ -28,3 +28,9 @@ __pycache__/
 
 # Store listing images are generated output; the HTML/JSON sources are tracked
 store-assets/*.png
+
+# Design QA tool output
+.qoder*
+.design-qa/
+design-preview/
+design.qa.yaml
