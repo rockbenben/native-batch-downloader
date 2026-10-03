@@ -2,7 +2,7 @@
 """Build the Chrome Web Store upload zip.
 
 Whitelist-based: only runtime files go in, so dev artifacts (scripts/, font
-source caches, store-descriptions.json, READMEs) can never leak into the
+source caches, store listing assets, READMEs) can never leak into the
 package. Validates every cross-file asset reference before zipping and fails
 loudly on any mismatch.
 
@@ -25,7 +25,11 @@ RUNTIME = [
     "manifest.json",
     "background.js",
     "popup.html",
+    "popup.css",
     "popup.js",
+    "dashboard.html",
+    "dashboard.css",
+    "dashboard.js",
 ]
 RUNTIME_DIRS = {
     "_locales": "**/messages.json",
@@ -82,12 +86,23 @@ def validate(files: list) -> None:
         if path not in rel:
             fail(f"manifest {key} {path} not packaged")
 
-    # every font popup.html loads must be in the package, and vice versa
-    html = (ROOT / "popup.html").read_text("utf-8")
-    font_refs = set(re.findall(r'url\("(fonts/[^"]+)"\)', html))
+    # every local asset an HTML page links or scripts must be packaged
+    for page in ("popup.html", "dashboard.html"):
+        html = (ROOT / page).read_text("utf-8")
+        for ref in re.findall(r'(?:href|src)="([^"]+)"', html):
+            if "://" in ref or ref.startswith("#"):
+                continue
+            if ref not in rel:
+                fail(f"{page} references {ref} but it is not packaged")
+
+    # every font the stylesheets load must be in the package, and vice versa
+    font_refs = set()
+    for sheet in ("popup.css", "dashboard.css"):
+        css = (ROOT / sheet).read_text("utf-8")
+        font_refs |= set(re.findall(r'url\("(fonts/[^"]+)"\)', css))
     packaged_fonts = {p for p in rel if p.startswith("fonts/")}
     if missing := font_refs - packaged_fonts:
-        fail(f"popup.html loads unpackaged fonts: {sorted(missing)}")
+        fail(f"stylesheets load unpackaged fonts: {sorted(missing)}")
     if orphans := packaged_fonts - font_refs:
         fail(f"packaged fonts nothing references: {sorted(orphans)}")
 

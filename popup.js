@@ -12,6 +12,7 @@
   // subsets overlap in the CJK ranges, so popup.html picks the family by lang.
   document.documentElement.lang = M("@@ui_locale").replace(/_/g, "-");
 
+  document.title = M("extName");
   $("#titleText").textContent = M("title");
   $("#urls").placeholder = M("placeholder");
   $("#concLabel").textContent = M("concurrency");
@@ -28,6 +29,13 @@
   const startBtn = $("#startBtn");
   const stopBtn = $("#stopBtn");
   const retryBtn = $("#retryBtn");
+  const popupResume = $("#popupResume");
+  const dashBtn = $("#dashBtn");
+  const tileFail = $("#tileFail");
+  const resumeBar = $("#resumeBar");
+  const resumeText = $("#resumeText");
+  const resumeBtn = $("#resumeBtn");
+  const resumeX = $("#resumeX");
   const concurrencyEl = $("#concurrency");
   const delayEl = $("#delay");
   const folderEl = $("#folder");
@@ -43,8 +51,18 @@
   const okEl = $("#ok");
   const failEl = $("#fail");
   const waitEl = $("#wait");
+  const beltEl = $("#belt");
   const barEl = $("#bar");
   const logEl = $("#log");
+
+  urlsEl.setAttribute("aria-label", M("urlsAria"));
+  beltEl.setAttribute("aria-label", M("progressAria"));
+  tileFail.title = M("viewDetails");
+  dashBtn.title = M("openDash");
+  dashBtn.setAttribute("aria-label", M("openDash"));
+  popupResume.textContent = M("resume");
+  resumeBtn.textContent = M("resume");
+  resumeX.textContent = M("resumeDismiss");
 
   let seenTotal = 0; // logical count of log entries already rendered (survives trimming)
 
@@ -118,7 +136,9 @@
     okEl.textContent = st.stats.ok;
     failEl.textContent = st.stats.fail;
     waitEl.textContent = st.stats.total - done;
-    barEl.style.width = st.stats.total ? `${(done / st.stats.total) * 100}%` : "0%";
+    const pct = st.stats.total ? Math.round((done / st.stats.total) * 100) : 0;
+    barEl.style.width = `${pct}%`;
+    beltEl.setAttribute("aria-valuenow", pct);
 
     startBtn.disabled = st.running;
     stopBtn.disabled = !st.running;
@@ -132,6 +152,16 @@
     const failed = st.failed || 0;
     retryBtn.hidden = st.running || !failed;
     retryBtn.textContent = `${M("retryFailed")} · ${failed}`;
+    // while paused, the retry slot is free — hand it to "Resume"
+    popupResume.hidden = !st.paused;
+    document.body.classList.toggle("paused", !!st.paused);
+    tileFail.setAttribute("aria-disabled", failed ? "false" : "true");
+    const resumable = !st.running && (st.pendingResume || 0) > 0;
+    resumeBar.hidden = !resumable;
+    if (resumable) resumeText.textContent = M("resumeAsk", st.pendingResume);
+    // The dashboard has nothing to show before a batch exists — opening it then
+    // is an empty machine room, so the door stays hidden until there is state.
+    dashBtn.hidden = !st.running && !st.paused && st.stats.total === 0 && !resumable;
 
     // Render by logical index so front-trimming of the capped log doesn't
     // desync the view. total = entries ever produced this run; st.log holds the
@@ -186,6 +216,22 @@
   retryBtn.addEventListener("click", () => {
     retryBtn.hidden = true;
     chrome.runtime.sendMessage({ cmd: "retry" });
+  });
+  tileFail.addEventListener("click", () => {
+    if (tileFail.getAttribute("aria-disabled") === "true") return;
+    chrome.tabs.create({ url: chrome.runtime.getURL("dashboard.html#failed") });
+  });
+  dashBtn.addEventListener("click", () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL("dashboard.html") });
+  });
+  popupResume.addEventListener("click", () => {
+    chrome.runtime.sendMessage({ cmd: "resume" });
+  });
+  resumeBtn.addEventListener("click", () => {
+    chrome.runtime.sendMessage({ cmd: "resumeBatch" });
+  });
+  resumeX.addEventListener("click", () => {
+    chrome.runtime.sendMessage({ cmd: "dismissResume" });
   });
 
   // -- drop a .txt/.csv of URLs anywhere on the popup --

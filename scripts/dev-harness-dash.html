@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Native Batch Downloader — dashboard harness</title>
+<link rel="stylesheet" href="../popup.css">
+<link rel="stylesheet" href="../dashboard.css">
+</head>
+<body class="dash">
+
+<main class="cabinet">
+
+  <header class="hdr">
+    <span class="chute" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 4v10"/>
+        <path d="M7.5 10.5 12 15l4.5-4.5"/>
+        <path d="M5 20h14"/>
+      </svg>
+    </span>
+    <h1 id="titleText"></h1>
+    <span class="led" aria-hidden="true"></span>
+  </header>
+
+  <div class="resume-bar" id="resumeBar" hidden>
+    <span id="resumeText"></span>
+    <button id="resumeBtn" type="button"></button>
+    <button id="resumeX" type="button"></button>
+  </div>
+
+  <div class="stats">
+    <div class="tile"><b id="total">0</b><span id="lblTotal"></span></div>
+    <div class="tile ok"><b id="ok">0</b><span id="lblOk"></span></div>
+    <div class="tile fail"><b id="fail">0</b><span id="lblFail"></span></div>
+    <div class="tile wait"><b id="wait">0</b><span id="lblWait"></span></div>
+  </div>
+
+  <div class="meter">
+    <div class="belt" id="belt" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="fill" id="bar"></div>
+    </div>
+  </div>
+  <div class="bytes" id="bytes" hidden></div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="dash-controls">
+    <button id="pauseBtn" type="button" disabled></button>
+    <button id="stopBtn" type="button" disabled></button>
+    <button id="dashRetry" type="button" hidden></button>
+  </div>
+
+  <div class="rows" id="rows"></div>
+  <div class="more" id="more" hidden></div>
+  <p class="empty" id="empty" hidden></p>
+
+</main>
+
+<script>
+  // chrome.* stub so the REAL dashboard.js runs in a plain tab.
+  // Set window.fakeFull before/after load to feed any batch shape.
+  window.sent = [];
+  // ?full=<urlencoded JSON> seeds window.fakeFull so previews/tests can
+  // drive any batch shape without an injected script.
+  const q = new URLSearchParams(location.search);
+  if (q.get("full")) window.fakeFull = JSON.parse(q.get("full"));
+  const MSGS = { extName: "Native Batch Downloader", title: "Native Batch Downloader", placeholder: "Paste download URLs, one per line", concurrency: "Concurrency", delay: "Delay", subfolder: "Save to subfolder", subfolderTip: "tip", start: "Start Download", stop: "Stop", retryFailed: "Retry Failed", total: "Total", success: "Done", failed: "Failed", waiting: "Waiting", noUrls: "Paste at least one URL starting with http:// or https://", urlsAria: "Download links", progressAria: "Download progress", pause: "Pause", resume: "Resume", resumed: "Resumed", paused: "Paused", all: "All", viewDetails: "View failure details", openDash: "Open batch dashboard", copyTip: "Copy link", menuAddLink: "Add link to batch", resumeAsk: "Unfinished batch: $1 links left", resumeDismiss: "Dismiss", dashEmpty: "No batch yet — paste links in the popup and press Start", downloading: "Downloading", interrupted: "interrupted", "@@bidi_dir": "ltr", "@@ui_locale": "en" };
+  window.chrome = {
+    i18n: { getMessage: (k, subs) => { let s = MSGS[k] || ""; (subs || []).forEach((v, i) => { s = s.replace("$" + (i + 1), v); }); return s; } },
+    storage: {
+      sync: { get: (d, cb) => cb({ ...d }), set: () => {} },
+      session: { get: (k, cb) => cb({}), set: () => {}, remove: () => {} },
+      local: { get: (k, cb) => cb({}), set: () => {}, remove: () => {} },
+    },
+    contextMenus: { create: () => {}, onClicked: { addListener: () => {} } },
+    tabs: { create: (o) => window.sent.push({ cmd: "openTab", ...o }) },
+    downloads: { search: (q, cb) => cb([{ bytesReceived: 7340032, fileSize: 20971520 }, { bytesReceived: 1048576, fileSize: 0 }]) },
+    runtime: {
+      lastError: null,
+      onMessage: { addListener: () => {} },
+      sendMessage: (msg, cb) => {
+        window.sent.push(msg);
+        if (msg.cmd === "getFull" && cb) cb({ state: window.fakeFull || { running: false, paused: false, stats: { total: 0, ok: 0, fail: 0 }, failed: 0, log: [], dropped: 0, pendingResume: 0, entries: {} } });
+        if (msg.cmd === "bytes" && cb) cb({ received: 8388608, total: 20971520 });
+        if (cb && msg.cmd !== "getFull" && msg.cmd !== "bytes") cb({ ok: true });
+      },
+      getURL: (p) => p,
+    },
+  };
+</script>
+<script src="../dashboard.js"></script>
+</body>
+</html>

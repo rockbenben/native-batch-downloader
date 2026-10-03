@@ -1,0 +1,147 @@
+/* ===== Conveyor — machine room =====
+   The dashboard tab: same tokens and chunky language as popup.css (linked
+   first), laid out for a full-width batch table instead of a 420px popup. */
+
+body.dash {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.hdr .spacer { flex: 1; }
+
+/* ----- filter chips ----- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0 12px;
+}
+.chip {
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  padding: 4px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--tile-shadow);
+  transition: transform 0.08s, box-shadow 0.08s, background 0.15s, color 0.15s;
+}
+.chip:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--tile-shadow); }
+.chip[aria-pressed="true"] { background: var(--cobalt); color: var(--on-primary); }
+.chip:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+
+/* ----- control row ----- */
+.dash-controls { display: flex; gap: 10px; }
+.dash-controls button { flex: 1; padding: 7px 0; font-size: 12px; }
+#pauseBtn { background: var(--sun); color: var(--ink); }
+#pauseBtn:hover:not(:disabled) { background: var(--sun-h); }
+#stopBtn { background: var(--red-d); }
+#stopBtn:hover:not(:disabled) { background: var(--red-dd); }
+#dashRetry { background: var(--sun); color: var(--ink); }
+#dashRetry:hover:not(:disabled) { background: var(--sun-h); }
+
+/* ----- byte readout ----- */
+.bytes {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  /* "8.0 MB / 20.0 MB" is an LTR run; without this the bidi algorithm
+     shuffles it under RTL locales */
+  direction: ltr;
+  text-align: end;
+}
+
+/* ----- batch table ----- */
+.rows {
+  margin-top: 12px;
+  background: var(--cream);
+  border: 2px dashed var(--log-border);
+  border-radius: 10px;
+  max-height: 52vh;
+  overflow-y: auto;
+}
+.rows::-webkit-scrollbar { width: 7px; }
+.rows::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 4px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
+  border-bottom: 1px dashed var(--log-rule);
+  font-size: 12px;
+}
+.row:last-child { border-bottom: none; }
+.row:hover { background: var(--card); }
+.row .g { flex: none; width: 14px; text-align: center; font-weight: 700; }
+.row .g.ok   { color: var(--mint); }
+.row .g.fail { color: var(--red-d); }
+.row .g.active { color: var(--cobalt); }
+.row .g.wait { color: var(--sun-d); }
+.row .lb {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* URLs are LTR; keep them readable under an RTL UI locale */
+  direction: ltr;
+  text-align: start;
+}
+.row .rs {
+  flex: none;
+  max-width: 38%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+.row .cp {
+  flex: none;
+  /* 28px hit area — the row's only control, keep it pointable */
+  min-width: 28px; min-height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-sm);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--tile-shadow);
+  transition: background 0.15s;
+}
+.row .cp:hover { background: var(--sun-bg); }
+.row .cp:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.row .cp svg {
+  display: block;
+  width: 12px; height: 12px;
+  stroke: var(--ink); stroke-width: 2.4; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.row.copied .cp { background: var(--mint-bg); }
+
+.more {
+  padding: 6px 10px;
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+.empty {
+  margin: 18px 0;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip, .row .cp { transition: none; }
+}
