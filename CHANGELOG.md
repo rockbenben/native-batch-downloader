@@ -4,6 +4,53 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2026-10-03
+
+### Added
+
+- **Batch dashboard** — a full-tab machine room opened from the door icon in the popup
+  header (or the FAIL tile, deep-linked to failures): per-link status and failure
+  reason, filter chips with live counts, byte-level progress, per-row copy.
+- **Pause & resume** — hold new launches while in-flight downloads finish; resume from
+  the dashboard or the popup's Resume button.
+- **Right-click → Add link to batch** — collect links while browsing into the draft
+  (new `contextMenus` permission; no host access needed).
+- **Survives browser restarts** — the not-yet-started queue is mirrored to
+  `chrome.storage.local`; the popup offers to resume after a restart.
+- 13 new UI messages in all 24 locales.
+- CI gates: JS syntax, locale parity incl. duplicate-key/stray-locale/untranslated-prose
+  scans (`scripts/i18n-check.py`), packaging cross-references, behavior tests
+  (`scripts/run-tests.mjs`), store-asset sizes/modes, display-font subset coverage; a
+  `v*` tag checks tag==manifest and attaches the store zip to a GitHub Release whose
+  notes come from this changelog (missing section fails the release).
+- Real-install smoke (`scripts/smoke.mjs`, local gate): loads the unpacked extension in
+  Chrome for Testing and verifies over CDP — SW registration, context-menu entry,
+  dashboard round-trip with v2 entries, popup idle state and hidden door.
+
+### Changed
+
+- Popup styles extracted to `popup.css`, shared by popup, dashboard, store-asset
+  screenshots and dev harnesses — no more copy-pasted CSS anywhere.
+- Queue state v2: per-URL `entries` (label/status/reason) replace the bare failed list.
+- Stop button uses the deeper red so its white label passes WCAG AA (3.96:1 → 5.55:1).
+- Dashboard door stays hidden until there is batch state to inspect — no more empty
+  machine room when clicked before the first batch.
+- Right-click link capture during a running batch confirms with a log entry
+  ("Added to the next batch") instead of staying silent — the badge is busy showing
+  the countdown and can't flash "+".
+- CI cancels in-flight gate runs when a newer push lands on the same ref; tag/release
+  runs are never cancelled.
+- Full 24-locale copy review: actionable empty error, Done/Failed/Waiting tiles,
+  inflection-safe `$1` phrasing, machine-translation fixes across languages.
+
+### Fixed
+
+- RTL: checkbox tick no longer flips into an arrow; Arabic labels no longer shattered
+  by letter-spacing; dashboard byte readout pinned LTR.
+- Accessibility: document title, main landmark, progressbar semantics, labeled inputs
+  (Lighthouse a11y 87 → 100 on both surfaces).
+- `package.py` shipped a zip missing `popup.css` and all dashboard files.
+
 ## [1.2.0] - 2026-06-10
 
 ### Added
