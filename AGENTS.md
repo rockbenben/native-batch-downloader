@@ -56,5 +56,6 @@ downscale to exact sizes → `flatten.py` → `flatten.py --check`.
 
 Plain-version bumps, push, tags and store publishing each need explicit user
 approval; CI's release step only runs after `git tag vX.Y.Z && git push --tags`,
-requires manifest.json to match the tag, and fails when CHANGELOG.md has no
-section for the tagged version (that section becomes the release notes).
+requires manifest.json to match the tag, and fails unless BOTH `CHANGELOG.md`
+and `CHANGELOG.zh.md` carry a section for the tagged version — the two sections
+are concatenated (English first) as the GitHub Release notes.

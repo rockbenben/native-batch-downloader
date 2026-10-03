@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- GitHub Release notes are now bilingual: English from this file plus Chinese
+  from `CHANGELOG.zh.md`; the release step fails if either section is missing.
+
 ## [1.3.0] - 2026-10-03
 
 ### Added

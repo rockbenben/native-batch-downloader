@@ -79,20 +79,29 @@ jobs:
           python - <<'PY'
           import os, pathlib
           ver = os.environ["GITHUB_REF_NAME"].lstrip("v")
-          text = pathlib.Path("CHANGELOG.md").read_text(encoding="utf-8")
-          section = ""
-          for chunk in text.split("\n## "):
-              if chunk.startswith("[%s]" % ver):
-                  section = "\n".join(chunk.split("\n")[1:]).strip()
-          if not section:
-              raise SystemExit(f"CHANGELOG.md has no section for {ver} — write it before tagging")
+          def section(name):
+              text = pathlib.Path(name).read_text(encoding="utf-8")
+              for chunk in text.split("\n## "):
+                  if chunk.startswith("[%s]" % ver):
+                      return "\n".join(chunk.split("\n")[1:]).strip()
+              raise SystemExit(f"{name} has no section for {ver} — write it before tagging")
+          en, zh = section("CHANGELOG.md"), section("CHANGELOG.zh.md")
           notes = "\n".join([
               "Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm),",
               "or download the zip below: unzip it, open `chrome://extensions`, enable Developer mode, and choose \"Load unpacked\".",
               "",
               "## Changes in " + ver,
               "",
-              section,
+              en,
+              "",
+              "---",
+              "",
+              "从 [Chrome 应用商店](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)安装（一键、自动更新），",
+              "或下载下方 zip：解压后打开 `chrome://extensions`，开启开发者模式，点「加载已解压的扩展程序」。",
+              "",
+              "## " + ver + " 更新内容",
+              "",
+              zh,
               "",
               "Source: https://github.com/rockbenben/native-batch-downloader",
           ])
