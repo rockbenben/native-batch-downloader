@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "أداة التحميل الأصلية الجماعية"
-  },
-  "extDesc": {
-    "message": "تنزيل جماعي للملفات عبر قناة التحميل الأصلية للمتصفح — حتى الملفات التي تتطلب تسجيل الدخول، مع إرسال الكوكيز تلقائياً"
-  },
-  "title": {
-    "message": "أداة التحميل الأصلية الجماعية"
-  },
-  "placeholder": {
-    "message": "الصق روابط التحميل، رابط واحد في كل سطر\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "تحميلات متزامنة"
-  },
-  "delay": {
-    "message": "تأخير"
-  },
-  "start": {
-    "message": "بدء التحميل"
-  },
-  "stop": {
-    "message": "إيقاف"
-  },
-  "retryFailed": { "message": "إعادة محاولة الفاشلة" },
+  "extName": { "message": "أداة التحميل الأصلية الجماعية" },
+  "extDesc": { "message": "تحميل جماعي للملفات عبر قناة التحميل الأصلية للمتصفح — تعمل حتى مع الملفات التي تتطلب تسجيل الدخول، وتُرسل الكوكيز تلقائيًا" },
+  "title": { "message": "أداة التحميل الأصلية الجماعية" },
+  "placeholder": { "message": "الصق روابط التحميل، رابط واحد في كل سطر\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "تحميلات متزامنة" },
+  "delay": { "message": "تأخير" },
+  "start": { "message": "بدء التحميل" },
+  "stop": { "message": "إيقاف" },
+  "retryFailed": { "message": "إعادة المحاولة للفاشلة" },
   "subfolder": { "message": "الحفظ في مجلد فرعي" },
   "subfolderTip": { "message": "تُحفظ الملفات في مجلد BatchDL/<التاريخ> داخل التنزيلات" },
-  "total": {
-    "message": "الإجمالي"
-  },
-  "success": {
-    "message": "نجاح"
-  },
-  "failed": {
-    "message": "فشل"
-  },
-  "waiting": {
-    "message": "انتظار"
-  },
-  "noUrls": {
-    "message": "لم يتم العثور على روابط صالحة"
-  },
-  "startLog": {
-    "message": "بدء تحميل $1 ملف (متزامن: $2)"
-  },
-  "downloading": {
-    "message": "جاري التحميل"
-  },
-  "interrupted": {
-    "message": "تم المقاطعة"
-  },
-  "skippedInvalid": { "message": "تم تخطي $1 من الروابط غير الصالحة" },
-  "skippedDuplicate": { "message": "تم تخطي $1 من الروابط المكررة" },
-  "stopped": {
-    "message": "تم الإيقاف يدوياً"
-  },
-  "doneAll": {
-    "message": "تم — $1 نجاح، $2 فشل"
-  }
+  "total": { "message": "الإجمالي" },
+  "success": { "message": "تم" },
+  "failed": { "message": "فشل" },
+  "waiting": { "message": "قيد الانتظار" },
+  "noUrls": { "message": "الصق رابطًا واحدًا على الأقل يبدأ بـ http:// أو https://" },
+  "urlsAria": { "message": "روابط التحميل" },
+  "progressAria": { "message": "تقدّم التحميل" },
+  "startLog": { "message": "بدء تحميل $1 ملف (التحميلات المتزامنة: $2)" },
+  "downloading": { "message": "جارٍ التحميل" },
+  "interrupted": { "message": "تمت مقاطعته" },
+  "skippedInvalid": { "message": "تم تجاهل $1 رابط غير صالح" },
+  "skippedDuplicate": { "message": "تم تجاهل $1 رابط مكرر" },
+  "stopped": { "message": "تم الإيقاف" },
+  "doneAll": { "message": "تم كل شيء — $1 نجحت، $2 فشلت" },
+  "pause": { "message": "إيقاف مؤقت" },
+  "resume": { "message": "استئناف" },
+  "resumed": { "message": "استُؤنف" },
+  "paused": { "message": "متوقف مؤقتًا" },
+  "all": { "message": "الكل" },
+  "viewDetails": { "message": "عرض تفاصيل الفشل" },
+  "openDash": { "message": "فتح لوحة الدفعة" },
+  "copyTip": { "message": "نسخ الرابط" },
+  "menuAddLink": { "message": "أضف الرابط إلى الدفعة" },
+  "queuedNext": { "message": "تمت الإضافة إلى الدفعة التالية" },
+  "resumeAsk": { "message": "دفعة غير مكتملة. الروابط المتبقية: $1" },
+  "resumeDismiss": { "message": "تجاهل" },
+  "dashEmpty": { "message": "لا توجد دفعة بعد — الصق الروابط في النافذة المنبثقة واضغط بدء التحميل" }
 }

@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Natywne pobieranie zbiorcze"
-  },
-  "extDesc": {
-    "message": "Zbiorcze pobieranie przez natywny kanał przeglądarki — nawet pliki wymagające logowania; ciasteczka wysyłane automatycznie"
-  },
-  "title": {
-    "message": "Natywne pobieranie zbiorcze"
-  },
-  "placeholder": {
-    "message": "Wklej adresy URL, jeden na linię\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Jednoczesnych pobrań"
-  },
-  "delay": {
-    "message": "Opóźnienie"
-  },
-  "start": {
-    "message": "Rozpocznij pobieranie"
-  },
-  "stop": {
-    "message": "Zatrzymaj"
-  },
+  "extName": { "message": "Natywne pobieranie zbiorcze" },
+  "extDesc": { "message": "Zbiorcze pobieranie przez natywny kanał przeglądarki — działają nawet pliki wymagające logowania; pliki cookie wysyłane automatycznie" },
+  "title": { "message": "Natywne pobieranie zbiorcze" },
+  "placeholder": { "message": "Wklej adresy URL, każdy w osobnej linii\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Jednoczesne pobieranie" },
+  "delay": { "message": "Opóźnienie" },
+  "start": { "message": "Rozpocznij pobieranie" },
+  "stop": { "message": "Zatrzymaj" },
   "retryFailed": { "message": "Ponów nieudane" },
   "subfolder": { "message": "Zapisz w podfolderze" },
-  "subfolderTip": { "message": "Pliki trafiają do folderu BatchDL/<data> w Pobranych" },
-  "total": {
-    "message": "Łącznie"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Błąd"
-  },
-  "waiting": {
-    "message": "Oczekuje"
-  },
-  "noUrls": {
-    "message": "Nie znaleziono prawidłowych URL"
-  },
-  "startLog": {
-    "message": "Rozpoczynam pobieranie $1 plików (jednocześnie: $2)"
-  },
-  "downloading": {
-    "message": "Pobieranie"
-  },
-  "interrupted": {
-    "message": "przerwano"
-  },
+  "subfolderTip": { "message": "Pliki trafiają do folderu BatchDL/<data> w folderze Pobrane" },
+  "total": { "message": "Łącznie" },
+  "success": { "message": "Gotowe" },
+  "failed": { "message": "Nieudane" },
+  "waiting": { "message": "Oczekuje" },
+  "noUrls": { "message": "Wklej co najmniej jeden adres URL zaczynający się od http:// lub https://" },
+  "urlsAria": { "message": "Linki do pobrania" },
+  "progressAria": { "message": "Postęp pobierania" },
+  "startLog": { "message": "Rozpoczynam pobieranie $1 plików (jednocześnie: $2)" },
+  "downloading": { "message": "Pobieranie" },
+  "interrupted": { "message": "przerwano" },
   "skippedInvalid": { "message": "Pominięto nieprawidłowe adresy URL: $1" },
   "skippedDuplicate": { "message": "Pominięto zduplikowane adresy URL: $1" },
-  "stopped": {
-    "message": "Zatrzymano ręcznie"
-  },
-  "doneAll": {
-    "message": "Gotowe — $1 OK, $2 błędów"
-  }
+  "stopped": { "message": "Zatrzymano" },
+  "doneAll": { "message": "Gotowe — $1 OK, błędy: $2" },
+  "pause": { "message": "Wstrzymaj" },
+  "resume": { "message": "Wznów" },
+  "resumed": { "message": "Wznowiono" },
+  "paused": { "message": "Wstrzymane" },
+  "all": { "message": "Wszystkie" },
+  "viewDetails": { "message": "Pokaż szczegóły błędów" },
+  "openDash": { "message": "Otwórz panel partii" },
+  "copyTip": { "message": "Kopiuj link" },
+  "menuAddLink": { "message": "Dodaj link do partii" },
+  "queuedNext": { "message": "Dodano do następnej partii" },
+  "resumeAsk": { "message": "Nieukończona partia — pozostało linków: $1" },
+  "resumeDismiss": { "message": "Odrzuć" },
+  "dashEmpty": { "message": "Brak partii — wklej linki w okienku i rozpocznij pobieranie" }
 }

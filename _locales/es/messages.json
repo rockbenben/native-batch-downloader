@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Descargador nativo por lotes"
-  },
-  "extDesc": {
-    "message": "Descarga por lotes mediante el canal nativo del navegador — incluso archivos que requieren login; cookies enviadas automáticamente"
-  },
-  "title": {
-    "message": "Descargador nativo por lotes"
-  },
-  "placeholder": {
-    "message": "Pega las URLs, una por línea\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Descargas simultáneas"
-  },
-  "delay": {
-    "message": "Intervalo"
-  },
-  "start": {
-    "message": "Iniciar descarga"
-  },
-  "stop": {
-    "message": "Detener"
-  },
+  "extName": { "message": "Descargador nativo por lotes" },
+  "extDesc": { "message": "Descarga archivos por lotes con el canal nativo del navegador — funcionan incluso los archivos protegidos con inicio de sesión; cookies enviadas automáticamente" },
+  "title": { "message": "Descargador nativo por lotes" },
+  "placeholder": { "message": "Pega las URLs de descarga, una por línea\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Descargas simultáneas" },
+  "delay": { "message": "Intervalo" },
+  "start": { "message": "Iniciar descarga" },
+  "stop": { "message": "Detener" },
   "retryFailed": { "message": "Reintentar fallidos" },
   "subfolder": { "message": "Guardar en subcarpeta" },
   "subfolderTip": { "message": "Los archivos se guardan en BatchDL/<fecha> dentro de Descargas" },
-  "total": {
-    "message": "Total"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Error"
-  },
-  "waiting": {
-    "message": "Espera"
-  },
-  "noUrls": {
-    "message": "No se encontraron URLs válidas"
-  },
-  "startLog": {
-    "message": "Iniciando $1 descargas (simultáneas: $2)"
-  },
-  "downloading": {
-    "message": "Descargando"
-  },
-  "interrupted": {
-    "message": "interrumpido"
-  },
+  "total": { "message": "Total" },
+  "success": { "message": "Listo" },
+  "failed": { "message": "Fallidos" },
+  "waiting": { "message": "En espera" },
+  "noUrls": { "message": "Pega al menos una URL que empiece por http:// o https://" },
+  "urlsAria": { "message": "Enlaces de descarga" },
+  "progressAria": { "message": "Progreso de la descarga" },
+  "startLog": { "message": "Iniciando $1 descargas (simultáneas: $2)" },
+  "downloading": { "message": "Descargando" },
+  "interrupted": { "message": "interrumpido" },
   "skippedInvalid": { "message": "Se omitieron $1 URL no válidas" },
   "skippedDuplicate": { "message": "Se omitieron $1 URL duplicadas" },
-  "stopped": {
-    "message": "Detenido manualmente"
-  },
-  "doneAll": {
-    "message": "Listo — $1 OK, $2 fallidos"
-  }
+  "stopped": { "message": "Detenido" },
+  "doneAll": { "message": "Todo listo — $1 OK, $2 fallidos" },
+  "pause": { "message": "Pausar" },
+  "resume": { "message": "Reanudar" },
+  "resumed": { "message": "Reanudado" },
+  "paused": { "message": "Pausado" },
+  "all": { "message": "Todos" },
+  "viewDetails": { "message": "Ver detalles del fallo" },
+  "openDash": { "message": "Abrir panel del lote" },
+  "copyTip": { "message": "Copiar enlace" },
+  "menuAddLink": { "message": "Añadir enlace al lote" },
+  "queuedNext": { "message": "Añadido al lote siguiente" },
+  "resumeAsk": { "message": "Lote sin terminar. Enlaces restantes: $1" },
+  "resumeDismiss": { "message": "Descartar" },
+  "dashEmpty": { "message": "Aún no hay lotes — pega enlaces en la ventana emergente y pulsa Iniciar descarga" }
 }

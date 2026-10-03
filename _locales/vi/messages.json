@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Tải hàng loạt gốc"
-  },
-  "extDesc": {
-    "message": "Tải hàng loạt qua kênh tải gốc của trình duyệt — tải được cả tệp cần đăng nhập, tự động gửi cookie"
-  },
-  "title": {
-    "message": "Tải hàng loạt gốc"
-  },
-  "placeholder": {
-    "message": "Dán URL tải xuống, mỗi dòng một URL\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Tải đồng thời"
-  },
-  "delay": {
-    "message": "Khoảng cách"
-  },
-  "start": {
-    "message": "Bắt đầu tải"
-  },
-  "stop": {
-    "message": "Dừng"
-  },
+  "extName": { "message": "Tải hàng loạt gốc" },
+  "extDesc": { "message": "Tải hàng loạt qua kênh tải gốc của trình duyệt — tải được cả tệp cần đăng nhập, tự động gửi cookie" },
+  "title": { "message": "Tải hàng loạt gốc" },
+  "placeholder": { "message": "Dán URL tải xuống, mỗi dòng một URL\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Tải đồng thời" },
+  "delay": { "message": "Độ trễ" },
+  "start": { "message": "Bắt đầu tải" },
+  "stop": { "message": "Dừng" },
   "retryFailed": { "message": "Thử lại mục lỗi" },
   "subfolder": { "message": "Lưu vào thư mục con" },
   "subfolderTip": { "message": "Tệp được lưu vào BatchDL/<ngày> trong thư mục Tải xuống" },
-  "total": {
-    "message": "Tổng"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Lỗi"
-  },
-  "waiting": {
-    "message": "Đợi"
-  },
-  "noUrls": {
-    "message": "Không tìm thấy URL hợp lệ"
-  },
-  "startLog": {
-    "message": "Bắt đầu tải $1 tệp (đồng thời: $2)"
-  },
-  "downloading": {
-    "message": "Đang tải"
-  },
-  "interrupted": {
-    "message": "bị gián đoạn"
-  },
+  "total": { "message": "Tổng" },
+  "success": { "message": "Xong" },
+  "failed": { "message": "Lỗi" },
+  "waiting": { "message": "Đợi" },
+  "noUrls": { "message": "Dán ít nhất một URL bắt đầu bằng http:// hoặc https://" },
+  "urlsAria": { "message": "Liên kết tải xuống" },
+  "progressAria": { "message": "Tiến trình tải xuống" },
+  "startLog": { "message": "Bắt đầu tải $1 tệp (đồng thời: $2)" },
+  "downloading": { "message": "Đang tải" },
+  "interrupted": { "message": "bị gián đoạn" },
   "skippedInvalid": { "message": "Đã bỏ qua $1 URL không hợp lệ" },
   "skippedDuplicate": { "message": "Đã bỏ qua $1 URL trùng lặp" },
-  "stopped": {
-    "message": "Đã dừng thủ công"
-  },
-  "doneAll": {
-    "message": "Hoàn tất — $1 OK, $2 lỗi"
-  }
+  "stopped": { "message": "Đã dừng" },
+  "doneAll": { "message": "Hoàn tất — $1 OK, $2 lỗi" },
+  "pause": { "message": "Tạm dừng" },
+  "resume": { "message": "Tiếp tục" },
+  "resumed": { "message": "Đã tiếp tục" },
+  "paused": { "message": "Đã tạm dừng" },
+  "all": { "message": "Tất cả" },
+  "viewDetails": { "message": "Xem chi tiết lỗi" },
+  "openDash": { "message": "Mở bảng điều khiển lô" },
+  "copyTip": { "message": "Sao chép liên kết" },
+  "menuAddLink": { "message": "Thêm liên kết vào lô tải" },
+  "queuedNext": { "message": "Đã thêm vào lô tải tiếp theo" },
+  "resumeAsk": { "message": "Lô chưa hoàn tất: còn $1 liên kết" },
+  "resumeDismiss": { "message": "Bỏ qua" },
+  "dashEmpty": { "message": "Chưa có lô nào — dán liên kết trong popup và nhấn Bắt đầu" }
 }

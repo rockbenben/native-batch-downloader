@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Нативний пакетний завантажувач"
-  },
-  "extDesc": {
-    "message": "Пакетне завантаження файлів через вбудований канал браузера — навіть файли, що потребують входу; куки надсилаються автоматично"
-  },
-  "title": {
-    "message": "Нативний пакетний завантажувач"
-  },
-  "placeholder": {
-    "message": "Вставте посилання, по одному на рядок\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Одночасних завантажень"
-  },
-  "delay": {
-    "message": "Затримка"
-  },
-  "start": {
-    "message": "Почати завантаження"
-  },
-  "stop": {
-    "message": "Зупинити"
-  },
+  "extName": { "message": "Нативний пакетний завантажувач" },
+  "extDesc": { "message": "Пакетне завантаження файлів через вбудований канал браузера — навіть файли, що потребують входу; куки надсилаються автоматично" },
+  "title": { "message": "Нативний пакетний завантажувач" },
+  "placeholder": { "message": "Вставте посилання, по одному на рядок\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Одночасних завантажень" },
+  "delay": { "message": "Затримка" },
+  "start": { "message": "Почати завантаження" },
+  "stop": { "message": "Зупинити" },
   "retryFailed": { "message": "Повторити невдалі" },
   "subfolder": { "message": "Зберігати в підпапку" },
   "subfolderTip": { "message": "Файли зберігаються в папці BatchDL/<дата> у Завантаженнях" },
-  "total": {
-    "message": "Всього"
-  },
-  "success": {
-    "message": "ОК"
-  },
-  "failed": {
-    "message": "Помилка"
-  },
-  "waiting": {
-    "message": "Очікування"
-  },
-  "noUrls": {
-    "message": "Дійсних URL не знайдено"
-  },
-  "startLog": {
-    "message": "Починаю завантаження $1 файлів (одночасно: $2)"
-  },
-  "downloading": {
-    "message": "Завантаження"
-  },
-  "interrupted": {
-    "message": "перервано"
-  },
+  "total": { "message": "Всього" },
+  "success": { "message": "Готово" },
+  "failed": { "message": "Помилка" },
+  "waiting": { "message": "Очікування" },
+  "noUrls": { "message": "Вставте хоча б одне посилання, що починається з http:// або https://" },
+  "urlsAria": { "message": "Посилання для завантаження" },
+  "progressAria": { "message": "Прогрес завантаження" },
+  "startLog": { "message": "Починаю завантаження $1 файлів (одночасно: $2)" },
+  "downloading": { "message": "Завантаження" },
+  "interrupted": { "message": "перервано" },
   "skippedInvalid": { "message": "Пропущено недійсних URL: $1" },
   "skippedDuplicate": { "message": "Пропущено повторюваних URL: $1" },
-  "stopped": {
-    "message": "Зупинено вручну"
-  },
-  "doneAll": {
-    "message": "Готово — $1 ОК, $2 помилок"
-  }
+  "stopped": { "message": "Зупинено" },
+  "doneAll": { "message": "Готово — $1 ОК, $2 помилок" },
+  "pause": { "message": "Призупинити" },
+  "resume": { "message": "Продовжити" },
+  "resumed": { "message": "Відновлено" },
+  "paused": { "message": "Призупинено" },
+  "all": { "message": "Усі" },
+  "viewDetails": { "message": "Показати деталі помилок" },
+  "openDash": { "message": "Відкрити панель пакета" },
+  "copyTip": { "message": "Копіювати посилання" },
+  "menuAddLink": { "message": "Додати посилання до пакета" },
+  "queuedNext": { "message": "Додано до наступного пакета" },
+  "resumeAsk": { "message": "Незавершений пакет — залишилося посилань: $1" },
+  "resumeDismiss": { "message": "Відхилити" },
+  "dashEmpty": { "message": "Пакетів ще немає — вставте посилання у спливному вікні та натисніть «Почати завантаження»" }
 }

@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "ดาวน์โหลดแบบกลุ่มผ่านเบราว์เซอร์"
-  },
-  "extDesc": {
-    "message": "ดาวน์โหลดไฟล์จำนวนมากผ่านช่องทางเนทีฟของเบราว์เซอร์ — ใช้ได้แม้กับไฟล์ที่ต้องเข้าสู่ระบบ ส่ง cookie อัตโนมัติ"
-  },
-  "title": {
-    "message": "ดาวน์โหลดแบบกลุ่มผ่านเบราว์เซอร์"
-  },
-  "placeholder": {
-    "message": "วาง URL บรรทัดละหนึ่งลิงก์\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "ดาวน์โหลดพร้อมกัน"
-  },
-  "delay": {
-    "message": "หน่วงเวลา"
-  },
-  "start": {
-    "message": "เริ่มดาวน์โหลด"
-  },
-  "stop": {
-    "message": "หยุด"
-  },
+  "extName": { "message": "ดาวน์โหลดแบบกลุ่มผ่านเบราว์เซอร์" },
+  "extDesc": { "message": "ดาวน์โหลดไฟล์จำนวนมากผ่านช่องทางเนทีฟของเบราว์เซอร์ — ใช้ได้แม้กับไฟล์ที่ต้องเข้าสู่ระบบ ส่ง cookie อัตโนมัติ" },
+  "title": { "message": "ดาวน์โหลดแบบกลุ่มผ่านเบราว์เซอร์" },
+  "placeholder": { "message": "วาง URL บรรทัดละหนึ่งลิงก์\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "ดาวน์โหลดพร้อมกัน" },
+  "delay": { "message": "หน่วงเวลา" },
+  "start": { "message": "เริ่มดาวน์โหลด" },
+  "stop": { "message": "หยุด" },
   "retryFailed": { "message": "ลองใหม่ที่ล้มเหลว" },
   "subfolder": { "message": "บันทึกลงโฟลเดอร์ย่อย" },
-  "subfolderTip": { "message": "ไฟล์จะถูกบันทึกในโฟลเดอร์ BatchDL/<วันที่> ภายในดาวน์โหลด" },
-  "total": {
-    "message": "ทั้งหมด"
-  },
-  "success": {
-    "message": "สำเร็จ"
-  },
-  "failed": {
-    "message": "ล้มเหลว"
-  },
-  "waiting": {
-    "message": "รอ"
-  },
-  "noUrls": {
-    "message": "ไม่พบ URL ที่ถูกต้อง"
-  },
-  "startLog": {
-    "message": "เริ่มดาวน์โหลด $1 ไฟล์ (พร้อมกัน: $2)"
-  },
-  "downloading": {
-    "message": "กำลังดาวน์โหลด"
-  },
-  "interrupted": {
-    "message": "ถูกขัดจังหวะ"
-  },
+  "subfolderTip": { "message": "ไฟล์จะถูกบันทึกในโฟลเดอร์ BatchDL/<วันที่> ภายในโฟลเดอร์ดาวน์โหลด" },
+  "total": { "message": "รวม" },
+  "success": { "message": "สำเร็จ" },
+  "failed": { "message": "ล้มเหลว" },
+  "waiting": { "message": "กำลังรอ" },
+  "noUrls": { "message": "วาง URL อย่างน้อยหนึ่งรายการที่ขึ้นต้นด้วย http:// หรือ https://" },
+  "urlsAria": { "message": "ลิงก์ดาวน์โหลด" },
+  "progressAria": { "message": "ความคืบหน้าการดาวน์โหลด" },
+  "startLog": { "message": "เริ่มดาวน์โหลด $1 ไฟล์ (พร้อมกัน $2)" },
+  "downloading": { "message": "กำลังดาวน์โหลด" },
+  "interrupted": { "message": "หยุดชะงัก" },
   "skippedInvalid": { "message": "ข้าม URL ที่ไม่ถูกต้อง $1 รายการ" },
   "skippedDuplicate": { "message": "ข้าม URL ที่ซ้ำกัน $1 รายการ" },
-  "stopped": {
-    "message": "หยุดด้วยตนเอง"
-  },
-  "doneAll": {
-    "message": "เสร็จสิ้น — สำเร็จ $1, ล้มเหลว $2"
-  }
+  "stopped": { "message": "หยุดแล้ว" },
+  "doneAll": { "message": "เสร็จสิ้น — สำเร็จ $1, ล้มเหลว $2" },
+  "pause": { "message": "หยุดชั่วคราว" },
+  "resume": { "message": "ทำต่อ" },
+  "resumed": { "message": "ทำต่อแล้ว" },
+  "paused": { "message": "หยุดชั่วคราวแล้ว" },
+  "all": { "message": "ทั้งหมด" },
+  "viewDetails": { "message": "ดูรายละเอียดความล้มเหลว" },
+  "openDash": { "message": "เปิดแผงกลุ่มดาวน์โหลด" },
+  "copyTip": { "message": "คัดลอกลิงก์" },
+  "menuAddLink": { "message": "เพิ่มลิงก์ลงในกลุ่มดาวน์โหลด" },
+  "queuedNext": { "message": "เพิ่มในกลุ่มดาวน์โหลดถัดไปแล้ว" },
+  "resumeAsk": { "message": "กลุ่มดาวน์โหลดค้าง: เหลือ $1 ลิงก์" },
+  "resumeDismiss": { "message": "ปิด" },
+  "dashEmpty": { "message": "ยังไม่มีกลุ่มดาวน์โหลด — วางลิงก์ในป๊อปอัปแล้วกดเริ่มดาวน์โหลด" }
 }

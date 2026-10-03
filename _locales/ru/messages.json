@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Нативный пакетный загрузчик"
-  },
-  "extDesc": {
-    "message": "Пакетная загрузка файлов через встроенный канал браузера — даже файлы, требующие входа; куки отправляются автоматически"
-  },
-  "title": {
-    "message": "Нативный пакетный загрузчик"
-  },
-  "placeholder": {
-    "message": "Вставьте ссылки, по одной на строку\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Одновременных загрузок"
-  },
-  "delay": {
-    "message": "Задержка"
-  },
-  "start": {
-    "message": "Начать загрузку"
-  },
-  "stop": {
-    "message": "Стоп"
-  },
+  "extName": { "message": "Нативный пакетный загрузчик" },
+  "extDesc": { "message": "Пакетная загрузка файлов через встроенный канал браузера — даже файлы, требующие входа; куки отправляются автоматически" },
+  "title": { "message": "Нативный пакетный загрузчик" },
+  "placeholder": { "message": "Вставьте ссылки, по одной на строку\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Одновременных загрузок" },
+  "delay": { "message": "Задержка" },
+  "start": { "message": "Начать загрузку" },
+  "stop": { "message": "Стоп" },
   "retryFailed": { "message": "Повторить неудачные" },
   "subfolder": { "message": "Сохранять в подпапку" },
   "subfolderTip": { "message": "Файлы сохраняются в папку BatchDL/<дата> внутри Загрузок" },
-  "total": {
-    "message": "Всего"
-  },
-  "success": {
-    "message": "ОК"
-  },
-  "failed": {
-    "message": "Ошибка"
-  },
-  "waiting": {
-    "message": "Ожидание"
-  },
-  "noUrls": {
-    "message": "Нет допустимых URL"
-  },
-  "startLog": {
-    "message": "Начинаю загрузку $1 файлов (одновременно: $2)"
-  },
-  "downloading": {
-    "message": "Загрузка"
-  },
-  "interrupted": {
-    "message": "прервано"
-  },
+  "total": { "message": "Всего" },
+  "success": { "message": "Готово" },
+  "failed": { "message": "Ошибка" },
+  "waiting": { "message": "Ожидание" },
+  "noUrls": { "message": "Вставьте хотя бы одну ссылку, начинающуюся с http:// или https://" },
+  "urlsAria": { "message": "Ссылки для загрузки" },
+  "progressAria": { "message": "Прогресс загрузки" },
+  "startLog": { "message": "Начинаю загрузку $1 файлов (одновременно: $2)" },
+  "downloading": { "message": "Загрузка" },
+  "interrupted": { "message": "прервано" },
   "skippedInvalid": { "message": "Пропущено недопустимых URL: $1" },
   "skippedDuplicate": { "message": "Пропущено повторяющихся URL: $1" },
-  "stopped": {
-    "message": "Остановлено вручную"
-  },
-  "doneAll": {
-    "message": "Готово — $1 ОК, $2 ошибок"
-  }
+  "stopped": { "message": "Остановлено" },
+  "doneAll": { "message": "Готово — $1 ОК, $2 ошибок" },
+  "pause": { "message": "Приостановить" },
+  "resume": { "message": "Продолжить" },
+  "resumed": { "message": "Возобновлено" },
+  "paused": { "message": "Приостановлено" },
+  "all": { "message": "Все" },
+  "viewDetails": { "message": "Показать подробности ошибок" },
+  "openDash": { "message": "Открыть панель пакета" },
+  "copyTip": { "message": "Копировать ссылку" },
+  "menuAddLink": { "message": "Добавить ссылку в пакет" },
+  "queuedNext": { "message": "Добавлено в следующий пакет" },
+  "resumeAsk": { "message": "Незавершённый пакет — осталось ссылок: $1" },
+  "resumeDismiss": { "message": "Отклонить" },
+  "dashEmpty": { "message": "Пакетов пока нет — вставьте ссылки во всплывающем окне и нажмите «Начать загрузку»" }
 }

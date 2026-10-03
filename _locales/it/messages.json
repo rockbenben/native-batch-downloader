@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Downloader nativo batch"
-  },
-  "extDesc": {
-    "message": "Download in batch tramite il canale nativo del browser — anche i file che richiedono il login; cookie inviati automaticamente"
-  },
-  "title": {
-    "message": "Downloader nativo batch"
-  },
-  "placeholder": {
-    "message": "Incolla gli URL, uno per riga\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Download simultanei"
-  },
-  "delay": {
-    "message": "Ritardo"
-  },
-  "start": {
-    "message": "Avvia download"
-  },
-  "stop": {
-    "message": "Ferma"
-  },
+  "extName": { "message": "Downloader nativo batch" },
+  "extDesc": { "message": "Download in batch tramite il canale nativo del browser — funzionano anche i file che richiedono il login; cookie inviati automaticamente" },
+  "title": { "message": "Downloader nativo batch" },
+  "placeholder": { "message": "Incolla gli URL di download, uno per riga\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Download simultanei" },
+  "delay": { "message": "Ritardo" },
+  "start": { "message": "Avvia download" },
+  "stop": { "message": "Ferma" },
   "retryFailed": { "message": "Riprova falliti" },
   "subfolder": { "message": "Salva in sottocartella" },
-  "subfolderTip": { "message": "I file vengono salvati in BatchDL/<data> dentro Download" },
-  "total": {
-    "message": "Totale"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Errore"
-  },
-  "waiting": {
-    "message": "In attesa"
-  },
-  "noUrls": {
-    "message": "Nessun URL valido trovato"
-  },
-  "startLog": {
-    "message": "Avvio di $1 download (simultanei: $2)"
-  },
-  "downloading": {
-    "message": "Download in corso"
-  },
-  "interrupted": {
-    "message": "interrotto"
-  },
+  "subfolderTip": { "message": "I file vengono salvati nella cartella BatchDL/<data> dentro Download" },
+  "total": { "message": "Totale" },
+  "success": { "message": "Completato" },
+  "failed": { "message": "Falliti" },
+  "waiting": { "message": "In attesa" },
+  "noUrls": { "message": "Incolla almeno un URL che inizi con http:// o https://" },
+  "urlsAria": { "message": "Link di download" },
+  "progressAria": { "message": "Avanzamento del download" },
+  "startLog": { "message": "Avvio di $1 download (simultanei: $2)" },
+  "downloading": { "message": "Download in corso" },
+  "interrupted": { "message": "interrotto" },
   "skippedInvalid": { "message": "Ignorati $1 URL non validi" },
   "skippedDuplicate": { "message": "Ignorati $1 URL duplicati" },
-  "stopped": {
-    "message": "Fermato manualmente"
-  },
-  "doneAll": {
-    "message": "Completato — $1 OK, $2 falliti"
-  }
+  "stopped": { "message": "Fermato" },
+  "doneAll": { "message": "Completato — $1 OK, $2 falliti" },
+  "pause": { "message": "Pausa" },
+  "resume": { "message": "Riprendi" },
+  "resumed": { "message": "Ripreso" },
+  "paused": { "message": "In pausa" },
+  "all": { "message": "Tutti" },
+  "viewDetails": { "message": "Vedi dettagli errore" },
+  "openDash": { "message": "Apri il pannello del batch" },
+  "copyTip": { "message": "Copia link" },
+  "menuAddLink": { "message": "Aggiungi link al batch" },
+  "queuedNext": { "message": "Aggiunto al batch successivo" },
+  "resumeAsk": { "message": "Batch non completato. Link rimanenti: $1" },
+  "resumeDismiss": { "message": "Ignora" },
+  "dashEmpty": { "message": "Ancora nessun batch — incolla i link nel popup e premi Avvia download" }
 }

@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Downloader nativo em lote"
-  },
-  "extDesc": {
-    "message": "Baixe arquivos em lote pelo canal nativo do navegador — até arquivos que exigem login; cookies enviados automaticamente"
-  },
-  "title": {
-    "message": "Downloader nativo em lote"
-  },
-  "placeholder": {
-    "message": "Cole as URLs, uma por linha\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Downloads simultâneos"
-  },
-  "delay": {
-    "message": "Intervalo"
-  },
-  "start": {
-    "message": "Iniciar download"
-  },
-  "stop": {
-    "message": "Parar"
-  },
+  "extName": { "message": "Downloader nativo em lote" },
+  "extDesc": { "message": "Baixe arquivos em lote pelo canal nativo do navegador — funcionam até arquivos protegidos por login; cookies enviados automaticamente" },
+  "title": { "message": "Downloader nativo em lote" },
+  "placeholder": { "message": "Cole as URLs de download, uma por linha\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Downloads simultâneos" },
+  "delay": { "message": "Intervalo" },
+  "start": { "message": "Iniciar download" },
+  "stop": { "message": "Parar" },
   "retryFailed": { "message": "Repetir falhas" },
   "subfolder": { "message": "Salvar em subpasta" },
-  "subfolderTip": { "message": "Os arquivos vão para BatchDL/<data> dentro de Downloads" },
-  "total": {
-    "message": "Total"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Falha"
-  },
-  "waiting": {
-    "message": "Aguardando"
-  },
-  "noUrls": {
-    "message": "Nenhuma URL válida encontrada"
-  },
-  "startLog": {
-    "message": "Iniciando $1 downloads (simultâneos: $2)"
-  },
-  "downloading": {
-    "message": "Baixando"
-  },
-  "interrupted": {
-    "message": "interrompido"
-  },
+  "subfolderTip": { "message": "Os arquivos vão para BatchDL/<data> dentro da pasta Downloads" },
+  "total": { "message": "Total" },
+  "success": { "message": "Concluído" },
+  "failed": { "message": "Falhas" },
+  "waiting": { "message": "Aguardando" },
+  "noUrls": { "message": "Cole pelo menos uma URL começando com http:// ou https://" },
+  "urlsAria": { "message": "Links de download" },
+  "progressAria": { "message": "Progresso do download" },
+  "startLog": { "message": "Iniciando $1 downloads (simultâneos: $2)" },
+  "downloading": { "message": "Baixando" },
+  "interrupted": { "message": "interrompido" },
   "skippedInvalid": { "message": "$1 URL(s) inválida(s) ignorada(s)" },
   "skippedDuplicate": { "message": "$1 URL(s) duplicada(s) ignorada(s)" },
-  "stopped": {
-    "message": "Parado manualmente"
-  },
-  "doneAll": {
-    "message": "Concluído — $1 OK, $2 falharam"
-  }
+  "stopped": { "message": "Parado" },
+  "doneAll": { "message": "Concluído — $1 OK, $2 falharam" },
+  "pause": { "message": "Pausar" },
+  "resume": { "message": "Retomar" },
+  "resumed": { "message": "Retomado" },
+  "paused": { "message": "Pausado" },
+  "all": { "message": "Todos" },
+  "viewDetails": { "message": "Ver detalhes da falha" },
+  "openDash": { "message": "Abrir painel do lote" },
+  "copyTip": { "message": "Copiar link" },
+  "menuAddLink": { "message": "Adicionar link ao lote" },
+  "queuedNext": { "message": "Adicionado ao próximo lote" },
+  "resumeAsk": { "message": "Lote inacabado. Links restantes: $1" },
+  "resumeDismiss": { "message": "Descartar" },
+  "dashEmpty": { "message": "Nenhum lote ainda — cole links no popup e pressione Iniciar download" }
 }

@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "네이티브 일괄 다운로더"
-  },
-  "extDesc": {
-    "message": "브라우저 기본 다운로드 채널로 파일을 일괄 다운로드 — 로그인이 필요한 파일도 쿠키 자동 전송으로 받기"
-  },
-  "title": {
-    "message": "네이티브 일괄 다운로더"
-  },
-  "placeholder": {
-    "message": "다운로드 URL을 한 줄에 하나씩 붙여넣기\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "동시 다운로드"
-  },
-  "delay": {
-    "message": "간격"
-  },
-  "start": {
-    "message": "다운로드 시작"
-  },
-  "stop": {
-    "message": "중지"
-  },
+  "extName": { "message": "네이티브 일괄 다운로더" },
+  "extDesc": { "message": "브라우저 기본 다운로드 채널로 파일을 일괄 다운로드 — 로그인이 필요한 파일도 쿠키 자동 전송으로 받기" },
+  "title": { "message": "네이티브 일괄 다운로더" },
+  "placeholder": { "message": "다운로드 URL을 한 줄에 하나씩 붙여넣기\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "동시 다운로드" },
+  "delay": { "message": "간격" },
+  "start": { "message": "다운로드 시작" },
+  "stop": { "message": "중지" },
   "retryFailed": { "message": "실패 재시도" },
   "subfolder": { "message": "하위 폴더에 저장" },
   "subfolderTip": { "message": "다운로드 폴더 내 BatchDL/<날짜> 폴더에 저장합니다" },
-  "total": {
-    "message": "전체"
-  },
-  "success": {
-    "message": "성공"
-  },
-  "failed": {
-    "message": "실패"
-  },
-  "waiting": {
-    "message": "대기"
-  },
-  "noUrls": {
-    "message": "유효한 URL이 없습니다"
-  },
-  "startLog": {
-    "message": "$1개 다운로드 시작 (동시 $2)"
-  },
-  "downloading": {
-    "message": "다운로드 중"
-  },
-  "interrupted": {
-    "message": "중단됨"
-  },
+  "total": { "message": "전체" },
+  "success": { "message": "성공" },
+  "failed": { "message": "실패" },
+  "waiting": { "message": "대기" },
+  "noUrls": { "message": "http:// 또는 https://로 시작하는 URL을 하나 이상 붙여넣어 주세요" },
+  "urlsAria": { "message": "다운로드 링크" },
+  "progressAria": { "message": "다운로드 진행률" },
+  "startLog": { "message": "$1개 다운로드 시작 (동시 $2)" },
+  "downloading": { "message": "다운로드 중" },
+  "interrupted": { "message": "중단됨" },
   "skippedInvalid": { "message": "잘못된 URL $1개 건너뜀" },
   "skippedDuplicate": { "message": "중복 URL $1개 건너뜀" },
-  "stopped": {
-    "message": "수동 중지됨"
-  },
-  "doneAll": {
-    "message": "완료 — 성공 $1, 실패 $2"
-  }
+  "stopped": { "message": "중지됨" },
+  "doneAll": { "message": "완료 — 성공 $1, 실패 $2" },
+  "pause": { "message": "일시정지" },
+  "resume": { "message": "재개" },
+  "resumed": { "message": "재개됨" },
+  "paused": { "message": "일시정지됨" },
+  "all": { "message": "전체" },
+  "viewDetails": { "message": "실패 상세 보기" },
+  "openDash": { "message": "배치 대시보드 열기" },
+  "copyTip": { "message": "링크 복사" },
+  "menuAddLink": { "message": "링크를 일괄 다운로드에 추가" },
+  "queuedNext": { "message": "다음 배치에 추가되었습니다" },
+  "resumeAsk": { "message": "미완료 배치: $1개 링크 남음" },
+  "resumeDismiss": { "message": "닫기" },
+  "dashEmpty": { "message": "아직 배치가 없습니다 — 팝업에서 링크를 붙여넣고 시작을 누르세요" }
 }

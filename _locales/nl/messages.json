@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Natieve batchdownloader"
-  },
-  "extDesc": {
-    "message": "Batchgewijs downloaden via het native kanaal van de browser — ook bestanden achter een login; cookies automatisch meegestuurd"
-  },
-  "title": {
-    "message": "Natieve batchdownloader"
-  },
-  "placeholder": {
-    "message": "Plak download-URL's, één per regel\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Gelijktijdige downloads"
-  },
-  "delay": {
-    "message": "Vertraging"
-  },
-  "start": {
-    "message": "Download starten"
-  },
-  "stop": {
-    "message": "Stoppen"
-  },
+  "extName": { "message": "Natieve batchdownloader" },
+  "extDesc": { "message": "Batchgewijs downloaden via het native kanaal van de browser — ook bestanden achter een login; cookies automatisch meegestuurd" },
+  "title": { "message": "Natieve batchdownloader" },
+  "placeholder": { "message": "Plak download-URL's, één per regel\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Gelijktijdige downloads" },
+  "delay": { "message": "Vertraging" },
+  "start": { "message": "Download starten" },
+  "stop": { "message": "Stoppen" },
   "retryFailed": { "message": "Mislukte opnieuw proberen" },
   "subfolder": { "message": "Opslaan in submap" },
   "subfolderTip": { "message": "Bestanden komen in BatchDL/<datum> binnen Downloads" },
-  "total": {
-    "message": "Totaal"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Fout"
-  },
-  "waiting": {
-    "message": "Wachtend"
-  },
-  "noUrls": {
-    "message": "Geen geldige URL's gevonden"
-  },
-  "startLog": {
-    "message": "$1 downloads gestart (gelijktijdig: $2)"
-  },
-  "downloading": {
-    "message": "Downloaden"
-  },
-  "interrupted": {
-    "message": "onderbroken"
-  },
-  "skippedInvalid": { "message": "$1 ongeldige URL's overgeslagen" },
-  "skippedDuplicate": { "message": "$1 dubbele URL's overgeslagen" },
-  "stopped": {
-    "message": "Handmatig gestopt"
-  },
-  "doneAll": {
-    "message": "Klaar — $1 OK, $2 mislukt"
-  }
+  "total": { "message": "Totaal" },
+  "success": { "message": "Klaar" },
+  "failed": { "message": "Mislukt" },
+  "waiting": { "message": "Wachten" },
+  "noUrls": { "message": "Plak minstens één URL die begint met http:// of https://" },
+  "urlsAria": { "message": "Downloadlinks" },
+  "progressAria": { "message": "Downloadvoortgang" },
+  "startLog": { "message": "$1 downloads gestart (gelijktijdig: $2)" },
+  "downloading": { "message": "Downloaden" },
+  "interrupted": { "message": "onderbroken" },
+  "skippedInvalid": { "message": "$1 ongeldige URL(s) overgeslagen" },
+  "skippedDuplicate": { "message": "$1 dubbele URL(s) overgeslagen" },
+  "stopped": { "message": "Gestopt" },
+  "doneAll": { "message": "Klaar — $1 OK, $2 mislukt" },
+  "pause": { "message": "Pauzeren" },
+  "resume": { "message": "Hervatten" },
+  "resumed": { "message": "Hervat" },
+  "paused": { "message": "Gepauzeerd" },
+  "all": { "message": "Alles" },
+  "viewDetails": { "message": "Foutdetails bekijken" },
+  "openDash": { "message": "Batchoverzicht openen" },
+  "copyTip": { "message": "Link kopiëren" },
+  "menuAddLink": { "message": "Link aan batch toevoegen" },
+  "queuedNext": { "message": "Toegevoegd aan de volgende batch" },
+  "resumeAsk": { "message": "Onvoltooide batch. Resterende links: $1" },
+  "resumeDismiss": { "message": "Negeren" },
+  "dashEmpty": { "message": "Nog geen batch — plak links in de popup en druk op Download starten" }
 }

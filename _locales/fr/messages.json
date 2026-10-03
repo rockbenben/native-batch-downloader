@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Téléchargeur natif par lots"
-  },
-  "extDesc": {
-    "message": "Téléchargement par lots via le canal natif du navigateur — même les fichiers nécessitant une connexion ; cookies automatiques"
-  },
-  "title": {
-    "message": "Téléchargeur natif par lots"
-  },
-  "placeholder": {
-    "message": "Collez les URLs, une par ligne\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Téléchargements simultanés"
-  },
-  "delay": {
-    "message": "Délai"
-  },
-  "start": {
-    "message": "Lancer"
-  },
-  "stop": {
-    "message": "Arrêter"
-  },
+  "extName": { "message": "Téléchargeur natif par lots" },
+  "extDesc": { "message": "Téléchargement par lots via le canal natif du navigateur — même les fichiers protégés par une connexion fonctionnent, cookies envoyés automatiquement" },
+  "title": { "message": "Téléchargeur natif par lots" },
+  "placeholder": { "message": "Collez les URLs de téléchargement, une par ligne\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Téléchargements simultanés" },
+  "delay": { "message": "Délai" },
+  "start": { "message": "Lancer" },
+  "stop": { "message": "Arrêter" },
   "retryFailed": { "message": "Réessayer les échecs" },
   "subfolder": { "message": "Enregistrer dans un sous-dossier" },
   "subfolderTip": { "message": "Les fichiers sont enregistrés dans BatchDL/<date> du dossier Téléchargements" },
-  "total": {
-    "message": "Total"
-  },
-  "success": {
-    "message": "OK"
-  },
-  "failed": {
-    "message": "Échec"
-  },
-  "waiting": {
-    "message": "Attente"
-  },
-  "noUrls": {
-    "message": "Aucune URL valide trouvée"
-  },
-  "startLog": {
-    "message": "Démarrage de $1 téléchargements (simultanés : $2)"
-  },
-  "downloading": {
-    "message": "Téléchargement"
-  },
-  "interrupted": {
-    "message": "interrompu"
-  },
+  "total": { "message": "Total" },
+  "success": { "message": "Terminé" },
+  "failed": { "message": "Échecs" },
+  "waiting": { "message": "En attente" },
+  "noUrls": { "message": "Collez au moins une URL commençant par http:// ou https://" },
+  "urlsAria": { "message": "Liens de téléchargement" },
+  "progressAria": { "message": "Progression du téléchargement" },
+  "startLog": { "message": "Démarrage de $1 téléchargements (simultanés : $2)" },
+  "downloading": { "message": "Téléchargement" },
+  "interrupted": { "message": "interrompu" },
   "skippedInvalid": { "message": "$1 URL non valide(s) ignorée(s)" },
   "skippedDuplicate": { "message": "$1 URL en double ignorée(s)" },
-  "stopped": {
-    "message": "Arrêté manuellement"
-  },
-  "doneAll": {
-    "message": "Terminé — $1 OK, $2 échoués"
-  }
+  "stopped": { "message": "Arrêté" },
+  "doneAll": { "message": "Terminé — $1 OK, $2 en échec" },
+  "pause": { "message": "Mettre en pause" },
+  "resume": { "message": "Reprendre" },
+  "resumed": { "message": "Repris" },
+  "paused": { "message": "En pause" },
+  "all": { "message": "Tout" },
+  "viewDetails": { "message": "Voir les détails de l'échec" },
+  "openDash": { "message": "Ouvrir le tableau des lots" },
+  "copyTip": { "message": "Copier le lien" },
+  "menuAddLink": { "message": "Ajouter le lien au lot" },
+  "queuedNext": { "message": "Ajouté au lot suivant" },
+  "resumeAsk": { "message": "Lot inachevé. Liens restants : $1" },
+  "resumeDismiss": { "message": "Ignorer" },
+  "dashEmpty": { "message": "Aucun lot pour l'instant — collez des liens dans la fenêtre pop-up et cliquez sur Lancer" }
 }

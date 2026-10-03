@@ -1,61 +1,40 @@
 {
-  "extName": {
-    "message": "Yerel Toplu İndirici"
-  },
-  "extDesc": {
-    "message": "Tarayıcının yerel indirme kanalıyla toplu indirme — oturum açma gerektiren dosyalar bile iner; çerezler otomatik gönderilir"
-  },
-  "title": {
-    "message": "Yerel Toplu İndirici"
-  },
-  "placeholder": {
-    "message": "İndirme URL'lerini yapıştırın, her satıra bir tane\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf"
-  },
-  "concurrency": {
-    "message": "Eşzamanlı indirme"
-  },
-  "delay": {
-    "message": "Gecikme"
-  },
-  "start": {
-    "message": "İndirmeyi başlat"
-  },
-  "stop": {
-    "message": "Durdur"
-  },
+  "extName": { "message": "Yerel Toplu İndirici" },
+  "extDesc": { "message": "Tarayıcının yerel indirme kanalıyla toplu indirme — oturum açma gerektiren dosyalar bile iner; çerezler otomatik gönderilir" },
+  "title": { "message": "Yerel Toplu İndirici" },
+  "placeholder": { "message": "İndirme URL'lerini yapıştırın, her satıra bir tane\nhttps://example.com/file1.pdf\nhttps://example.com/file2.pdf" },
+  "concurrency": { "message": "Eşzamanlı indirme" },
+  "delay": { "message": "Gecikme" },
+  "start": { "message": "İndirmeyi başlat" },
+  "stop": { "message": "Durdur" },
   "retryFailed": { "message": "Başarısızları yeniden dene" },
   "subfolder": { "message": "Alt klasöre kaydet" },
   "subfolderTip": { "message": "Dosyalar İndirilenler içindeki BatchDL/<tarih> klasörüne kaydedilir" },
-  "total": {
-    "message": "Toplam"
-  },
-  "success": {
-    "message": "Tamam"
-  },
-  "failed": {
-    "message": "Hata"
-  },
-  "waiting": {
-    "message": "Bekliyor"
-  },
-  "noUrls": {
-    "message": "Geçerli URL bulunamadı"
-  },
-  "startLog": {
-    "message": "$1 indirme başlatılıyor (eşzamanlı: $2)"
-  },
-  "downloading": {
-    "message": "İndiriliyor"
-  },
-  "interrupted": {
-    "message": "kesildi"
-  },
+  "total": { "message": "Toplam" },
+  "success": { "message": "Tamam" },
+  "failed": { "message": "Başarısız" },
+  "waiting": { "message": "Bekliyor" },
+  "noUrls": { "message": "http:// veya https:// ile başlayan en az bir URL yapıştırın" },
+  "urlsAria": { "message": "İndirme bağlantıları" },
+  "progressAria": { "message": "İndirme ilerlemesi" },
+  "startLog": { "message": "$1 indirme başlatılıyor (eşzamanlı: $2)" },
+  "downloading": { "message": "İndiriliyor" },
+  "interrupted": { "message": "kesildi" },
   "skippedInvalid": { "message": "$1 geçersiz URL atlandı" },
   "skippedDuplicate": { "message": "$1 yinelenen URL atlandı" },
-  "stopped": {
-    "message": "El ile durduruldu"
-  },
-  "doneAll": {
-    "message": "Tamamlandı — $1 başarılı, $2 başarısız"
-  }
+  "stopped": { "message": "Durduruldu" },
+  "doneAll": { "message": "Tamamlandı — $1 başarılı, $2 başarısız" },
+  "pause": { "message": "Duraklat" },
+  "resume": { "message": "Devam et" },
+  "resumed": { "message": "Devam edildi" },
+  "paused": { "message": "Duraklatıldı" },
+  "all": { "message": "Tümü" },
+  "viewDetails": { "message": "Hata ayrıntılarını göster" },
+  "openDash": { "message": "Toplu indirme panelini aç" },
+  "copyTip": { "message": "Bağlantıyı kopyala" },
+  "menuAddLink": { "message": "Bağlantıyı toplu indirmeye ekle" },
+  "queuedNext": { "message": "Bir sonraki toplu indirmeye eklendi" },
+  "resumeAsk": { "message": "Yarım kalan toplu indirme: $1 bağlantı kaldı" },
+  "resumeDismiss": { "message": "Yoksay" },
+  "dashEmpty": { "message": "Henüz toplu indirme yok — bağlantıları açılır pencereye yapıştırın ve indirmeyi başlatın" }
 }
