@@ -72,6 +72,14 @@ Install directly from the [Chrome Web Store](https://chromewebstore.google.com/d
 
 ## Important Notes
 
+### Permissions & privacy
+
+The extension declares exactly three permissions and **no host permissions**:
+
+- **downloads** -- the core of the tool: files are queued through Chrome's own download pipeline (the same one a click uses), which is what carries your login state. Nothing is read from or written to disk outside those downloads.
+- **storage** -- remembers your settings (`sync`), keeps an unstarted URL list while the popup is closed (`session`), and mirrors the not-yet-started queue so it can be offered back after a browser restart (`local`). All of it stays inside your browser profile; there is no account and no server.
+- **contextMenus** -- adds the single "Add link to batch" item, shown only on links. Chrome hands the extension the clicked link's URL directly; the permission grants no access to page content, and the extension never reads or modifies any webpage.
+
 ### URLs must be direct links
 
 If a website generates a temporary download URL via JavaScript after you click a button (e.g. cloud storage "Download" buttons), pasting the page URL won't work. You need the actual file URL.
