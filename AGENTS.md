@@ -16,9 +16,14 @@ python store-assets/flatten.py --check             # store images: exact sizes, 
                                                    # store PNGs are generated output, gitignored)
 python scripts/subset-display-fonts.py             # font coverage (fails on missing glyphs)
 python scripts/subset-display-fonts.py --check     # committed fonts/ still cover the current display strings
+python scripts/release-notes.py --check            # both changelogs carry a section for manifest's version
 ```
 
 Every gate was sabotage-tested (break it → go red → restore). Keep it that way when editing gates.
+
+The dev-only Python dependencies (fontTools, brotli) are declared as ranges in
+`requirements-dev.txt`; setup-python caches pip against that file, so CI
+installs the font tooling from cache.
 
 ## Frozen display keys
 
@@ -86,7 +91,25 @@ downscale to exact sizes → `flatten.py` → `flatten.py --check`.
 ## Release
 
 Plain-version bumps, push, tags and store publishing each need explicit user
-approval; CI's release step only runs after `git tag vX.Y.Z && git push --tags`,
-requires manifest.json to match the tag, and fails unless BOTH `CHANGELOG.md`
-and `CHANGELOG.zh.md` carry a section for the tagged version — the two sections
-are concatenated (English first) as the GitHub Release notes.
+approval. The order that works:
+
+1. Bump the version in `manifest.json`.
+2. Land a `## [X.Y.Z] - <date>` section in BOTH `CHANGELOG.md` and
+   `CHANGELOG.zh.md` — the two sections are concatenated (English first) as
+   the GitHub Release notes. Keep-a-changelog layout: the version section
+   follows the preamble directly, and a release leaves no empty `[Unreleased]`
+   section behind.
+3. `scripts/release-notes.py --check` (a CI gate on every push) fails if
+   either changelog lacks the section for the version in `manifest.json`, so
+   a version bump without its sections goes red immediately.
+4. Push to main, then `git tag vX.Y.Z && git push --tags`.
+
+CI's release job runs only for a tag, only after the gates passed, and only
+when the tag matches manifest.json. It builds the store zip and publishes the
+GitHub Release. It does NOT publish to the Chrome Web Store — that upload is
+manual, and the store listing copy lives outside this repo.
+
+The tag-vs-manifest check is its own job, so a mistyped tag fails in seconds
+instead of after the whole gate suite. The release step is idempotent: re-
+running a tag updates the existing release instead of failing on "release
+already exists".

@@ -1,21 +1,26 @@
 name: CI
 
-# Every gate here caught a real bug in this repo at least once:
-#   i18n-check — a 24-locale rollout that missed keys / broke $1 placeholders
-#   subset-display-fonts — editing title/start/stop without re-baking loses
-#     glyphs at runtime (fails loudly on missing coverage)
-#   package.py — the CSS extraction silently dropped files from the zip
-# Tests run on every push to main so a tag can never outrun a red gate.
-# No workflow_dispatch on purpose: a manual run carries the branch name in
-# GITHUB_REF_NAME, so the tag-vs-manifest check below would always fail —
-# to re-release, delete the tag and re-push it.
+# Two stages.
+#   gates   — every check that must pass before anything ships.
+#   release — runs only for a tag, only after the gates passed, and only when
+#             the tag is proven to match manifest.json.
+#
+# The tag-vs-manifest check lives in its own job so a mistyped tag fails in
+# seconds instead of after the whole gate suite. Every release step is
+# guarded by `github.ref_type == 'tag'`, so a manual run on a branch can only
+# re-check the code — it can never touch a release.
+
 on:
   push:
     branches: [main]
     tags: ["v*"]
+  # Manual re-run of the gates.
+  workflow_dispatch:
 
+# Least privilege by default: the gates only read the repo. The release job
+# asks for write access on its own, for its own steps.
 permissions:
-  contents: write
+  contents: read
 
 # A newer push to the same ref supersedes in-flight gate runs; a tag run is a
 # release — never cancelled mid-zip.
@@ -23,19 +28,43 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.ref_type != 'tag' }}
 
+env:
+  NODE_VERSION: "22"
+  PYTHON_VERSION: "3.12"
+
 jobs:
-  gates:
+  tag-version:
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+      - name: tag matches manifest version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          manifest="$(python -c "import json;print(json.load(open('manifest.json'))['version'])")"
+          echo "tag=$tag manifest=$manifest"
+          if [ "$tag" != "$manifest" ]; then
+            echo "::error::tag v$tag but manifest.json says $manifest"
+            exit 1
+          fi
 
+  gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: "22"
-
-      - uses: actions/setup-python@v5
+          node-version: "${{ env.NODE_VERSION }}"
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "${{ env.PYTHON_VERSION }}"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
 
       - name: JS syntax
         run: |
@@ -49,69 +78,64 @@ jobs:
       - name: package gate (runtime file + asset cross-references)
         run: |
           python scripts/package.py
-          rm native-batch-downloader-v*.zip
+          rm -f native-batch-downloader-v*.zip
 
-      - name: behavior tests (draft restore + flush, real popup.js over CDP)
+      - name: behavior tests (popup/dashboard/background over CDP)
         run: node scripts/run-tests.mjs
 
-      - name: display-font subset coverage
+      - name: display-font coverage of the committed subsets
         run: |
-          pip install fonttools brotli
-          # the committed subsets must already cover the current display strings.
-          # Re-baking below only proves the SOURCE fonts can render them — it
-          # would happily write fresh fonts over a stale committed subset, so
-          # check the committed files first.
+          pip install -r requirements-dev.txt
           python scripts/subset-display-fonts.py --check
+
+      - name: display-font source coverage
+        # The rebuild is network-bound (it pulls ~40 MB of Noto/Google sources)
+        # and only proves the SOURCE fonts can render the current strings.
+        # --check above already proves the committed subsets cover them, and
+        # the author re-bakes locally, so this only runs for a release —
+        # where a font that cannot render the shipped copy would matter most.
+        if: github.ref_type == 'tag'
+        run: |
           python scripts/subset-display-fonts.py
           # the gate is glyph coverage, not recompased bytes — ship what is committed
           git checkout -- fonts/
 
-      - name: tag matches manifest version
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          tag="${GITHUB_REF_NAME#v}"
-          manifest="$(python -c "import json;print(json.load(open('manifest.json'))['version'])")"
-          echo "tag=$tag manifest=$manifest"
-          if [ "$tag" != "$manifest" ]; then
-            echo "::error::tag v$tag but manifest.json says $manifest"
-            exit 1
-          fi
+      - name: release notes exist for the current version
+        # Both changelogs must carry a section for the version in
+        # manifest.json. Checking it on every push catches a version bump
+        # without its changelog sections here, not at release time.
+        run: python scripts/release-notes.py --check
 
-      - name: Publish GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
-        run: |
-          python scripts/package.py
-          python - <<'PY'
-          import os, pathlib
-          ver = os.environ["GITHUB_REF_NAME"].lstrip("v")
-          def section(name):
-              text = pathlib.Path(name).read_text(encoding="utf-8")
-              for chunk in text.split("\n## "):
-                  if chunk.startswith("[%s]" % ver):
-                      return "\n".join(chunk.split("\n")[1:]).strip()
-              raise SystemExit(f"{name} has no section for {ver} — write it before tagging")
-          en, zh = section("CHANGELOG.md"), section("CHANGELOG.zh.md")
-          notes = "\n".join([
-              "Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm),",
-              "or download the zip below: unzip it, open `chrome://extensions`, enable Developer mode, and choose \"Load unpacked\".",
-              "",
-              "## Changes in " + ver,
-              "",
-              en,
-              "",
-              "---",
-              "",
-              "从 [Chrome 应用商店](https://chromewebstore.google.com/detail/native-batch-downloader/fmmihnoplefjcfoggfgpeiomlbmjnfpm)安装（一键、自动更新），",
-              "或下载下方 zip：解压后打开 `chrome://extensions`，开启开发者模式，点「加载已解压的扩展程序」。",
-              "",
-              "## " + ver + " 更新内容",
-              "",
-              zh,
-              "",
-              "Source: https://github.com/rockbenben/native-batch-downloader",
-          ])
-          pathlib.Path("notes.md").write_text(notes, encoding="utf-8")
-          PY
-          gh release create "$GITHUB_REF_NAME" native-batch-downloader-v*.zip --title "$GITHUB_REF_NAME" --notes-file notes.md
+  release:
+    needs: [tag-version, gates]
+    if: github.ref_type == 'tag' && needs.tag-version.result == 'success' && needs.gates.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      - name: build the store zip
+        run: python scripts/package.py
+
+      - name: build the release notes
+        run: python scripts/release-notes.py "${GITHUB_REF_NAME#v}" > notes.md
+
+      - name: publish the GitHub Release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: "${{ github.token }}"
+        run: |
+          # Idempotent: a re-run of the same tag (a retried run, or a tag
+          # deleted and re-pushed) updates the existing release instead of
+          # failing on "release already exists".
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" native-batch-downloader-v*.zip --clobber
+            gh release edit "$GITHUB_REF_NAME" --notes-file notes.md --title "$GITHUB_REF_NAME"
+          else
+            gh release create "$GITHUB_REF_NAME" native-batch-downloader-v*.zip \
+              --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md
+          fi

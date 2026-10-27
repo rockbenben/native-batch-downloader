@@ -1,0 +1,5 @@
+# Dev-only dependencies (not shipped in the extension package).
+# setup-python caches the pip download cache against this file, so the font
+# tooling installs from cache on most CI runs.
+fonttools>=4.50
+brotli>=1.1
