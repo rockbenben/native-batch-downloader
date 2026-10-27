@@ -9,12 +9,12 @@
   ta.dispatchEvent(new Event("input"));
   return new Promise((r) =>
     setTimeout(() => {
-      results.savedAfterInput = window.fakeSession.draft;
+      results.savedAfterInput = window.fakeLocal.draft;
       // 3. a valid Start clears the draft and beats the pending debounce
       ta.dispatchEvent(new Event("input")); // re-arm debounce just before start
       document.getElementById("startBtn").click();
       setTimeout(() => {
-        results.draftAfterStart = window.fakeSession.draft ?? null;
+        results.draftAfterStart = window.fakeLocal.draft ?? null;
         results.startSent = window.sent.some((m) => m.cmd === "start");
         r(JSON.stringify(results));
       }, 500); // longer than the debounce — a leaked save would resurface here

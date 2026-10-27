@@ -57,6 +57,11 @@ jobs:
       - name: display-font subset coverage
         run: |
           pip install fonttools brotli
+          # the committed subsets must already cover the current display strings.
+          # Re-baking below only proves the SOURCE fonts can render them — it
+          # would happily write fresh fonts over a stale committed subset, so
+          # check the committed files first.
+          python scripts/subset-display-fonts.py --check
           python scripts/subset-display-fonts.py
           # the gate is glyph coverage, not recompased bytes — ship what is committed
           git checkout -- fonts/

@@ -41,6 +41,7 @@
     </div>
   </div>
   <div class="bytes" id="bytes" hidden></div>
+  <div class="saved" id="savedPath" hidden></div>
 
   <div class="chips" id="chips"></div>
 
@@ -51,7 +52,7 @@
   </div>
 
   <div class="rows" id="rows"></div>
-  <div class="more" id="more" hidden></div>
+  <button class="more" id="more" type="button" hidden></button>
   <p class="empty" id="empty" hidden></p>
 
 </main>
@@ -64,7 +65,19 @@
   // drive any batch shape without an injected script.
   const q = new URLSearchParams(location.search);
   if (q.get("full")) window.fakeFull = JSON.parse(q.get("full"));
-  const MSGS = { extName: "Native Batch Downloader", title: "Native Batch Downloader", placeholder: "Paste download URLs, one per line", concurrency: "Concurrency", delay: "Delay", subfolder: "Save to subfolder", subfolderTip: "tip", start: "Start Download", stop: "Stop", retryFailed: "Retry Failed", total: "Total", success: "Done", failed: "Failed", waiting: "Waiting", noUrls: "Paste at least one URL starting with http:// or https://", urlsAria: "Download links", progressAria: "Download progress", pause: "Pause", resume: "Resume", resumed: "Resumed", paused: "Paused", all: "All", viewDetails: "View failure details", openDash: "Open batch dashboard", copyTip: "Copy link", menuAddLink: "Add link to batch", resumeAsk: "Unfinished batch: $1 links left", resumeDismiss: "Dismiss", dashEmpty: "No batch yet — paste links in the popup and press Start", downloading: "Downloading", interrupted: "interrupted", "@@bidi_dir": "ltr", "@@ui_locale": "en" };
+  // Scale fixture: ?big=N generates N failed entries without a 25KB URL, so
+  // the headless runner's request-line limit stays irrelevant.
+  const big = Number(q.get("big") || 0);
+  if (big > 0) {
+    const entries = {};
+    for (let i = 0; i < big; i++) entries[String(i)] = { status: "fail" };
+    window.fakeFull = {
+      running: false, paused: false,
+      stats: { total: big, ok: 0, fail: big }, failed: big,
+      log: [], dropped: 0, pendingResume: 0, entries,
+    };
+  }
+  const MSGS = { extName: "Native Batch Downloader", title: "Native Batch Downloader", placeholder: "Paste download URLs, one per line", concurrency: "Concurrency", delay: "Delay", subfolder: "Save to subfolder", subfolderTip: "tip", start: "Start Download", stop: "Stop", retryFailed: "Retry Failed", total: "Total", success: "Done", failed: "Failed", waiting: "Waiting", noUrls: "Paste at least one URL starting with http:// or https://", urlsAria: "Download links", progressAria: "Download progress", pause: "Pause", resume: "Resume", resumed: "Resumed", paused: "Paused", all: "All", viewDetails: "View failure details", openDash: "Open batch dashboard", copyTip: "Copy link", menuAddLink: "Add link to batch", resumeAsk: "Unfinished batch: $1 links left", resumeDismiss: "Discard", dashEmpty: "No batch yet — paste links in the popup and press Start", downloading: "Downloading", interrupted: "interrupted", showMore: "Show more · $1", savedFolder: "Saved in Downloads: $1", "@@bidi_dir": "ltr", "@@ui_locale": "en" };
   window.chrome = {
     i18n: { getMessage: (k, subs) => { let s = MSGS[k] || ""; (subs || []).forEach((v, i) => { s = s.replace("$" + (i + 1), v); }); return s; } },
     storage: {
@@ -77,7 +90,7 @@
     downloads: { search: (q, cb) => cb([{ bytesReceived: 7340032, fileSize: 20971520 }, { bytesReceived: 1048576, fileSize: 0 }]) },
     runtime: {
       lastError: null,
-      onMessage: { addListener: () => {} },
+      onMessage: { addListener: (fn) => { window.__onMessage = fn; } },
       sendMessage: (msg, cb) => {
         window.sent.push(msg);
         if (msg.cmd === "getFull" && cb) cb({ state: window.fakeFull || { running: false, paused: false, stats: { total: 0, ok: 0, fail: 0 }, failed: 0, log: [], dropped: 0, pendingResume: 0, entries: {} } });
@@ -86,6 +99,10 @@
       },
       getURL: (p) => p,
     },
+  };
+  window.pushState = (state) => {
+    window.fakeFull = state;
+    if (window.__onMessage) window.__onMessage({ evt: "sync", state });
   };
 </script>
 <script src="../dashboard.js"></script>

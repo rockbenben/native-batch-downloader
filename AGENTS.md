@@ -8,26 +8,41 @@ Conventions this repo relies on — read before changing anything below.
 node --check background.js popup.js dashboard.js   # syntax
 python scripts/i18n-check.py                       # locale parity/dups/registry/untranslated, exit 1 on finding
 python scripts/package.py                          # zip whitelist + asset cross-reference validation
-node scripts/run-tests.mjs                         # draft/flush behavior tests via headless CDP
+node scripts/run-tests.mjs                         # popup/dashboard/background behavior tests via headless CDP
 node scripts/smoke.mjs                             # real-install: SW + contextMenus + getFull + popup
                                                    # (local only — needs Chrome for Testing; branded
                                                    # stable ignores --load-extension)
 python store-assets/flatten.py --check             # store images: exact sizes, 24-bit RGB (local only —
                                                    # store PNGs are generated output, gitignored)
 python scripts/subset-display-fonts.py             # font coverage (fails on missing glyphs)
+python scripts/subset-display-fonts.py --check     # committed fonts/ still cover the current display strings
 ```
 
 Every gate was sabotage-tested (break it → go red → restore). Keep it that way when editing gates.
 
 ## Frozen display keys
 
-`title`, `start`, `stop`, `retryFailed` are baked into the per-script
-display-font subsets in `fonts/` (the set must stay in sync with
-`DISPLAY_KEYS` in the subset script; `extName` shows only in browser chrome,
-not in display-font UI). Changing any of their values in any locale
-REQUIRES rerunning `scripts/subset-display-fonts.py` (needs network; retry on
-`IncompleteRead`; byte-churn-only subsets can be `git checkout`-reverted, glyph-
-changed ones must be committed). `i18n-check.py` fails on frozen-key drift.
+`title`, `start`, `stop`, `retryFailed`, `pause`, `resume`, `resumeDismiss` are
+baked into the per-script display-font subsets in `fonts/` — they are the
+strings rendered in the display font (the title and every button label). The
+set must stay in sync with `DISPLAY_KEYS` in the subset script and with
+`FROZEN` in `i18n-check.py`; `extName` shows only in browser chrome, not in
+display-font UI, so it is not frozen. Changing any of their values in any
+locale REQUIRES rerunning `scripts/subset-display-fonts.py` (needs network;
+retry on `IncompleteRead`; byte-churn-only subsets can be `git checkout`-reverted,
+glyph-changed ones must be committed). `i18n-check.py` fails on frozen-key
+drift, and `subset-display-fonts.py --check` fails when the committed subsets
+no longer cover the current strings.
+
+A display-font string that is missing from the subsets does not fail loudly —
+the browser falls back to a system font for just the missing characters, so
+the label renders half in the display font and half in a fallback. That is why
+the key list is pinned from three places instead of one.
+
+The freeze check compares the working tree against `HEAD`, so editing a frozen
+key turns `i18n-check.py` red immediately and it stays red until the locale
+change and the re-baked fonts are committed together. That is the intended
+"deliberate act" signal, not a broken gate — commit both in the same commit.
 
 ## CSS single source
 
@@ -36,6 +51,22 @@ changed ones must be committed). `i18n-check.py` fails on frozen-key drift.
 `store-assets/popup-shot.html` all link it. Never paste popup CSS anywhere.
 Design contract: `DESIGN.md` (audited by the design-review plugin; keep its
 English section names exact).
+
+## Behavior tests
+
+`scripts/run-tests.mjs` serves the repo over HTTP, drives headless Chrome over
+CDP, and evaluates `scripts/*-test.js` against the harnesses:
+`scripts/dev-harness.html` (real `popup.js`), `scripts/dev-harness-dash.html`
+(real `dashboard.js`) and `scripts/background-harness.html` (real
+`background.js`). The harnesses stub `chrome.*`; they never reimplement app
+logic. Each test file returns a JSON object, the runner compares it against the
+`expect` map in `TESTS`, and any mismatch exits non-zero.
+
+Adding a test: drop a `<name>-test.js` beside the others, add a `TESTS` entry
+with the harness URL and the expected values, and extend the harness if the
+state you need cannot be seeded. Harness state comes from query parameters —
+`?state=` (popup), `?full=` / `?big=` (dashboard) — plus `window.pushState()`
+for driving the live-sync path. `CHROME=<path>` overrides the browser binary.
 
 ## i18n rollouts
 

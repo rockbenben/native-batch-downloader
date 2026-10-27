@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Native Batch Downloader — background harness</title>
+</head>
+<body>
+<script>
+  // Minimal chrome stub so the real background.js can load in a plain tab.
+  const noop = () => {};
+  const MSGS = {
+    menuAddLink: "Add link to batch",
+    skippedInvalid: "Skipped $1 invalid URL(s)",
+    skippedDuplicate: "Skipped $1 duplicate URL(s)",
+  };
+  window.chrome = {
+    i18n: {
+      getMessage: (key, subs) => {
+        let s = MSGS[key] || key;
+        (subs || []).forEach((v, i) => { s = s.replace("$" + (i + 1), v); });
+        return s;
+      },
+    },
+    action: {
+      setBadgeBackgroundColor: noop,
+      setBadgeTextColor: noop,
+      setBadgeText: noop,
+      setTitle: noop,
+    },
+    storage: {
+      local: {
+        get: () => Promise.resolve({}),
+        set: noop,
+        remove: noop,
+      },
+      session: {
+        get: () => Promise.resolve({}),
+        set: noop,
+      },
+    },
+    downloads: {
+      onChanged: { addListener: noop },
+      onDeterminingFilename: { addListener: noop },
+      search: noop,
+      download: noop,
+      cancel: noop,
+    },
+    contextMenus: {
+      create: (props, cb) => { if (cb) cb(); },
+      onClicked: { addListener: noop },
+    },
+    runtime: {
+      lastError: null,
+      onMessage: { addListener: noop },
+      sendMessage: () => Promise.resolve(),
+    },
+  };
+</script>
+<script src="../background.js"></script>
+<script>
+  window.__bg = {
+    setState: (s) => { state = s; },
+    getState: () => state,
+    pushLog,
+    repushSkippedIfTrimmed,
+    M,
+  };
+</script>
+</body>
+</html>

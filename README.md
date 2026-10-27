@@ -24,16 +24,16 @@ That also sets the boundary: if a link doesn't download by clicking it in this b
 
 - **Logged-in downloads just work** -- files go through the browser's own download channel, so you stay signed in automatically. Anything you can normally download while signed in, you can batch here.
 - **Concurrency & delay control** -- set how many files download in parallel (1-200) and an optional minimum gap between download starts (in ms) -- every start is spaced, including the first batch, so rate-limited servers aren't hit with a burst.
-- **Remembers your settings** -- concurrency, delay, and the folder toggle persist across sessions (synced to your browser profile).
-- **Badge progress** -- the toolbar icon shows the remaining count while a batch runs, so progress stays visible with the popup closed.
+- **Remembers your settings** -- concurrency, delay, and the folder toggle save as soon as you change them (synced to your browser profile); out-of-range values snap to the allowed 1-200 / 0-10000 ms range as soon as you leave the field, and are clamped again when a batch starts.
+- **Badge progress** -- the toolbar icon shows the remaining count while a batch runs, or `II` while paused, so progress stays visible with the popup closed.
 - **Retry failed** -- after a batch ends, one click re-queues every URL that failed, was interrupted, or was abandoned by Stop.
-- **Batch dashboard** -- the door icon in the popup header opens a full-page view: every link with its status and failure reason, filter chips, live byte progress, one-click copy of any link, and Pause/Resume. The FAIL tile jumps straight to the failures.
-- **Pause & resume** -- hold new launches while in-flight downloads finish, then continue -- from the dashboard, or the popup's Resume button.
+- **Batch dashboard** -- the door icon in the popup header opens a full-page view: every link with its status and failure reason (400 rows at a time, with **Show more** for larger batches), filter chips, live byte progress, one-click copy of any link, the save folder, and Pause/Resume. The FAIL tile jumps straight to the failures.
+- **Pause & resume** -- hold new launches while in-flight downloads finish, then continue -- from the popup's Pause/Resume button or the dashboard.
 - **Right-click to collect** -- right-click any link on any page to add it to the popup's draft; start the batch when you have enough.
-- **Survives browser restarts** -- if Chrome restarts mid-batch, the not-yet-started links are kept and the popup offers to resume them.
-- **Drop a list file** -- drag a `.txt`/`.csv` of URLs onto the popup to load it into the editor.
-- **Tidy subfolder** -- files save into `BatchDL/<date>/` inside your Downloads folder (toggleable), so a 200-file batch doesn't bury everything else.
-- **Real-time progress** -- live stats for total / succeeded / failed / waiting, with a progress bar.
+- **Survives browser restarts** -- if Chrome restarts mid-batch, every unfinished link is kept -- including one that was already downloading -- and the popup offers to resume them.
+- **Drop a list file** -- drag a `.txt` or `.csv` of URLs onto the popup to load it; CSV rows are read for their URL cells, so exported tables work.
+- **Tidy subfolder** -- files save into `BatchDL/<date>/` inside your Downloads folder (toggleable), so a 200-file batch doesn't bury everything else. The dashboard and completion log name that folder.
+- **Real-time progress** -- live stats for total / succeeded / failed / remaining, with a progress bar.
 - **Any file type** -- PDF, images, videos, archives, executables -- anything a direct URL points to.
 - **Keeps running in the background** -- closing the popup doesn't stop the queue; reopen anytime to resume the live view.
 - **Smart de-duplication** -- duplicate URLs download once, and skipped invalid/duplicate lines are reported in the log.
@@ -61,11 +61,11 @@ Install directly from the [Chrome Web Store](https://chromewebstore.google.com/d
 ![Paste or drop links, watch the batch run, retry any failures](assets/popup-states.png)
 
 1. Click the extension icon in the toolbar.
-2. Paste direct download URLs into the text area, **one per line** -- or drag a `.txt`/`.csv` file of URLs onto the popup, or right-click links on any page and choose **Add link to batch**. The Start button shows how many valid links it found. An unstarted list is kept if the popup closes -- reopen and it's still there.
+2. Paste direct download URLs into the text area, **one per line** -- or drag a `.txt`/`.csv` file of URLs onto the popup, or right-click links on any page and choose **Add link to batch**. The Start button shows how many valid links it found. An unstarted list is kept if the popup closes or the browser restarts -- reopen and it's still there.
 3. Adjust **Concurrency** (default 10) and **Delay** (default 0 ms) if needed, and choose whether files go into a dated `BatchDL/<date>/` subfolder (on by default). All three settings are remembered for next time.
 4. Click **Start Download** (or press **Ctrl/Cmd+Enter** in the text area).
-5. Watch the log and stats update in real time. You can close the popup -- downloads keep going, and the toolbar badge shows how many are left. Click **Stop** to cancel the batch, including downloads in progress. If Chrome itself restarts mid-batch, the remaining links survive and the popup offers to resume them.
-6. Need more room? Click the **door icon** in the popup header -- it appears once a batch exists -- to open the batch dashboard: every link with its status and failure reason, filter chips, byte progress, and **Pause**. When a batch has failures, clicking the **FAIL** tile goes straight to them; copy any link from its row.
+5. Watch the log and stats update in real time. You can close the popup -- downloads keep going, and the toolbar badge shows how many are left. Click **Stop** to cancel the batch, including downloads in progress. If Chrome itself restarts mid-batch, every unfinished link survives (in-progress downloads included) and the popup offers to resume them.
+6. Need more room? Click the **door icon** in the popup header -- it appears once a batch exists -- to open the batch dashboard: every link with its status and failure reason (400 rows at a time; **Show more** reveals the rest), filter chips, byte progress, the save folder, and **Pause**. You can also pause/resume from the popup. When a batch has failures, clicking the **FAIL** tile goes straight to them; copy any link from its row. The dashboard's fourth tile counts everything still unfinished (including in-flight downloads), while its **Waiting** filter chip counts only queued links.
 7. If anything failed, a **Retry Failed** button appears after the batch ends -- one click re-queues exactly those URLs.
 
 ![The batch dashboard: per-link status and reasons, filters, byte progress, pause](assets/dashboard.png)
@@ -77,12 +77,12 @@ Install directly from the [Chrome Web Store](https://chromewebstore.google.com/d
 The extension declares exactly three permissions and **no host permissions**:
 
 - **downloads** -- the core of the tool: files are queued through Chrome's own download pipeline (the same one a click uses), which is what carries your login state. Nothing is read from or written to disk outside those downloads.
-- **storage** -- remembers your settings (`sync`), keeps an unstarted URL list while the popup is closed (`session`), and mirrors the not-yet-started queue so it can be offered back after a browser restart (`local`). All of it stays inside your browser profile; there is no account and no server.
+- **storage** -- remembers your settings (`sync`), keeps an unstarted URL list across popup and browser restarts (`local`), and mirrors the unfinished queue, including in-progress URLs, so it can be offered back after a browser restart (`local`). All of it stays inside your browser profile; there is no account and no server.
 - **contextMenus** -- adds the single "Add link to batch" item, shown only on links. Chrome hands the extension the clicked link's URL directly; the permission grants no access to page content, and the extension never reads or modifies any webpage.
 
 ### URLs must be direct links
 
-If a website generates a temporary download URL via JavaScript after you click a button (e.g. cloud storage "Download" buttons), pasting the page URL won't work. You need the actual file URL.
+If a website generates a temporary download URL via JavaScript after you click a button (e.g. cloud storage "Download" buttons), pasting the page URL won't work. You need the actual file URL. If a link returns an HTML page instead, the batch still saves it as a file but marks it as "a web page, not a file" in the dashboard and log, with a reminder to use the direct file link.
 
 ### Login state matters
 
@@ -110,7 +110,8 @@ Chrome may put the extension's background process to sleep after a period of ina
 
 No build step -- plain HTML/CSS/JS, loads unpacked as-is.
 
-- After changing the `title`/`start`/`stop`/`retryFailed` messages or adding a locale, regenerate the bundled display-font subsets: `pip install fonttools brotli`, then `python scripts/subset-display-fonts.py` (fails loudly on missing glyphs).
+- Run the behavior tests (headless Chrome over CDP): `node scripts/run-tests.mjs`
+- After changing the `title`/`start`/`stop`/`retryFailed`/`pause`/`resume`/`resumeDismiss` messages or adding a locale, regenerate the bundled display-font subsets: `pip install fonttools brotli`, then `python scripts/subset-display-fonts.py` (fails loudly on missing glyphs). `python scripts/subset-display-fonts.py --check` verifies that the committed fonts still cover those strings.
 - Build the Web Store upload zip: `python scripts/package.py`
 
 ## About the 365 Open Source Plan

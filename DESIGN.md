@@ -180,19 +180,28 @@ title, buttons and stat numbers; `--mono` for everything else. Levels are `displ
 `label-micro` (uppercase 10px labels — never below 10px), and `log-md`. Uppercase + letter-spacing
 is a label signature, but letter-spacing must be zeroed for Arabic-script locales
 (`html[dir="rtl"]`) because tracking breaks Arabic glyph joining. The display font only renders
-the `title`, `start`, `stop`, `retryFailed` messages; changing those strings requires rerunning
-`scripts/subset-display-fonts.py`.
+the `title`, `start`, `stop`, `retryFailed`, `pause`, `resume` and `resumeDismiss` messages —
+the title and every button label; changing those strings requires rerunning
+`scripts/subset-display-fonts.py`, and `scripts/subset-display-fonts.py --check` fails when the
+committed subsets no longer cover them. A label whose glyphs are missing from its subset does not
+fail loudly: the browser falls back per character, so the label renders half in the display font
+and half in a fallback face.
 
 ## Layout
 
 Two surfaces share this contract. The popup is a fixed 420px column
 (`body.popup`): header → hopper (URL textarea) → dials (3-column grid) →
-button row → belt → stat tiles → resume banner → retry → log. The dashboard
-tab (`body.dash`, max 760px centered) is the machine room: same header, tiles
-and belt, then filter chips, a pause/stop/retry control row, and the batch
-table. Gaps and margins use the `spacing` scale only (8/10/12/16, inner gaps
-4/6). Neither surface scrolls horizontally; the log and the batch table own
-vertical overflow with themed scrollbars.
+button row → belt → stat tiles → resume banner → service slot
+(pause/resume/retry) → log. The dashboard
+tab (`body.dash`, max 760px centered) is the machine room: same header, resume
+banner, tiles and belt, then the byte readout and saved-folder line, filter
+chips, a pause/stop/retry control row, and the batch table. Live syncs coalesce:
+background status broadcasts at 150 ms, the dashboard refreshes at 500 ms;
+a hidden dashboard skips fetches and catches up on visibility, and a
+finished/stopped state refreshes immediately. Gaps and margins use the
+`spacing` scale only (8/10/12/16, inner gaps 4/6). Neither surface scrolls
+horizontally; the log and the batch table own vertical overflow with themed
+scrollbars.
 
 ## Elevation & Depth
 
@@ -212,7 +221,7 @@ for the belt. Dashed 2px borders are reserved for the log (ticket stub) and the 
 
 - `button-start` / `button-stop` share the base button; stop is `red-deep` with `red-deeper`
   hover. Disabled buttons drop to 0.45 opacity with no shadow. Hover darkens; active presses.
-- `button-retry` appears only after a finished batch with failures; full-width, sun-yellow, ink text. While paused, the popup reuses this slot for a sun-yellow `Resume` button (the two are never visible together).
+- `button-retry` is the popup's sun-yellow service slot and shows exactly one action at a time: `Pause` while running, `Resume` while paused, or `Retry Failed` after a finished batch with failures. They are never visible together.
 - `dashdoor` — the 28px card-white icon button left of the status lamp; opens the dashboard tab. Visible only once there is batch state to inspect (running, paused, a started batch, or a resumable queue) — with nothing to show the door stays hidden; the FAIL tile deep-links to failures when they exist.
 - `text-area` focus lifts the card by 1px and paints a cobalt offset shadow; a dashed cobalt
   variant signals "drop files here" during dragover. Always LTR, even in RTL locales.
@@ -221,26 +230,44 @@ for the belt. Dashed 2px borders are reserved for the log (ticket stub) and the 
 - `checkbox` is a custom 23px box; the checkmark must use physical borders (`border-left`, not
   `border-inline-end`) so RTL does not flip it into an arrow.
 - `stat-tile` shows a number + `label-micro` caption; semantic variants `ok` (mint), `fail`
-  (red-deep), `wait` (sun-deep) on tinted backgrounds.
+  (red-deep), `wait` (sun-deep) on tinted backgrounds. The popup's fourth caption is
+  `Remaining` (unfinished, including active). The dashboard's fourth tile is captioned
+  `Waiting` but carries that same unfinished count (including active) — the dashboard's
+  `Waiting` *filter chip* counts queued rows only, so the two readings of "waiting" differ
+  by design and the tile caption is the one to watch.
 - `progress-belt` is a pill bar; while running, stripes animate. It carries
   `role="progressbar"` with live `aria-valuenow`. The dashboard's byte
   readout is an LTR run (`direction: ltr`) — bare number+unit strings
   shuffle under RTL bidi otherwise.
+- `saved-path` is a one-line 11px ink-soft destination under the byte readout
+  after a finished/stopped batch with at least one saved file. It reuses the
+  `savedFolder` copy and wraps the folder in LRM so the path stays LTR under RTL.
 - Log lines are prefixed by CSS markers: `✓` mint, `✗` red, `▸` cobalt; newest on top.
+  At the end of a batch that saved anything, a `▸` line names the destination folder.
+  If the 500-line cap trims the opening start/skip lines, the invalid/duplicate counts
+  are restated at the end; the popup drops trimmed lines from its DOM so they don't
+  duplicate.
 - `filter-chip` pills select batch-table subsets (all/waiting/downloading/done/failed)
   with live counts; the selected chip inverts to cobalt with `on-primary` text.
 - `batch-row` repeats the log's glyph language per URL: status glyph
   (`✓ ✗ ▸ ○` — the waiting dot must read as a shape, not a speck), LTR
-  filename (ellipsized, `title` carries the full URL), optional grey reason,
-  and a `copy` button with the chunky 2px border and a 28px minimum hit area;
+  saved filename (server Content-Disposition honored; conflict-suffixed names
+  resolved from the finished DownloadItem; ellipsized, `title` carries the full
+  URL), optional grey reason
+  (a failure cause, or the advisory note when the saved file is an HTML
+  page), and a `copy` button with the chunky 2px border and a 28px minimum hit area;
   rows lift to `card` on hover; a copied row flashes `mint-soft-bg` on the
-  button for under a second. Rows cap at 400 with a plain `+N` overflow line.
+  button for under a second. Rows render 400 at a time; a full-width, mono
+  11px Show more text button reveals the next 400 instead of a dead `+N`.
 - `resume-banner` (both surfaces) is a sun-tinted bar: message left, Resume
-  (sun) and Dismiss (card) buttons right; it only appears when a restart-left
+  (sun) and Discard (card) buttons right; it only appears when a restart-left
   batch is pending.
 - Interaction states required for every actionable part: default, hover, focus-visible, active,
-  disabled; plus loading (running: inputs disabled, lamp blinks), paused (lamp steady,
-  belt stripes frozen), and error (fail tile, retry).
+  disabled; plus loading (running: inputs disabled, lamp blinks), paused (lamp holds a steady
+  sun, belt stripes freeze in place, the chute arrow keeps bobbing because in-flight downloads
+  still land), and error (fail tile, retry). The running animations are scoped with
+  `:not(.paused)`: a `:has()` selector out-specifies a plain `.paused` class, so the pause state
+  has to exclude itself from the running rules rather than override them.
 
 ## Do's and Don'ts
 

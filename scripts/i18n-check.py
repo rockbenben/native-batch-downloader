@@ -7,9 +7,10 @@ Run from anywhere; checks, per locale:
   2. the locale directory set matches the shipped registry
   3. key set AND order identical to en
   4. $1/$2 placeholder multiset identical to en per key
-  5. frozen display-font keys (title/start/stop/retryFailed/extName)
-     unchanged versus HEAD — changing one means re-running
+  5. frozen display-font keys (title/start/stop/retryFailed/pause/resume/
+     resumeDismiss) unchanged versus HEAD — changing one means re-running
      scripts/subset-display-fonts.py, so it must be a deliberate act
+     (extName is excluded: it only shows in the browser chrome)
   6. the placeholder keeps its two example URL lines
   7. no untranslated prose: a >=4-word sentence identical to English is a
      missed translation (brand keys exempt)
@@ -20,7 +21,7 @@ import json, subprocess, sys, collections, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 LOCALES = ROOT / "_locales"
-FROZEN = ["title", "start", "stop", "retryFailed"]  # == subset DISPLAY_KEYS; extName is not display-font rendered
+FROZEN = ["title", "start", "stop", "retryFailed", "pause", "resume", "resumeDismiss"]  # == subset DISPLAY_KEYS; extName is not display-font rendered
 SHIPPED = {"en", "ar", "bn", "de", "es", "fa", "fil", "fr", "hi", "id", "it",
            "ja", "ko", "nl", "pl", "pt_BR", "ru", "th", "tr", "uk", "ur", "vi",
            "zh_CN", "zh_TW"}

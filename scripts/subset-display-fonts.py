@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
 """Build per-script display-font subsets for the popup.
 
-The popup's display font (Bricolage Grotesque 800) only renders three strings:
-the title and the two button labels. Those strings are static per locale, so
-non-Latin scripts get an exact-glyph subset of Noto Sans Black (a few KB each)
-instead of a multi-megabyte full font. Latin/Vietnamese come straight from
-Bricolage's own Google-served subsets.
+The popup's display font (Bricolage Grotesque 800) renders the title and every
+button label. Those strings are static per locale, so non-Latin scripts get an
+exact-glyph subset of Noto Sans Black (a few KB each) instead of a
+multi-megabyte full font. Latin/Vietnamese come straight from Bricolage's own
+Google-served subsets.
 
-Run from the repo root after changing any of the `title`, `start`, or `stop`
-messages (or adding a locale):
+DISPLAY_KEYS below is the single source of truth for which messages are
+display-font rendered: scripts/i18n-check.py freezes the same set and
+AGENTS.md lists it. A message that renders in the display font but is missing
+from DISPLAY_KEYS has no glyphs baked for it — the browser falls back to a
+system font mid-word, so every locale's string must be re-baked into fonts/
+whenever a key is added or its text changes.
 
-    python scripts/subset-display-fonts.py
+Run from the repo root after changing any of the DISPLAY_KEYS messages (or
+adding a locale):
 
-Outputs into fonts/ and prints the @font-face CSS to paste into popup.html
+    python scripts/subset-display-fonts.py            # rebuild fonts/
+    python scripts/subset-display-fonts.py --check    # verify committed fonts/
+
+--check reads fonts/ as committed and reports any display string whose glyphs
+are missing from the subset that serves its locale; it needs no network.
+
+Outputs into fonts/ and prints the @font-face CSS to paste into popup.css
 if ranges ever change. Requires: pip install fonttools brotli
 """
 
@@ -35,8 +46,14 @@ FONTS = ROOT / "fonts"
 # sources are ~8 MB each and would otherwise sit around as junk.
 CACHE = Path(tempfile.gettempdir()) / "nbd-fontsrc-cache"
 
-# Keys whose values are rendered in the display font (popup.html).
-DISPLAY_KEYS = ("title", "start", "stop", "retryFailed")
+# Keys whose values are rendered in the display font (popup buttons + title).
+# Keep in sync with FROZEN in scripts/i18n-check.py and with the "Frozen
+# display keys" section of AGENTS.md.
+DISPLAY_KEYS = ("title", "start", "stop", "retryFailed", "pause", "resume", "resumeDismiss")
+
+# Locales served by the Bricolage whole-script subsets (Latin / Latin-ext /
+# Vietnamese) rather than by a per-script exact-glyph subset.
+LATIN_LOCALES = ["en", "de", "es", "fil", "fr", "id", "it", "nl", "pl", "pt_BR", "tr", "vi"]
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
@@ -128,7 +145,51 @@ def subset_to_woff2(src: bytes, text: str, out: Path) -> set:
     return {c for c in text if c != " " and ord(c) not in cmap}
 
 
+def check_committed() -> int:
+    """Verify the committed subsets already carry every display glyph.
+
+    The rebuild path below only proves the SOURCE fonts can render the display
+    strings. This mode reads fonts/ as committed, so a subset that was never
+    re-baked after a display string changed fails the gate instead of shipping
+    half-fallback labels. Needs no network.
+    """
+    problems = []
+    for group, (locales, _source) in GROUPS.items():
+        path = FONTS / f"display-{group}.woff2"
+        if not path.is_file():
+            problems.append(f"{group}: fonts/{path.name} is missing")
+            continue
+        cmap = TTFont(path).getBestCmap()
+        for loc in locales:
+            missing = {c for c in display_chars([loc]) if c != " " and ord(c) not in cmap}
+            if missing:
+                problems.append(
+                    f"{loc}: fonts/{path.name} misses {sorted(missing)} — "
+                    "rerun scripts/subset-display-fonts.py and commit fonts/"
+                )
+    latin_cmap = {}
+    for sub in BRICOLAGE_SUBSETS:
+        path = FONTS / f"bricolage-800-{sub}.woff2"
+        if not path.is_file():
+            problems.append(f"latin: fonts/{path.name} is missing")
+            continue
+        latin_cmap.update(TTFont(path).getBestCmap())
+    for loc in LATIN_LOCALES:
+        missing = {c for c in display_chars([loc]) if c != " " and ord(c) not in latin_cmap}
+        if missing:
+            problems.append(f"{loc}: the Bricolage subsets miss {sorted(missing)}")
+    for line in problems:
+        print(line)
+    print(
+        f"checked {len(GROUPS)} script subsets + {len(LATIN_LOCALES)} latin locales, "
+        f"{len(problems)} problems"
+    )
+    return 1 if problems else 0
+
+
 def main() -> int:
+    if "--check" in sys.argv[1:]:
+        return check_committed()
     FONTS.mkdir(exist_ok=True)
     failures = []
     css_lines = []
@@ -146,7 +207,7 @@ def main() -> int:
             f"unicode-range: {urange}; }}"
         )
 
-    print("Script subsets (exact glyphs of title/start/stop):")
+    print(f"Script subsets (exact glyphs of {', '.join(DISPLAY_KEYS)}):")
     for group, (locales, source) in GROUPS.items():
         text = display_chars(locales)
         if isinstance(source, tuple):
@@ -168,7 +229,7 @@ def main() -> int:
             f"unicode-range: {RANGES[group]}; }}"
         )
 
-    print("\n/* @font-face block for popup.html */")
+    print("\n/* @font-face block for popup.css */")
     print("\n".join(css_lines))
 
     if failures:

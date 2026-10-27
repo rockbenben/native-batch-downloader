@@ -73,6 +73,7 @@
   </div>
 
   <button id="retryBtn" class="retry" hidden></button>
+  <button id="popupPause" class="retry" hidden></button>
   <button id="popupResume" class="retry" hidden></button>
 
   <div id="log" role="log" aria-live="polite"></div>
@@ -83,17 +84,24 @@
   // chrome.* stub so the REAL popup.js runs in a plain tab.
   // ?draft=<text> seeds storage.session; window.fakeSession is inspectable.
   const q = new URLSearchParams(location.search);
+  const syncSlow = Number(q.get("syncSlow") || 0);
+  const syncSeed = q.get("sync") ? JSON.parse(q.get("sync")) : null;
   window.fakeSession = {};
-  if (q.get("draft")) window.fakeSession.draft = q.get("draft");
+  window.fakeLocal = {};
+  if (q.get("draft")) window.fakeLocal.draft = q.get("draft");
   // ?state=<urlencoded JSON> drives renderState for previews/tests.
   if (q.get("state")) window.fakeState = JSON.parse(q.get("state"));
   window.sent = [];
-  const MSGS = { extName: "Native Batch Downloader", title: "Native Batch Downloader", placeholder: "Paste download URLs, one per line", concurrency: "Concurrency", delay: "Delay", subfolder: "Save to subfolder", subfolderTip: "tip", start: "Start Download", stop: "Stop", retryFailed: "Retry Failed", total: "Total", success: "Done", failed: "Failed", waiting: "Waiting", noUrls: "Paste at least one URL starting with http:// or https://", urlsAria: "Download links", progressAria: "Download progress", pause: "Pause", resume: "Resume", resumed: "Resumed", paused: "Paused", all: "All", viewDetails: "View failure details", openDash: "Open batch dashboard", copyTip: "Copy link", menuAddLink: "Add link to batch", resumeAsk: "Unfinished batch: $1 links left", resumeDismiss: "Dismiss", dashEmpty: "No batch yet — paste links in the popup and press Start", "@@bidi_dir": "ltr", "@@ui_locale": "en" };
+  const MSGS = { extName: "Native Batch Downloader", title: "Native Batch Downloader", placeholder: "Paste download URLs, one per line", concurrency: "Concurrency", delay: "Delay", subfolder: "Save to subfolder", subfolderTip: "tip", start: "Start Download", stop: "Stop", retryFailed: "Retry Failed", total: "Total", success: "Done", failed: "Failed", waiting: "Waiting", remaining: "Remaining", noUrls: "Paste at least one URL starting with http:// or https://", urlsAria: "Download links", progressAria: "Download progress", pause: "Pause", resume: "Resume", resumed: "Resumed", paused: "Paused", all: "All", viewDetails: "View failure details", openDash: "Open batch dashboard", copyTip: "Copy link", menuAddLink: "Add link to batch", resumeAsk: "Unfinished batch: $1 links left", resumeDismiss: "Discard", dashEmpty: "No batch yet — paste links in the popup and press Start", "@@bidi_dir": "ltr", "@@ui_locale": "en" };
   window.chrome = {
     i18n: { getMessage: (k, subs) => { let s = MSGS[k] || ""; (subs || []).forEach((v, i) => { s = s.replace("$" + (i + 1), v); }); return s; } },
     storage: {
       sync: {
-        get: (defaults, cb) => cb({ ...defaults }),
+        get: (defaults, cb) => {
+          const values = syncSeed ? { ...defaults, ...syncSeed } : { ...defaults };
+          if (syncSlow) setTimeout(() => cb(values), syncSlow);
+          else cb(values);
+        },
         set: (v) => (window.savedSettings = v),
       },
       session: {
@@ -102,9 +110,12 @@
         remove: (key) => delete window.fakeSession[key],
       },
       local: {
-        get: (key, cb) => cb({}),
-        set: () => {},
-        remove: () => {},
+        get: (key, cb) => {
+          if (typeof key === "string") cb({ [key]: window.fakeLocal[key] });
+          else cb({ ...window.fakeLocal });
+        },
+        set: (obj) => Object.assign(window.fakeLocal, obj),
+        remove: (key) => { delete window.fakeLocal[key]; },
       },
     },
     contextMenus: { create: () => {}, onClicked: { addListener: () => {} } },
@@ -112,7 +123,7 @@
     downloads: { search: (q, cb) => cb([]) },
     runtime: {
       lastError: null,
-      onMessage: { addListener: () => {} },
+      onMessage: { addListener: (fn) => { window.__onMessage = fn; } },
       sendMessage: (msg, cb) => {
         window.sent.push(msg);
         if (msg.cmd === "getState" && cb) cb({ state: window.fakeState || { running: false, paused: false, stats: { total: 0, ok: 0, fail: 0 }, failed: 0, log: [], dropped: 0, pendingResume: 0 } });
@@ -122,6 +133,10 @@
       },
       getURL: (p) => p,
     },
+  };
+  window.pushState = (state) => {
+    window.fakeState = state;
+    if (window.__onMessage) window.__onMessage({ evt: "sync", state });
   };
 </script>
 <script src="../popup.js"></script>

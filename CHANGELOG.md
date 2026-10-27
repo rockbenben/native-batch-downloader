@@ -6,10 +6,73 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+
+- Pause button in the popup's service slot (Pause while running, Resume while
+  paused) so pausing no longer requires finding the dashboard.
+- The dashboard's batch table pages 400 rows at a time; a Show more button
+  reveals the next 400 instead of a dead `+N` line.
+- The dashboard shows the save folder after a finished or stopped batch with
+  at least one saved file.
+- A completion log line names the save folder when the subfolder option is on
+  (also after Stop, for files that already finished).
+- The toolbar badge shows `II` while paused, and the action title says paused.
+
 ### Changed
 
+- The restart banner's secondary button is now `Discard` (was `Dismiss`, and
+  several locales said Close/Ignore), making its permanent clearing of the
+  saved queue explicit. RTL resume-banner buttons no longer get letter-spacing.
+- Concurrency, delay, and folder settings save on change and when the popup
+  closes; out-of-range values are clamped and written back when a batch starts.
+- Dashboard live updates coalesce: background status broadcasts at 150 ms and
+  the dashboard refreshes at 500 ms; hidden dashboard tabs skip fetches and
+  catch up on visibility, while a finished/stopped batch refreshes immediately.
+  A 405-file batch went from 1601 full dashboard fetches to 75.
+- When the 500-line log cap trims the opening start/skip lines, the skipped
+  invalid/duplicate counts are restated at the end; the open popup drops
+  trimmed lines from the DOM so the count isn't shown twice.
+- Settings no longer overwrite saved values when the popup closes before the
+  async sync load finishes; Start pressed before the load waits for it.
+- The skip-count restatement checks which log lines are still present, so the
+  500-line boundary keeps both invalid and duplicate counts.
+- Failure reasons now say what to check (sign-in, expired link, or network)
+  instead of the unhelpful "interrupted"; malformed lines such as `https://`
+  are skipped before Start instead of failing inside Chrome.
+- Batch rows and logs show the actual saved filename, including a server
+  `Content-Disposition` rename, so results match the files on disk.
+- A saved HTML page is marked "a web page, not a file" with a direct-link
+  reminder instead of looking like a successful file download.
+- Unstarted URL drafts survive browser restarts (`chrome.storage.local`); a
+  draft collected during a running batch appears as soon as that batch ends.
+- Restart recovery includes in-progress downloads, not just the not-yet-started
+  queue; resumed and retried batches keep their original dated folder.
+- `.csv` drops extract URL cells (headers and quoted commas included);
+  the URL placeholder explains that file links are expected, not web pages.
+- The popup's fourth stat tile now reads "Remaining" (it counts active
+  downloads too); the dashboard's "Waiting" filter still means queued only.
+- The pause log line now says in-flight downloads will finish, so counters
+  that keep moving while paused don't look like a broken pause.
 - GitHub Release notes are now bilingual: English from this file plus Chinese
   from `CHANGELOG.zh.md`; the release step fails if either section is missing.
+- The display-font key list now covers every string rendered in the display
+  font (`title`/`start`/`stop`/`retryFailed`/`pause`/`resume`/`resumeDismiss`),
+  and `scripts/subset-display-fonts.py --check` fails when the committed fonts
+  no longer cover them. CI runs that check, so a display string changed
+  without re-baking the fonts can no longer pass silently.
+
+### Fixed
+
+- Pausing a batch left the status lamp blinking and the conveyor belt moving:
+  the running animations are `:has()`-scoped and out-specified the plain
+  `.paused` class, so the pause state never took effect. The paused state now
+  excludes itself from the running rules.
+- The Pause/Resume/Discard labels render in the display font, but their glyphs
+  were never baked into the per-locale font subsets — 12 locales showed those
+  buttons half in a fallback face. The subsets are re-baked with the full
+  display-key list.
+- A behavior test pins the paused state: the status lamp holds a steady sun
+  and the belt stripes freeze while a batch is paused.
 
 ## [1.3.0] - 2026-10-03
 

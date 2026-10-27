@@ -4,16 +4,16 @@
   // make visibilityState controllable, count session writes
   let vis = "visible";
   Object.defineProperty(document, "visibilityState", { get: () => vis, configurable: true });
-  const rawSet = chrome.storage.session.set;
+  const rawSet = chrome.storage.local.set;
   let writes = 0;
-  chrome.storage.session.set = (o) => { writes++; rawSet(o); };
+  chrome.storage.local.set = (o) => { writes++; rawSet(o); };
   const hide = () => { vis = "hidden"; document.dispatchEvent(new Event("visibilitychange")); vis = "visible"; };
 
   // 1. pending debounce + popup hides -> flushed immediately (no 250ms wait)
   ta.value = "https://flush.example.com/a.zip";
   ta.dispatchEvent(new Event("input"));
   hide(); // within the debounce window
-  results.flushedImmediately = window.fakeSession.draft === ta.value;
+  results.flushedImmediately = window.fakeLocal.draft === ta.value;
   results.writesAfterFlush = writes;
 
   // 2. hide again with nothing pending -> no extra write
@@ -24,7 +24,7 @@
   ta.dispatchEvent(new Event("input")); // re-arm debounce
   document.getElementById("startBtn").click(); // clears draft + timer
   hide();
-  results.noResurrectionAfterStart = !("draft" in window.fakeSession);
+  results.noResurrectionAfterStart = !("draft" in window.fakeLocal);
 
   // 4. debounce still works on its own (timer nulls itself, flush stays quiet)
   return new Promise((r) => {
@@ -32,7 +32,7 @@
     ta.value = "https://later.example.com/b.zip";
     ta.dispatchEvent(new Event("input"));
     setTimeout(() => {
-      results.debouncedSaveStillWorks = window.fakeSession.draft === ta.value;
+      results.debouncedSaveStillWorks = window.fakeLocal.draft === ta.value;
       const w = writes;
       hide(); // timer already fired and nulled itself -> no write
       results.timerSelfNulls = writes === w;

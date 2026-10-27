@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-// Headless behavior tests for the popup: serves the repo over HTTP, drives
-// headless Chrome over CDP, and evals scripts/draft-test.js and
-// scripts/flush-test.js against the real dev harness (chrome.* stubs).
-// Any assertion failure exits non-zero — this is the CI gate for "closing the
-// popup must never lose the user's list".
+// Headless behavior tests for the popup, dashboard, and background: serves the
+// repo over HTTP, drives headless Chrome over CDP, and evals scripts/*-test.js
+// against the real dev harnesses (chrome.* stubs). Any assertion failure exits
+// non-zero — this is the CI gate for drafts/settings that never lose the
+// user's work, a dashboard that can reveal large result sets, and the capped
+// background log restating its skipped counts.
 //
 // Usage: node scripts/run-tests.mjs        (CHROME=... to override the binary)
 
@@ -73,9 +74,31 @@ const send = (method, params = {}) =>
 
 await send("Page.enable");
 await send("Runtime.enable");
+// Headless Chrome reports prefers-reduced-motion: reduce, and popup.css then
+// force-disables every animation. Tests that assert on animation state would
+// read "none" either way, so emulate the motion preference the product
+// actually ships with.
+await send("Emulation.setEmulatedMedia", {
+  features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
+});
 
 const SEED = "https://seed.example.com/seed.zip";
 const TYPED = "https://typed.example.com/x.zip\nhttps://typed.example.com/y.zip";
+const RUNNING = encodeURIComponent(JSON.stringify({
+  running: true, paused: false, stats: { total: 2, ok: 0, fail: 0 },
+  failed: 0, log: [], dropped: 0, pendingResume: 0,
+}));
+const RESUMABLE = encodeURIComponent(JSON.stringify({
+  running: false, paused: false, stats: { total: 0, ok: 0, fail: 0 },
+  failed: 0, log: [], dropped: 0, pendingResume: 2,
+}));
+const SAVED_FULL = encodeURIComponent(JSON.stringify({
+  running: false, paused: false, stats: { total: 2, ok: 2, fail: 0 },
+  failed: 0, log: [], dropped: 0, pendingResume: 0,
+  folder: "BatchDL/2026-10-27",
+  entries: { u0: { label: "alpha.txt", status: "ok" }, u1: { label: "beta.txt", status: "ok" } },
+}));
+const RACE_SEED = encodeURIComponent(JSON.stringify({ concurrency: 3, delay: 500, subfolder: false }));
 const TESTS = [
   {
     name: "draft-test",
@@ -94,6 +117,182 @@ const TESTS = [
     url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}`,
     file: "flush-test.js",
     expectAllTrue: true,
+  },
+  {
+    name: "url-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}`,
+    file: "url-test.js",
+    expect: { label: "Start Download · 2", bomAccepted: true },
+  },
+  {
+    name: "csv-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}`,
+    file: "csv-test.js",
+    expect: {
+      value: "https://example.com/a.pdf\nhttps://example.com/b.pdf?x=1,2\n",
+      label: "Start Download · 2",
+      hasHeader: false,
+      a: true,
+      b: true,
+      lines: 2,
+    },
+  },
+  {
+    name: "pause-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&state=${RUNNING}`,
+    file: "pause-test.js",
+    expect: {
+      pauseVisible: true,
+      pauseText: "Pause",
+      resumeHidden: true,
+      retryHidden: true,
+      urlsDisabled: true,
+      pauseSent: true,
+    },
+  },
+  {
+    name: "paused-state-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&state=${RUNNING}`,
+    file: "paused-state-test.js",
+    expect: {
+      runningLed: "lampblink",
+      runningBelt: "convey",
+      pausedLed: "none",
+      pausedBelt: "none",
+      bodyPaused: true,
+    },
+  },
+  {
+    name: "draft-running-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&draft=${encodeURIComponent("https://next.example.com/n.zip")}&state=${RUNNING}`,
+    file: "draft-running-test.js",
+    expect: {
+      whileRunning: "",
+      disabledWhileRunning: true,
+      pauseVisible: true,
+      afterFinish: "https://next.example.com/n.zip",
+      labelAfterFinish: "Start Download · 1",
+      enabledAfterFinish: true,
+    },
+  },
+  {
+    name: "resume-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&state=${RESUMABLE}`,
+    file: "resume-test.js",
+    expect: {
+      dismiss: "Discard",
+      resume: "Resume",
+      barVisible: true,
+      doorVisible: true,
+    },
+  },
+  {
+    name: "settings-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}`,
+    file: "settings-test.js",
+    expect: {
+      savedC: 3,
+      savedD: 500,
+      savedFolder: true,
+      hiddenC: 200,
+      hiddenD: 10000,
+      folderOff: false,
+      startC: 200,
+      startD: 10000,
+      startSubfolder: false,
+      inputC: "200",
+      inputD: "10000",
+      startSent: true,
+    },
+  },
+  {
+    name: "settings-race-hidden-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&syncSlow=1500&sync=${RACE_SEED}`,
+    file: "settings-race-hidden-test.js",
+    expect: {
+      beforeC: "10",
+      beforeD: "0",
+      beforeF: true,
+      savedAfterHide: null,
+      afterC: "3",
+      afterD: "500",
+      afterF: false,
+      savedAfterLoad: null,
+    },
+  },
+  {
+    name: "settings-race-edit-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&syncSlow=1500&sync=${RACE_SEED}`,
+    file: "settings-race-edit-test.js",
+    expect: {
+      savedAfterEdit: "7/600/true",
+      afterC: "7",
+      afterD: "600",
+      afterF: true,
+      savedAfterLoad: "7/600/true",
+    },
+  },
+  {
+    name: "settings-race-start-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness.html?ci=${Date.now()}&syncSlow=1500&sync=${RACE_SEED}`,
+    file: "settings-race-start-test.js",
+    expect: {
+      beforeStartSent: false,
+      startSent: true,
+      startC: 3,
+      startD: 500,
+      startSubfolder: false,
+      inputC: "3",
+      inputD: "500",
+    },
+  },
+  {
+    name: "background-log-test",
+    url: `http://127.0.0.1:${PORT}/scripts/background-harness.html?ci=${Date.now()}`,
+    file: "background-log-test.js",
+    expect: {
+      smallLen: 3,
+      largeLast: "Skipped 2 invalid URL(s)|Skipped 1 duplicate URL(s)",
+      boundaryInv: 1,
+      boundaryDup: 1,
+      boundaryLen: 2,
+    },
+  },
+  {
+    name: "more-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness-dash.html?ci=${Date.now()}&big=401`,
+    file: "more-test.js",
+    expect: {
+      beforeRows: 400,
+      moreText: "Show more · 1",
+      moreVisible: true,
+      afterRows: 401,
+      moreHidden: true,
+    },
+  },
+  {
+    name: "saved-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness-dash.html?ci=${Date.now()}&full=${SAVED_FULL}`,
+    file: "saved-test.js",
+    expect: {
+      visible: true,
+      hasFolder: true,
+      rows: 2,
+    },
+  },
+  {
+    name: "sync-test",
+    url: `http://127.0.0.1:${PORT}/scripts/dev-harness-dash.html?ci=${Date.now()}`,
+    file: "sync-test.js",
+    expect: {
+      afterRapidNow: 0,
+      afterRapid: 1,
+      afterHidden: 1,
+      afterVisible: 2,
+      afterFinal: 3,
+      rows: 2,
+      finalOk: "2",
+    },
   },
 ];
 

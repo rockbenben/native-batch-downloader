@@ -2,8 +2,9 @@
    Cream cabinet, cobalt chassis, one red stop button. Chunky ink
    outlines, hard shadows, springy motion. Serious work, toy energy.
 
-   Single source of truth for the popup's visuals: popup.html links this
-   file, and scripts/dev-harness.html links it too — never copy-paste it. */
+   Single source of truth for the popup's visuals: popup.html, dashboard.html
+   (+ dashboard.css), scripts/dev-harness*.html and store-assets/popup-shot.html
+   all link this file — never copy-paste it. */
 :root {
   --cream:    #f4edda;
   --card:     #fdfaf1;
@@ -124,7 +125,8 @@ body::before {
   stroke: var(--on-primary); stroke-width: 2.6; fill: none;
   stroke-linecap: round; stroke-linejoin: round;
 }
-/* the arrow bobs while the machine is running */
+/* the arrow bobs while the machine is running — it keeps bobbing while
+   paused too, because in-flight downloads still land */
 @keyframes drop { 0%, 100% { transform: translateY(-1.5px); } 50% { transform: translateY(2px); } }
 body:has(#stopBtn:not(:disabled)) .chute svg {
   animation: drop 1.4s cubic-bezier(0.45, 0, 0.2, 1.4) infinite;
@@ -174,7 +176,12 @@ h1 {
 /* blink between deep and pale sun — never back to the idle white, so a
    glance always distinguishes running from idle */
 @keyframes lampblink { 50% { background: var(--sun-bg); } }
-body:has(#stopBtn:not(:disabled)) .led {
+/* The running rules carry :not(.paused) on purpose. `:has(#stopBtn:not(:disabled))`
+   out-specifies a plain `body.paused` selector, so a paused batch kept
+   blinking and kept moving its belt. Excluding the paused state here (rather
+   than overriding it below) makes the two states mutually exclusive: while
+   paused, these rules simply do not match. */
+body:not(.paused):has(#stopBtn:not(:disabled)) .led {
   background: var(--sun);
   animation: lampblink 1s steps(2, start) infinite;
 }
@@ -244,7 +251,8 @@ textarea::-webkit-scrollbar-thumb {
 }
 /* Tracking breaks Arabic glyph joining — zero it wherever RTL is active. */
 html[dir="rtl"] .dial label,
-html[dir="rtl"] .tile span { letter-spacing: 0; }
+html[dir="rtl"] .tile span,
+html[dir="rtl"] .resume-bar button { letter-spacing: 0; }
 .dial .with-unit {
   display: flex;
   align-items: center;
@@ -395,7 +403,7 @@ body.dragging textarea {
     transparent 0 14px, var(--belt-stripe) 14px 20px);
 }
 @keyframes convey { to { background-position: 20px 0; } }
-body:has(#stopBtn:not(:disabled)) .belt .fill::after {
+body:not(.paused):has(#stopBtn:not(:disabled)) .belt .fill::after {
   animation: convey 0.8s linear infinite;
 }
 

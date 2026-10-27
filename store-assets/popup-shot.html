@@ -74,6 +74,7 @@
   </div>
 
   <button id="retryBtn" class="retry" hidden></button>
+  <button id="popupPause" class="retry" hidden></button>
   <button id="popupResume" class="retry" hidden></button>
 
   <div id="log" role="log" aria-live="polite"></div>
@@ -92,10 +93,11 @@
   $id("lblTotal").textContent = "Total";
   $id("lblOk").textContent = "Done";
   $id("lblFail").textContent = "Failed";
-  $id("lblWait").textContent = "Waiting";
+  $id("lblWait").textContent = "Remaining";
   $id("dashBtn").title = "Open batch dashboard";
   if (state !== "idle") $id("dashBtn").hidden = false;
   $id("popupResume").textContent = "Resume";
+  $id("popupPause").textContent = "Pause";
   const URLS = [
     "https://archive.example.org/dataset/spring-survey.zip",
     "https://cdn.example.com/papers/field-notes-2026.pdf",
@@ -123,14 +125,15 @@
     $id("bar").style.width = "60%";
     $id("belt").setAttribute("aria-valuenow", "60");
     $id("log").innerHTML = [
-      paused ? '<div class="info">Paused</div>' : "",
+      paused ? '<div class="info">Paused — running downloads finish</div>' : "",
       '<div class="ok">yosemite-4k.jpg</div>',
       '<div class="ok">field-notes-2026.pdf</div>',
-      '<div class="err">orders-may.csv — interrupted</div>',
+      '<div class="err">orders-may.csv — Download failed — sign-in or link</div>',
       '<div class="ok">spring-survey.zip</div>',
       '<div class="info">Starting 148 downloads (concurrency 10)</div>',
     ].filter(Boolean).join("");
     if (paused) $id("popupResume").hidden = false;
+    else $id("popupPause").hidden = false;
   } else if (state === "done") {
     $id("total").textContent = "148";
     $id("ok").textContent = "143";
@@ -143,9 +146,10 @@
     $id("retryBtn").textContent = "Retry Failed · 5";
     $id("log").innerHTML = [
       '<div class="err">All done — 143 OK, 5 failed</div>',
+      '<div class="info">Saved in Downloads: BatchDL/2026-10-03</div>',
       '<div class="ok">contour-tiles.zip</div>',
       '<div class="ok">lecture-04.mp4</div>',
-      '<div class="err">orders-may.csv — interrupted</div>',
+      '<div class="err">orders-may.csv — Download failed — sign-in or link</div>',
       '<div class="ok">yosemite-4k.jpg</div>',
     ].join("");
   }

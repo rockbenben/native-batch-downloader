@@ -28,8 +28,11 @@ let lastLaunch = -Infinity; // Date.now() of the most recent launch, for min-gap
 // onDeterminingFilename claim a download that races ahead of our callback.
 let launchingUrls = new Set();
 // A committed batch mirror in storage.local, offered back after a browser
-// restart. In-flight download ids cannot survive a restart, so only the
-// not-yet-started queue is mirrored; resuming is always the user's choice.
+// restart. Download ids cannot survive a restart, so every unfinished URL is
+// mirrored — queued, launching, and in-flight alike. Chrome leaves an
+// interrupted download behind but never resumes it for us; offering the URL
+// back is the only way the file isn't silently lost. Resuming is always the
+// user's choice.
 let pendingResume = null;
 let pendingResumePromise = chrome.storage.local.get("dlResume").then((s) => {
   pendingResume = s.dlResume && s.dlResume.v === STATE_V && (s.dlResume.queue || []).length ? s.dlResume : null;
@@ -50,6 +53,8 @@ function blankState() {
     entries: {},  // url -> {label, status: wait|active|ok|fail, reason?}
     log: [],      // {text, cls}, oldest first
     dropped: 0,   // count of log entries trimmed off the front (for the view's delta)
+    invalid: 0,   // skipped non-URL lines from this batch's input
+    dups: 0,      // skipped duplicate URLs from this batch's input
   };
 }
 
@@ -87,6 +92,7 @@ function publicState() {
     log: state.log,
     dropped: state.dropped || 0,
     pendingResume: pendingResume ? pendingResume.queue.length : 0,
+    folder: state.folder,
   };
 }
 
@@ -94,14 +100,37 @@ function publicState() {
 // closed; cleared when the batch ends.
 function updateBadge() {
   const remaining = state.stats.total - state.stats.ok - state.stats.fail;
-  const text = state.running ? (remaining > 999 ? "999+" : String(remaining)) : "";
+  const paused = state.running && state.paused;
+  // "II" reads as a pause key at toolbar size; the remaining count returns on
+  // resume. The action title spells it out and restores the extension name.
+  const text = state.running
+    ? (paused ? "II" : remaining > 999 ? "999+" : String(remaining))
+    : "";
   chrome.action.setBadgeText({ text });
+  chrome.action.setTitle({ title: paused ? M("paused") : M("extName") });
 }
 
-function broadcast() {
+let broadcastTimer = null;
+function broadcastNow() {
   updateBadge();
   // Rejects with "Receiving end does not exist" when no view is open — ignore.
   chrome.runtime.sendMessage({ evt: "sync", state: publicState() }).catch(() => {});
+}
+function broadcast() {
+  // Running updates are coalesced: a 405-file batch was producing 1601 full
+  // dashboard fetches. A finished/stopped state is what the user is waiting
+  // for, so send that one immediately.
+  if (!state.running) {
+    clearTimeout(broadcastTimer);
+    broadcastTimer = null;
+    broadcastNow();
+    return;
+  }
+  if (broadcastTimer) return;
+  broadcastTimer = setTimeout(() => {
+    broadcastTimer = null;
+    broadcastNow();
+  }, 150);
 }
 
 function pushLog(text, cls) {
@@ -119,18 +148,33 @@ function activeCount() {
 
 // -- restart-resume mirror --
 let mirrorTimer = null;
+function unfinishedUrls() {
+  const urls = state.queue.slice();
+  for (const a of Object.values(state.active)) urls.push(a.url);
+  for (const url of launchingUrls) urls.push(url);
+  return urls;
+}
 function scheduleMirror() {
   clearTimeout(mirrorTimer);
-  if (!state.running || !state.queue.length) {
+  if (!state.running || !unfinishedUrls().length) {
     clearMirror();
     return;
   }
   mirrorTimer = setTimeout(() => {
     mirrorTimer = null;
+    if (!state.running) {
+      clearMirror();
+      return;
+    }
+    const queue = unfinishedUrls();
+    if (!queue.length) {
+      clearMirror();
+      return;
+    }
     chrome.storage.local.set({
       dlResume: {
         v: STATE_V,
-        queue: state.queue.slice(),
+        queue,
         concurrency: state.concurrency,
         delay: state.delay,
         folder: state.folder,
@@ -270,6 +314,13 @@ function checkDone() {
   if (state.paused) return;
   if (activeCount() === 0 && launching === 0 && state.queue.length === 0) {
     state.running = false;
+    // The log is the one place a closed-and-reopened popup still shows, so put
+    // the destination here — "where did my files go" is otherwise unanswered.
+    // LRM isolates the folder path as one LTR run under RTL locales.
+    if (state.folder && state.stats.ok > 0) {
+      pushLog(M("savedFolder", `\u200E${state.folder}\u200E`), "info");
+    }
+    repushSkippedIfTrimmed();
     pushLog(M("doneAll", state.stats.ok, state.stats.fail), state.stats.fail ? "err" : "ok");
     clearMirror();
     persist();
@@ -277,7 +328,24 @@ function checkDone() {
   }
 }
 
-function start({ urls, concurrency, delay, invalid = 0, dups = 0, subfolder = false }) {
+// The start log carries "Skipped N invalid/duplicate" at the front, which the
+// 500-line cap can trim before a large batch finishes. Restate any count whose
+// line is no longer present; checking the actual lines (not a dropped-count
+// threshold) keeps both counts at the 500-line boundary and never duplicates a
+// small batch's opening line.
+function repushSkippedIfTrimmed() {
+  const has = (text) => state.log.some((e) => e.text === text);
+  if (state.invalid) {
+    const text = M("skippedInvalid", state.invalid);
+    if (!has(text)) pushLog(text, "info");
+  }
+  if (state.dups) {
+    const text = M("skippedDuplicate", state.dups);
+    if (!has(text)) pushLog(text, "info");
+  }
+}
+
+function start({ urls, concurrency, delay, invalid = 0, dups = 0, subfolder = false, folder = null }) {
   if (state.running) return; // a batch is already in progress; don't clobber it
   state.running = true;
   state.paused = false;
@@ -289,10 +357,11 @@ function start({ urls, concurrency, delay, invalid = 0, dups = 0, subfolder = fa
   state.concurrency = Math.max(1, Math.min(200, concurrency || 1));
   state.delay = Math.max(0, Math.min(10000, delay || 0));
   // Local date, not toISOString's UTC — for UTC+N users a morning batch would
-  // otherwise be filed under yesterday's folder.
+  // otherwise be filed under yesterday's folder. Resume/retry pass the original
+  // folder so a restart after midnight doesn't split one batch across two dates.
   const d = new Date();
   const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-  state.folder = subfolder ? `BatchDL/${ymd}` : null;
+  state.folder = folder || (subfolder ? `BatchDL/${ymd}` : null);
   state.stats = { total: urls.length, ok: 0, fail: 0 };
   state.queue = urls.slice();
   state.active = {};
@@ -300,6 +369,8 @@ function start({ urls, concurrency, delay, invalid = 0, dups = 0, subfolder = fa
   for (const url of urls) state.entries[url] = { label: filenameFromUrl(url) || url, status: "wait" };
   state.log = [];
   state.dropped = 0;
+  state.invalid = invalid;
+  state.dups = dups;
   pushLog(M("startLog", urls.length, state.concurrency), "info");
   if (invalid) pushLog(M("skippedInvalid", invalid), "info");
   if (dups) pushLog(M("skippedDuplicate", dups), "info");
@@ -340,6 +411,11 @@ function stop() {
   launching = 0;
   state.running = false;
   state.paused = false;
+  // Completed files stay on disk after a stop; say where they are too.
+  if (state.folder && state.stats.ok > 0) {
+    pushLog(M("savedFolder", `\u200E${state.folder}\u200E`), "info");
+  }
+  repushSkippedIfTrimmed();
   pushLog(M("stopped"), "err");
   clearMirror();
   persist();
@@ -370,11 +446,36 @@ chrome.downloads.onChanged.addListener(async (delta) => {
   if (!delta.state || !(delta.id in state.active)) return;
   const { url, label } = state.active[delta.id];
   if (delta.state.current === "complete") {
-    state.stats.ok++;
-    if (state.entries[url]) state.entries[url].status = "ok";
-    pushLog(label, "ok");
-    delete state.active[delta.id];
-    onSettle();
+    // Conflict uniquification (slow.bin -> slow (1).bin) happens after
+    // onDeterminingFilename, so the finished DownloadItem is the only authority
+    // for the name actually on disk. Ask for it before writing the row/log.
+    const myEpoch = epoch;
+    chrome.downloads.search({ id: delta.id }, (items) => {
+      // Stop/new-batch may have settled this id while the search was in flight;
+      // don't double-count it or resurrect a stopped row.
+      if (myEpoch !== epoch || !(delta.id in state.active)) return;
+      const saved = items && items[0] && items[0].filename;
+      const finalLabel = (saved && saved.split(/[\\/]/).pop()) || label;
+      state.stats.ok++;
+      const e = state.entries[url];
+      if (e) {
+        e.status = "ok";
+        if (finalLabel !== e.label) e.label = finalLabel;
+        // The finished item's MIME is the reliable source (the determining
+        // event races tiny files); mark a saved HTML page even if that missed.
+        if (items && items[0] && (items[0].mime || "").startsWith("text/html")) e.web = true;
+        if (e.web) {
+          // A page URL "completes" as a saved .htm file, but it isn't the file
+          // the user asked for. Keep the success count (the save did happen) and
+          // attach a note they can act on instead of pretending nothing is off.
+          e.reason = M("webPage");
+          pushLog(M("webPage"), "info");
+        }
+      }
+      pushLog(finalLabel, "ok");
+      delete state.active[delta.id];
+      onSettle();
+    });
   } else if (delta.state.current === "interrupted") {
     state.stats.fail++;
     markFail(url, M("interrupted"));
@@ -387,9 +488,37 @@ chrome.downloads.onChanged.addListener(async (delta) => {
 // Route this batch's files into the dated subfolder. Matching by id covers the
 // normal case; matching by URL covers the race where Chrome determines the
 // filename before our download() callback has delivered the id.
+// This is also the first moment the real saved name and MIME exist: a server
+// Content-Disposition can rename the file away from what the URL suggested, so
+// the list and log follow item.filename here; completion later replaces it
+// with Chrome's final conflict-uniquified name.
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
   loadState().then(() => {
     const ours = item.id in state.active || launchingUrls.has(item.url);
+    if (ours) {
+      const base = (item.filename || "").split(/[\\/]/).pop();
+      let changed = false;
+      const entry = state.entries[item.url];
+      if (entry) {
+        if (base && entry.label !== base) {
+          entry.label = base;
+          changed = true;
+        }
+        if (item.mime && item.mime.startsWith("text/html") && !entry.web) {
+          entry.web = true;
+          changed = true;
+        }
+      }
+      const active = state.active[item.id];
+      if (active && base && active.label !== base) {
+        active.label = base;
+        changed = true;
+      }
+      if (changed) {
+        persist();
+        broadcast();
+      }
+    }
     if (ours && state.folder) {
       suggest({ filename: `${state.folder}/${item.filename}`, conflictAction: "uniquify" });
     } else {
@@ -411,11 +540,11 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
   const url = info.linkUrl;
   if (!/^https?:\/\//i.test(url)) return;
   await loadState();
-  const s = await chrome.storage.session.get("draft");
+  const s = await chrome.storage.local.get("draft");
   const lines = (s.draft || "").split("\n").map((l) => l.trim()).filter(Boolean);
   const added = !lines.includes(url);
   if (added) lines.push(url);
-  await chrome.storage.session.set({ draft: lines.join("\n") });
+  await chrome.storage.local.set({ draft: lines.join("\n") });
   if (state.running) {
     // The badge shows the batch countdown — it can't also flash "+", so the
     // confirmation goes to the log the next time a surface opens.
@@ -454,6 +583,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
           concurrency: state.concurrency,
           delay: state.delay,
           subfolder: !!state.folder,
+          folder: state.folder,
         });
       }
       sendResponse({ ok: true });
@@ -462,7 +592,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       if (m && !state.running) {
         pendingResume = null;
         clearMirror();
-        start({ urls: m.queue, concurrency: m.concurrency, delay: m.delay, subfolder: !!m.folder });
+        start({ urls: m.queue, concurrency: m.concurrency, delay: m.delay, subfolder: !!m.folder, folder: m.folder || null });
       }
       sendResponse({ ok: true });
     } else if (msg.cmd === "dismissResume") {
